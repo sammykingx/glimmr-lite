@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# project related
+.env
+copy.html
+*.log
+secrets
+instance/
+bolt-src/
+node_modules/
+dist/
+dist-ssr
+*.local
