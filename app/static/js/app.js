@@ -22,7 +22,7 @@ let bookingData = {
 };
 
 let currentStep = 1;
-let totalPrice = 90;
+let totalPrice = 0;
 
 // Service categories
 const serviceCategories = {
@@ -42,9 +42,10 @@ const serviceCategories = {
 
 // Frequency multipliers
 const frequencyMultipliers = {
-  weekly: 1.0,
-  "bi-weekly": 0.9,
-  monthly: 0.8,
+  "one-off": 1.0,
+  weekly: 0.9,
+  "bi-weekly": 0.8,
+  monthly: 0.7,
 };
 
 // Calculate base price
@@ -387,11 +388,54 @@ function handleBooking() {
 
   bookingData.additionalInfo = document.getElementById("additionalInfo").value;
 
-  // Show booking complete modal
-  document.getElementById("confirmedTotal").textContent = "$" + totalPrice;
-  document.getElementById("bookingComplete").classList.remove("hidden");
+  const token =
+    document.head.querySelector('meta[name="csrf-token"]')?.content || "";
+  // Send booking data to server
+  fetch("/booking", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": token,
+    },
+    body: JSON.stringify(bookingData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400) {
+          throw new Error(
+            "Your session was terminated for security reasons. Please refresh the page and try again."
+          );
+        } else if (response.status === 404) {
+          throw new Error(
+            "The requested service is not available. Please check and try again."
+          );
+        } else {
+          throw new Error(
+            "Our booking service is currently not available, please try again."
+          );
+        }
+        // showNotification(
+        //   "There was a problem submitting your booking. Please try again."
+        // );
+        //return Promise.reject();
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Booking successful:", JSON.stringify(data, null, 2));
+      //showBookingCompleteModal();
+      document.getElementById("confirmedTotal").textContent = "$" + totalPrice;
+      document.getElementById("bookingComplete").classList.remove("hidden");
+    })
+    .catch((error) => {
+      console.error("Error during booking:", error);
+      alert(error.message);
+      window.location.reload();
+    });
 
-  console.log("Booking Data:", bookingData);
+  // Show booking complete modal
+  // document.getElementById("confirmedTotal").textContent = "$" + totalPrice;
+  // document.getElementById("bookingComplete").classList.remove("hidden");
 }
 
 // Reset booking
@@ -410,7 +454,7 @@ function resetBooking() {
   };
 
   currentStep = 1;
-  totalPrice = 90;
+  totalPrice = 0;
 
   // Reset UI
   document.getElementById("bookingComplete").classList.add("hidden");

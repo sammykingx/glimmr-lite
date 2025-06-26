@@ -8,9 +8,11 @@ main = Blueprint('main', __name__)
 @main.route('/booking', methods=['POST'])
 def place_booking():
     
+    print("Received booking request")
     try:
         csrf_token = request.headers.get('X-CSRFToken')
         validate_csrf(csrf_token)  # Manual validation
+        print("CSRF token validated successfully")
 
         data = request.get_json()
 
@@ -19,7 +21,7 @@ def place_booking():
     
     # Process your booking data
     # booking handling logic here
-    
+    print("Booking data received:", data)
     return jsonify(
         {
             'status': 'success',
