@@ -10,4 +10,6 @@ dependencies = [
     "flask-sqlalchemy>=3.1.1",
     "flask-talisman>=1.1.0",
     "flask-wtf>=1.2.2",
+    "pydantic>=2.11.7",
+    "pytz>=2025.2",
 ]

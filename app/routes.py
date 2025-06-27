@@ -1,7 +1,10 @@
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, jsonify, request
+from flask_wtf.csrf import CSRFError, validate_csrf
 from app.extensions import db
 from app.models import User
-from flask_wtf.csrf import CSRFError, validate_csrf
+from app.utils import booking_data_serializer
+from app.services.booking_service import BookingService
+
 
 main = Blueprint('main', __name__)
 
@@ -12,31 +15,43 @@ def place_booking():
     try:
         csrf_token = request.headers.get('X-CSRFToken')
         validate_csrf(csrf_token)  # Manual validation
-        print("CSRF token validated successfully")
-
-        data = request.get_json()
 
     except CSRFError as e:
         return jsonify({'status': 'error', 'message': 'CSRF validation failed'}), 400
     
-    # Process your booking data
-    # booking handling logic here
+    data = booking_data_serializer(request.get_json())
+    
+    try:
+        Booking = BookingService(data)
+        booked_service = Booking.create_booking()
+        
+    except Exception as e:
+        return jsonify(
+          {
+            'status': 'error',
+            'message': str(e)
+          }
+        ), 400
+
     print("Booking data received:", data)
+    
     return jsonify(
         {
             'status': 'success',
             'message': 'Booking saved',
-            'data': data,
+            'data': booked_service.to_dict() if booked_service else None,
         }
     )
 '''
-booking_data ={
+booking_data = {
   "category": "Standard Cleaning",
   "service": "Regular House Cleaning",
   "bedrooms": 1,
   "bathrooms": 1,
   "frequency": "weekly",
   "addOns": [],
+  "cleaningDate": "2025-06-30",
+  "cleaningTime": "10:00",
   "personalInfo": {
     "firstName": "Moon",
     "lastName": "Chaser",
@@ -48,8 +63,6 @@ booking_data ={
     "city": "lagos",
     "state": "lagos",
     "zipCode": "00035",
-    "date": "2025-06-25",
-    "time": "14:09"
   },
   "additionalInfo": "no additional info"
 }
