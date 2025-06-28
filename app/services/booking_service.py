@@ -1,7 +1,7 @@
 # Booking Service Module
 # This module handles the booking process, including validation, saving to the database,
 # payment processing, and notifications.
-
+from flask import render_template
 from app.models import Address, Booking, RecurringBooking, User, db
 from app.services.payment_service import PaymentService
 from app.services.notification_service import NotificationService
@@ -96,9 +96,33 @@ class BookingService:
     def notify(self):
         """Send mail notifications."""
         
-        NotificationService.send_to_customer(self.booking)
-        NotificationService.send_to_admin(self.booking)
-
+        from app.constants import APP_NAME, APP_SUPPORT_EMAIL
+        
+        email_message =  render_template(
+            "email/payment-confirmation.html",
+            client_name=f"{self.user.full_name()}",
+            client_email= "wofer57222@iridales.com", #self.user.email,
+            amount=self.booking.price,
+            service_type=self.booking.service,
+            payment_date=self.booking.booking_date,
+            app_name= APP_NAME,
+            app_support_email=APP_SUPPORT_EMAIL,
+            partner_name="Kleen & Spotless",
+            partner_support_email="contact@kleenspotless.com",
+            footer_comp_name="Divgm Technologies",
+        )
+        print("email_message ready for sending")
+        
+        mail_service = NotificationService(
+            user=self.user,
+            subject=f"Booking Confirmation - {APP_NAME}",
+            message=email_message
+        )
+        mail_service.send_to_customer()
+        # NotificationService.send_to_customer(self.booking)
+        # NotificationService.send_to_admin(self.booking)
+        return True
+    
     def place_booking(self):
         """Run the entire booking flow."""
         #self.validate()

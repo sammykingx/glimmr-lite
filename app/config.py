@@ -6,6 +6,7 @@ load_dotenv()
 class Config:
     SECRET_KEY = os.getenv("APP_SECRET_KEY") or "b6059dc8db3bcf7bd4e2dc3b01d8e57994b2275e101ad7bdd2a446482990df9b"
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI") or 'sqlite:///app.db'
+    
     WTF_CSRF_ENABLED = True
     WTF_CSRF_SECRET_KEY = os.getenv("CSRF_SECRET_KEY")
     WTF_CSRF_TIME_LIMIT = 900 # 15 minutes in seconds
@@ -13,8 +14,17 @@ class Config:
     WTF_CSRF_METHODS = ["POST"] # allowed methods for CSRF protection
     WTF_CSRF_HEADERS = ["X-CSRFToken",] # allowed headers for CSRF protection
 
+    # Flask-Mail configuration
+    MAIL_SERVER = os.getenv("MAIL_SERVER")
+    MAIL_PORT = 465  # Use 465 for SSL, or 587 for TLS
+    MAIL_USE_SSL = bool(os.getenv("MAIL_USE_SSL", "true"))
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = "af1LTpr#ty.#"
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
+    MAIL_MAX_EMAILS = int(os.getenv("MAIL_MAX_EMAILS", 20))
+    
 class DevelopmentConfig(Config):
-    DEBUG = True
+    DEBUG = False
 
 class ProductionConfig(Config):
     SECRET_KEY = os.environ.get("SECRET_KEY")
