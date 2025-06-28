@@ -1,10 +1,15 @@
+from dotenv import load_dotenv
 import os
 
+
+load_dotenv()
 class Config:
-    SECRET_KEY = 'my_secret_key'
-    DEBUG = False
-    DATABASE_URI = 'sqlite:///app.db'
+    SECRET_KEY = os.getenv("APP_SECRET_KEY") or "b6059dc8db3bcf7bd4e2dc3b01d8e57994b2275e101ad7bdd2a446482990df9b"
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI") or 'sqlite:///app.db'
     WTF_CSRF_ENABLED = True
+    WTF_CSRF_SECRET_KEY = os.getenv("CSRF_SECRET_KEY")
+    WTF_CSRF_TIME_LIMIT = 900 # 15 minutes in seconds
+    SESSION_COOKIE_NAME = "glimmr_session"
     WTF_CSRF_METHODS = ["POST"] # allowed methods for CSRF protection
     WTF_CSRF_HEADERS = ["X-CSRFToken",] # allowed headers for CSRF protection
 
@@ -15,6 +20,16 @@ class ProductionConfig(Config):
     SECRET_KEY = os.environ.get("SECRET_KEY")
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
+    SESSION_COOKIE_SAMESITE = "Lax"
     WTF_CSRF_ENABLED = True
-    PREFERRED_URL_SCHEME = 'https'
+    PREFERRED_URL_SCHEME = "https"
+    PERMANENT_SESSION_LIFETIME = 86400  # 1 day in seconds
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_size": 20,        # Number of connections to keep open
+        "max_overflow": 10,     # Extra connections beyond pool_size
+        "pool_timeout": 30,     # Time in seconds to wait before giving up on getting a connection
+        "pool_recycle": 1800,   # Recycle connections every 30 mins
+        "pool_pre_ping": True,  # Check connection liveness before using
+        "echo": False,          # No SQL logging in prod
+        "future": True          # Use SQLAlchemy 2.0 API style if desired
+    }

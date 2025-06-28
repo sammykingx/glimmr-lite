@@ -11,8 +11,8 @@ class User(db.Model):
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=False)
-    address= db.relationship('Address', backref='user', lazy=True)
-    bookings = db.relationship('Booking', backref='user', lazy=True)
+    address = db.relationship('Address', back_populates='user', lazy=True, uselist=False,)
+    booked_service = db.relationship("Booking", back_populates="user", lazy=True,)
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -55,9 +55,10 @@ class Booking(db.Model):
     recurring = db.Column(db.Boolean, default=False)
     status = db.Column(db.String(20), default="pending")
     payment_status = db.Column(db.String(20), default="unpaid")
+    paid_at = db.Column(db.DateTime,)
     additional_info = db.Column(db.Text)
-    
-    user = db.relationship('User', backref=db.backref('bookings', lazy=True))
+    user = db.relationship('User', back_populates='booked_service', lazy=True,)
+
     
     def __repr__(self):
         return f'<Booking {self.id}>'
@@ -87,6 +88,10 @@ class Address(db.Model):
     city = db.Column(db.String(50), nullable=False)
     state = db.Column(db.String(50), nullable=False)
     zip_code = db.Column(db.String(20), nullable=False)
+    user = db.relationship('User', back_populates='address', lazy=True,)
+    def __repr__(self):
+        return f'<Address {self.street}, {self.city}>'
+    
     
     def to_dict(self):
         return {

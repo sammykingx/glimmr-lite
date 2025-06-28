@@ -19,6 +19,7 @@ let bookingData = {
     zipCode: "",
   },
   additionalInfo: "",
+  price: 0,
 };
 
 let currentStep = 1;
@@ -66,6 +67,7 @@ function updateTotalPrice() {
     : 1;
   const addOnPrice = bookingData.addOns.length * 30;
   totalPrice = Math.round(basePrice * frequencyMultiplier + addOnPrice);
+  bookingData.price = totalPrice;
 
   document.getElementById("totalPrice").textContent = "$" + totalPrice;
   document.getElementById("finalPrice").textContent = totalPrice;
@@ -402,22 +404,26 @@ function handleBooking() {
     .then((response) => {
       if (!response.ok) {
         if (response.status === 400) {
+          throw new Error("Invalid request. Please try again.");
+        } else if (response.status === 403) {
           throw new Error(
-            "Your session was terminated for security reasons. Please refresh the page and try again."
+            "Oh dear, your session has expired please refresh the page and try again."
           );
         } else if (response.status === 404) {
           throw new Error(
-            "The requested service is not available. Please check and try again."
+            "The requested resource was not found. Please try again."
+          );
+        } else if (response.status === 422) {
+          throw new Error("You sent incorrect booking data, please try again.");
+        } else if (response.status === 500) {
+          throw new Error(
+            "There was a problem with our server. check back later."
           );
         } else {
           throw new Error(
             "Our booking service is currently not available, please try again."
           );
         }
-        // showNotification(
-        //   "There was a problem submitting your booking. Please try again."
-        // );
-        //return Promise.reject();
       }
       return response.json();
     })
@@ -430,6 +436,7 @@ function handleBooking() {
     .catch((error) => {
       console.error("Error during booking:", error);
       alert(error.message);
+      resetBooking();
       window.location.reload();
     });
 

@@ -3,19 +3,16 @@
 # payment processing, and notifications.
 
 from app.models import Address, Booking, RecurringBooking, User, db
-from app.utils import ValidateBookingData
-from app.services.payment_service import PaymentGateway
+from app.services.payment_service import PaymentService
 from app.services.notification_service import NotificationService
 
 
 class BookingService:
-    def __init__(self, booking_data:dict) -> None:
-        self.clean_data = ValidateBookingData(**booking_data)
-        self.booking_info = self.clean_data.model_dump()
+    def __init__(self, cleaned_data:dict) -> None:
+        self.booking_info = cleaned_data.model_dump()
         self.user_info = self.booking_info.pop("user_info", {})
         self.address = self.booking_info.pop("address", {})
-        self.recurring_booking = True if self.booking_info.get("frequency") != "one-off" else False
-        self.booking_info["recurring"] = self.recurring_booking
+        self.booking_info["recurring"] = True if self.booking_info.get("frequency") != "one-off" else False
         self.booking = None
         self.user = None
 
@@ -34,53 +31,67 @@ class BookingService:
         
         return self.user
     
-    def save_user_address(self, user: User):
+    def save_user_address(self):
         """Creates or returns a new address for the user."""
         
         if not self.user.address:
-            Address(
-                user_id=self.user.user_id,
+            self.address = Address(
+                user_id=self.user.id,
                 **self.address
             )
+            
+            db.session.add(self.address)
+            db.session.commit()
 
         return self.address
     
     def save_booking(self):
-        """Creates the booking in the database."""
+        """Creates the booking record in the database."""
         
         # Check if booking object already exists
         if not self.booking:
+            print("Creating new booking record...")
             self.user = self.create_or_get_user()
-            self.save_user_address(self.user)
+            self.save_user_address()
             self.booking = Booking(
                 **self.booking_info,
                 user_id=self.user.id,
+                # user_id=2,  # For testing purposes, replace with self.user.id
             )
             
             db.session.add(self.booking)
             db.session.commit()
-    
+            
+        print("Booking record saved successfully.")
         return self.booking
 
     def process_payment(self):
         """Handle optional payment processing."""
-        if self.booking.price > 0:
-            result = PaymentGateway.charge(self.user, self.booking)
-            if self.booking.payment_status == "paid":
-                # it's a recurring service payment
-                # update the recurring booking table
-                pass
+
+        if not self.booking.price > 0:
+            raise ValueError("Booking price must be greater than zero for payment processing.")
+            # 
+            # result = payment.charge_user(payment_gateway=None)  # Replace None with actual payment gateway
             
-            else:
-                # it's a one-off service payment
-                # update the booking status and payment status
-                self.booking.status = "approved"
-                self.booking.payment_status = "paid"
-                db.session.add(self.booking)
-                db.session.commit()
-            return result
+        elif self.booking.frequency != "one-off":
+            # it's a recurring service payment
+            # update the recurring booking table
+            pass
+            
+        else:
+            # it's a one-off service payment
+            payment = PaymentService(self.booking)
+            response = payment.charge_user(self.user)
+            if not response:
+                raise Exception("Payment processing failed.")
+            
+            # Update booking status and payment status
+            self.booking.status = "approved"
+            self.booking.payment_status = "paid"
+            db.session.add(self.booking)
+            db.session.commit()
         
-        return None
+        return response
 
     def notify(self):
         """Send mail notifications."""
@@ -88,12 +99,12 @@ class BookingService:
         NotificationService.send_to_customer(self.booking)
         NotificationService.send_to_admin(self.booking)
 
-    def create_booking(self):
+    def place_booking(self):
         """Run the entire booking flow."""
         #self.validate()
         self.save_booking()
         
-        self.process_payment()
+        # self.process_payment()
         
         self.notify()
         
