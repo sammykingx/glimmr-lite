@@ -47,12 +47,13 @@ class NotificationService:
     def send_to_customer(self):
         """Send booking confirmation to the customer."""
         
-        user_msg = Message(self.subject, recipients=["wofer57222@iridales.com"], html=self.message)
+        user_msg = Message(self.subject, recipients=[self.user.email], html=self.message)
         print("message object ready for mail transport")
         
         try:
             print("inside try block to send message to customer")
             mail.send(user_msg)
+
         except Exception as err:
             print("In exception block")
             current_app.logger.error(err, exc_info=True)

@@ -24,7 +24,7 @@ class Config:
     MAIL_MAX_EMAILS = int(os.getenv("MAIL_MAX_EMAILS", 20))
     
 class DevelopmentConfig(Config):
-    DEBUG = False
+    DEBUG = True
 
 class ProductionConfig(Config):
     SECRET_KEY = os.environ.get("SECRET_KEY")

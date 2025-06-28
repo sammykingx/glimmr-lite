@@ -14,7 +14,7 @@ ALLOWED_SERVICE_CATEGORY = [
 ALLOWED_SERVICE_TYPE = [
     "standard-cleaning",
     "deep-cleaning",
-    "move-in-move-out-cleaning",
+    "move-in-move/out-cleaning",
     "post-renovation-cleaning",
     "office-cleaning",
     "carpet-cleaning",

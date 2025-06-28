@@ -101,7 +101,7 @@ class BookingService:
         email_message =  render_template(
             "email/payment-confirmation.html",
             client_name=f"{self.user.full_name()}",
-            client_email= "wofer57222@iridales.com", #self.user.email,
+            client_email= self.user.email,
             amount=self.booking.price,
             service_type=self.booking.service,
             payment_date=self.booking.booking_date,
