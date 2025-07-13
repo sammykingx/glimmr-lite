@@ -1,5 +1,10 @@
+import { bookingData } from "./bookingData.js";
+import { serviceCategories } from "./constants.js";
+import { updateNextButton, updateProgress } from "./uiHelpers.js";
+import { updateTotalPrice } from "./pricing.js";
+
 // Select category
-export function selectCategory(category) {
+export function selectCategory(category, event) {
   bookingData.category = category;
 
   // Update UI
@@ -21,17 +26,27 @@ export function selectCategory(category) {
     const button = document.createElement("button");
     button.className =
       "service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card";
-    button.onclick = () => selectService(service);
+    button.dataset.service = service;
     button.innerHTML = `<span class="font-medium">${service}</span>`;
     serviceOptions.appendChild(button);
   });
 
   serviceSelection.classList.remove("hidden");
+
+  // Attach service button click handlers immediately
+  // since service was dynamically added to the DOM
+  document.querySelectorAll(".service-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const selected = btn.dataset.service;
+      selectService(selected, e);
+    });
+  });
+
   updateNextButton();
 }
 
 // Select service
-export function selectService(service) {
+export function selectService(service, event) {
   bookingData.service = service;
 
   // Update UI
@@ -39,14 +54,18 @@ export function selectService(service) {
     btn.classList.remove("border-primary", "bg-green-50");
     btn.classList.add("border-gray-200");
   });
-  event.target.classList.add("border-primary", "bg-green-50");
-  event.target.classList.remove("border-gray-200");
+  event.target
+    .closest(".service-btn")
+    .classList.add("border-primary", "bg-green-50");
+  event.target.closest(".service-btn").classList.remove("border-gray-200");
 
+  updateTotalPrice();
+  updateProgress();
   updateNextButton();
 }
 
 // Select bedrooms
-export function selectBedrooms(num) {
+export function selectBedrooms(num, event) {
   bookingData.bedrooms = num;
 
   // Update UI
@@ -63,7 +82,7 @@ export function selectBedrooms(num) {
 }
 
 // Select bathrooms
-function selectBathrooms(num) {
+export function selectBathrooms(num, event) {
   bookingData.bathrooms = num;
 
   // Update UI
@@ -80,7 +99,7 @@ function selectBathrooms(num) {
 }
 
 // Toggle add-on
-export function toggleAddOn(addOn) {
+export function toggleAddOn(addOn, event) {
   const index = bookingData.addOns.indexOf(addOn);
   const button = event.target.closest(".addon-btn");
 
@@ -112,7 +131,7 @@ export function toggleAddOn(addOn) {
 }
 
 // Select frequency
-export function selectFrequency(frequency) {
+export function selectFrequency(frequency, event) {
   bookingData.frequency = frequency;
 
   // Update UI

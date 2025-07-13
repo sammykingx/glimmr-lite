@@ -30,6 +30,22 @@ let currentCalendarDate = new Date();
 let maxBookingDate = new Date();
 maxBookingDate.setDate(maxBookingDate.getDate() + 45);
 
+// Service categories
+const serviceCategories = {
+  "Standard Cleaning": [
+    "Regular House Cleaning",
+    "Apartment Cleaning",
+    "Weekly Maintenance",
+  ],
+  "Deep Cleaning": [
+    "Move-in Cleaning",
+    "Move-out Cleaning",
+    "Spring Cleaning",
+    "Post-Construction Cleanup",
+  ],
+  Specialized: ["Office Cleaning", "Airbnb Cleaning", "Post-Party Cleanup"],
+};
+
 // Frequency multipliers
 const frequencyMultipliers = {
   weekly: 1.0,
@@ -112,12 +128,12 @@ function generateCalendarDays() {
     }`;
 
     dayElement.innerHTML = `
-                        <div class="text-lg font-medium">${day}</div>
-                        <div class="text-xs text-gray-500">${currentDate.toLocaleDateString(
-                          "en-US",
-                          { weekday: "short" }
-                        )}</div>
-                    `;
+                    <div class="text-lg font-medium">${day}</div>
+                    <div class="text-xs text-gray-500">${currentDate.toLocaleDateString(
+                      "en-US",
+                      { weekday: "short" }
+                    )}</div>
+                `;
 
     if (!isPast && !isBeyondLimit) {
       dayElement.onclick = () => selectDate(currentDate);
@@ -332,6 +348,53 @@ function updateBookingSummary() {
   }
 
   document.getElementById("summaryTotal").textContent = "$" + totalPrice;
+}
+
+// Select category
+function selectCategory(category) {
+  bookingData.category = category;
+
+  // Update UI
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.classList.remove("border-primary", "bg-green-50");
+    btn.classList.add("border-gray-200");
+  });
+  event.target
+    .closest(".category-btn")
+    .classList.add("border-primary", "bg-green-50");
+  event.target.closest(".category-btn").classList.remove("border-gray-200");
+
+  // Show service options
+  const serviceSelection = document.getElementById("serviceSelection");
+  const serviceOptions = document.getElementById("serviceOptions");
+  serviceOptions.innerHTML = "";
+
+  serviceCategories[category].forEach((service) => {
+    const button = document.createElement("button");
+    button.className =
+      "service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card";
+    button.onclick = () => selectService(service);
+    button.innerHTML = `<span class="font-medium">${service}</span>`;
+    serviceOptions.appendChild(button);
+  });
+
+  serviceSelection.classList.remove("hidden");
+  updateNextButton();
+}
+
+// Select service
+function selectService(service) {
+  bookingData.service = service;
+
+  // Update UI
+  document.querySelectorAll(".service-btn").forEach((btn) => {
+    btn.classList.remove("border-primary", "bg-green-50");
+    btn.classList.add("border-gray-200");
+  });
+  event.target.classList.add("border-primary", "bg-green-50");
+  event.target.classList.remove("border-gray-200");
+
+  updateNextButton();
 }
 
 // Select bedrooms
@@ -587,8 +650,6 @@ function handleBooking() {
   };
 
   bookingData.additionalInfo = document.getElementById("additionalInfo").value;
-  const token =
-    document.head.querySelector('meta[name="csrf-token"]')?.content || "";
 
   // Show loading modal
   document.getElementById("loadingModal").classList.remove("hidden");

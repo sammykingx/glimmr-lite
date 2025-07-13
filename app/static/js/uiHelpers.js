@@ -1,5 +1,5 @@
-import { currentStep } from "./bookingData.js";
-import { canProceed } from "./bookingSteps.js";
+import { currentStep } from "./bookingData.js"; //passed
+import { canProceed } from "./bookingSteps.js"; //passed
 
 // Update progress
 export function updateProgress() {
@@ -18,8 +18,10 @@ export function updateNextButton() {
   const nextBtn = document.getElementById("nextBtn");
   const bookBtn = document.getElementById("bookBtn");
 
+  console.log(`In updateNextButton, currentStep: ${currentStep}`);
+
   if (currentStep < 8) {
-    if (canProceed()) {
+    if (canProceed(currentStep)) {
       nextBtn.classList.remove(
         "bg-gray-300",
         "text-gray-500",
@@ -45,7 +47,7 @@ export function updateNextButton() {
       );
     }
   } else {
-    if (canProceed()) {
+    if (canProceed(currentStep)) {
       bookBtn.classList.remove(
         "bg-gray-300",
         "text-gray-500",

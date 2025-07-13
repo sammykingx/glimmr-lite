@@ -1,14 +1,15 @@
-import { currentStep, setCurrentStep } from "./bookingData.js";
-import { updateProgress } from "./uiHelpers.js";
-import { updateBookingSummary } from "./bookingSummary.js";
+import { canProceed } from "./bookingSteps.js";
+import { currentStep, increaseCurrentStep } from "./bookingData.js"; //passed
+import { updateProgress, updateNextButton } from "./uiHelpers.js"; //passed
+import { updateBookingSummary } from "./bookingSummary.js"; //passed
 
 // Next step
 export function nextStep() {
-  if (!canProceed()) return;
+  if (!canProceed(currentStep)) return;
 
   if (currentStep < 8) {
     document.getElementById(`step${currentStep}`).classList.remove("active");
-    currentStep++;
+    increaseCurrentStep++;
     document.getElementById(`step${currentStep}`).classList.add("active");
 
     updateProgress();

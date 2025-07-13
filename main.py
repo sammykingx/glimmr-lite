@@ -14,6 +14,9 @@ def add_security_headers(response):
 def index():
     return render_template('index.html')  # CSRF token can be added if needed
 
+@app.route('/bkp')
+def bkp_index():
+    return render_template('index-bkp.html')
 
 if __name__ == "__main__":
     app.run()

@@ -1,0 +1,86 @@
+<div id="step4" class="step p-8 animate-slideIn">
+    <div class="flex items-center space-x-3 mb-6">
+        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        <h2 class="text-2xl font-bold text-primary">Add-on Services</h2>
+        <span class="text-sm text-gray-500">(Optional - $30 each)</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button onclick="toggleAddOn('Fridge Cleaning')" class="addon-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card" data-addon="Fridge Cleaning">
+            <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                <div class="text-left">
+                    <span class="font-medium block">Fridge Cleaning</span>
+                    <span class="text-sm text-gray-500">+$30</span>
+                </div>
+            </div>
+        </button>
+        <button onclick="toggleAddOn('Oven Cleaning')" class="addon-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card" data-addon="Oven Cleaning">
+            <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <div class="text-left">
+                    <span class="font-medium block">Oven Cleaning</span>
+                    <span class="text-sm text-gray-500">+$30</span>
+                </div>
+            </div>
+        </button>
+        <button onclick="toggleAddOn('Blinds Dusting')" class="addon-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card" data-addon="Blinds Dusting">
+            <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3H5a2 2 0 00-2 2v12a4 4 0 004 4h2a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+                </svg>
+                <div class="text-left">
+                    <span class="font-medium block">Blinds Dusting</span>
+                    <span class="text-sm text-gray-500">+$30</span>
+                </div>
+            </div>
+        </button>
+        <button onclick="toggleAddOn('Furniture Polish')" class="addon-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card" data-addon="Furniture Polish">
+            <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                <div class="text-left">
+                    <span class="font-medium block">Furniture Polish</span>
+                    <span class="text-sm text-gray-500">+$30</span>
+                </div>
+            </div>
+        </button>
+        <button onclick="toggleAddOn('Laundry Service')" class="addon-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card" data-addon="Laundry Service">
+            <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M8 11v6a2 2 0 002 2h4a2 2 0 002-2v-6M8 11h8"/>
+                </svg>
+                <div class="text-left">
+                    <span class="font-medium block">Laundry Service</span>
+                    <span class="text-sm text-gray-500">+$30</span>
+                </div>
+            </div>
+        </button>
+        <button onclick="toggleAddOn('Garage Cleaning')" class="addon-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card" data-addon="Garage Cleaning">
+            <div class="flex items-center space-x-3">
+                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM21 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17h4v-5H9M15 17h2v-5h-2M7 12V6a4 4 0 118 0v6"/>
+                </svg>
+                <div class="text-left">
+                    <span class="font-medium block">Garage Cleaning</span>
+                    <span class="text-sm text-gray-500">+$30</span>
+                </div>
+            </div>
+        </button>
+    </div>
+
+    <div id="addOnSummary" class="mt-6 p-4 bg-gray-50 rounded-lg hidden">
+        <div class="flex items-center justify-between">
+            <span class="text-gray-600">Add-on Services (<span id="addOnCount">0</span>)</span>
+            <span id="addOnTotal" class="font-bold text-primary">+$0</span>
+        </div>
+    </div>
+</div>

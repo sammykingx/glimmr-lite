@@ -29,4 +29,5 @@ export let currentStep = 1;
 export let totalPrice = 90;
 
 export const setTotalPrice = (price) => (totalPrice = price);
-export const setCurrentStep = (step) => (currentStep = step);
+export const increaseCurrentStep = () => currentStep++;
+export const decreaseCurrentStep = () => currentStep--;

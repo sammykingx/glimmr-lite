@@ -1,5 +1,5 @@
-import { bookingData, setTotalPrice } from "./bookingData.js";
-import { frequencyMultipliers } from "./constants.js";
+import { bookingData, setTotalPrice } from "./bookingData.js"; // passed
+import { frequencyMultipliers } from "./constants.js"; // passed
 
 // service base prices
 export function calculateBasePrice(bedrooms, bathrooms) {
@@ -21,19 +21,18 @@ export function updateTotalPrice() {
   const total = Math.round(basePrice * frequencyMultiplier + addOnPrice);
   setTotalPrice(total);
 
-    // DOM update logic here
-    
-    document.getElementById("totalPrice").textContent = "$" + totalPrice;
-    document.getElementById("finalPrice").textContent = totalPrice;
+  // DOM update logic here
+  document.getElementById("totalPrice").textContent = "$" + total;
+  document.getElementById("finalPrice").textContent = total;
 
-    // Update frequency prices
-    document.getElementById("weeklyPrice").textContent =
-      "$" + Math.round(basePrice * 1.0);
-    document.getElementById("biWeeklyPrice").textContent =
-      "$" + Math.round(basePrice * 0.9);
-    document.getElementById("monthlyPrice").textContent =
-      "$" + Math.round(basePrice * 0.8);
+  // Update frequency prices
+  document.getElementById("weeklyPrice").textContent =
+    "$" + Math.round(basePrice * 1.0);
+  document.getElementById("biWeeklyPrice").textContent =
+    "$" + Math.round(basePrice * 0.9);
+  document.getElementById("monthlyPrice").textContent =
+    "$" + Math.round(basePrice * 0.8);
 
-    // Update base price display
-    document.getElementById("basePrice").textContent = "$" + basePrice;
+  // Update base price display
+  document.getElementById("basePrice").textContent = "$" + basePrice;
 }

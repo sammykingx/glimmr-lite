@@ -1,4 +1,4 @@
-import { bookingData } from "./bookingData.js";
+import { bookingData } from "./bookingData.js"; // passed
 
 export function canProceed(currentStep) {
   switch (currentStep) {

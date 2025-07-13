@@ -1,21 +1,30 @@
 // eventHandlers.js
 import {
+  selectCategory,
   selectBedrooms,
   selectBathrooms,
   selectFrequency,
   toggleAddOn,
-  selectPayment,
-  selectTime,
-  nextStep,
-  prevStep,
-  handleBooking,
-  resetBooking,
-} from "./bookingActions.js";
+} from "./services.js"; //passed
+import { selectPayment } from "./payments.js"; //passed
+import { selectTime } from "./calendar.js"; //passed
+import { nextStep, prevStep } from "./bookingNavigation.js"; //passed
+import { handleBooking, resetBooking } from "./bookingHandlers.js"; //passed
 
 export function attachEventHandlers() {
+  
+  // Category & Service selection
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const category = btn.dataset.category;
+      selectCategory(category, e);
+    });
+  });
+
   // Bedrooms
   document.querySelectorAll(".bedroom-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
+      console.log(`Selected Bedrooms: ${e.target.dataset.value}`);
       selectBedrooms(Number(e.target.dataset.value), e);
     });
   });

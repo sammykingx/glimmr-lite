@@ -1,6 +1,6 @@
 import { bookingData, totalPrice } from "./bookingData.js";
-import { calculateBasePrice } from "./pricing.js";
-import { frequencyMultipliers, paymentMethods } from "./constants.js";
+import { calculateBasePrice } from "./pricing.js"; //passed
+import { frequencyMultipliers, paymentMethods } from "./constants.js"; //passed
 
 // export function updateBookingSummary() { ... }
 
