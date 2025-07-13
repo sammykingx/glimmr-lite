@@ -9,7 +9,7 @@ from app.constants import ALLOWED_FREQUENCIES, ALLOWED_SERVICE_CATEGORY, ALLOWED
 
 main = Blueprint('main', __name__)
 
-@main.route('/booking', methods=['GET', 'POST'])
+@main.route('/booking', methods=['POST'])
 def place_booking():
     
     try:

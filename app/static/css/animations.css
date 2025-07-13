@@ -1,4 +1,4 @@
-@keyframes fadeIn {
+/* @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
@@ -33,4 +33,67 @@ input:focus, textarea:focus, button:focus {
 button, input, textarea { transition: all 0.2s ease-in-out; }
 
 .hover-card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+.hover-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); } */
+
+/* new css */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+        
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+        
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+        
+.animate-fadeIn { animation: fadeIn 0.5s ease-in-out; }
+.animate-slideIn { animation: slideIn 0.5s ease-out; }
+.animate-slideUp { animation: slideUp 0.3s ease-out; }
+.animate-spin { animation: spin 1s linear infinite; }
+        
+.step { display: none; }
+.step.active { display: block; }
+        
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #024522; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #035529; }
+        
+input:focus, textarea:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(2, 69, 34, 0.1);
+}
+        
+button, input, textarea { transition: all 0.2s ease-in-out; }
+        
+.hover-card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
 .hover-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); }
+
+.calendar-day {
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-day.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.calendar-day.past {
+    opacity: 0.5;
+    background-color: #f9fafb;
+    cursor: not-allowed;
+}

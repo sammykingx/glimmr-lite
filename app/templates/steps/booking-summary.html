@@ -1,0 +1,104 @@
+<div id="step8" class="step p-8 animate-slideIn">
+  <div class="flex items-center space-x-3 mb-6">
+    <svg
+      class="w-6 h-6 text-primary"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+      />
+    </svg>
+    <h2 class="text-2xl font-bold text-primary">Booking Summary</h2>
+  </div>
+
+  <div class="space-y-6">
+    <!-- Service Details -->
+    <div class="bg-gray-50 rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-green-900 mb-4">Service Details</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Category</p>
+          <p id="summaryCategory" class="font-medium text-green-900">-</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Service</p>
+          <p id="summaryService" class="font-medium text-green-900">-</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Property Size</p>
+          <p id="summaryProperty" class="font-medium text-green-900">-</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Frequency</p>
+          <p id="summaryFrequency" class="font-medium text-green-900">-</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule Details -->
+    <div class="bg-gray-50 rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-primary mb-4">Schedule</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Date</p>
+          <p id="summaryDate" class="font-medium text-green-900">-</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Time</p>
+          <p id="summaryTime" class="font-medium text-green-900">-</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment & Contact -->
+    <div class="bg-gray-50 rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-primary mb-4">Payment & Contact</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Payment Method</p>
+          <p id="summaryPayment" class="font-medium text-green-900">-</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Contact</p>
+          <p id="summaryContact" class="font-medium text-green-900">-</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add-ons -->
+    <div id="summaryAddOns" class="bg-gray-50 rounded-lg p-6 hidden">
+      <h3 class="text-lg font-semibold text-primary mb-4">Add-on Services</h3>
+      <div id="summaryAddOnsList" class="space-y-2"></div>
+    </div>
+
+    <!-- Price Breakdown -->
+    <div class="bg-primary/5 border border-primary/20 rounded-lg p-6">
+      <h3 class="text-lg font-semibold text-primary mb-4">Price Breakdown</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Base Service</span>
+          <span id="summaryBasePrice" class="font-medium">$90</span>
+        </div>
+        <div id="summaryAddOnPrice" class="flex justify-between hidden">
+          <span class="text-gray-600">Add-on Services</span>
+          <span class="font-medium">+$0</span>
+        </div>
+        <div id="summaryDiscount" class="flex justify-between hidden">
+          <span class="text-gray-600">Frequency Discount</span>
+          <span class="font-medium text-green-600">-$0</span>
+        </div>
+        <div class="border-t pt-3">
+          <div class="flex justify-between text-lg font-bold">
+            <span class="text-primary">Total</span>
+            <span id="summaryTotal" class="text-primary">$90</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
