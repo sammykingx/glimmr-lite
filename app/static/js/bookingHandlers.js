@@ -1,8 +1,12 @@
-import { bookingData, totalPrice } from "./bookingData.js";
+import { bookingData, bookingState, resetBookingData } from "./bookingData.js";
+import { canProceed } from "./bookingSteps.js";
+import { updateCalendarDisplay } from "./calendar.js";
+import { updateProgress, updateNextButton } from "./uiHelpers.js";
+import { updateTotalPrice } from "./pricing.js";
 
 // Handle booking
 export function handleBooking() {
-  if (!canProceed()) return;
+  if (!canProceed(bookingState.currentStep)) return;
 
   // Collect personal information
   bookingData.personalInfo = {
@@ -31,7 +35,8 @@ export function handleBooking() {
     document.getElementById("loadingModal").classList.add("hidden");
 
     // Show booking complete modal
-    document.getElementById("confirmedTotal").textContent = "$" + totalPrice;
+    document.getElementById("confirmedTotal").textContent =
+      "$" + bookingState.totalPrice;
 
     // Show schedule in confirmation
     if (bookingData.selectedDate && bookingData.selectedTime) {
@@ -56,23 +61,10 @@ export function handleBooking() {
 // Reset booking
 export function resetBooking() {
   // Reset data
-  bookingData = {
-    category: "",
-    service: "",
-    bedrooms: 1,
-    bathrooms: 1,
-    frequency: "",
-    addOns: [],
-    selectedDate: "",
-    selectedTime: "",
-    paymentMethod: "",
-    personalInfo: { firstName: "", lastName: "", email: "", phone: "" },
-    address: { street: "", city: "", state: "", zipCode: "" },
-    additionalInfo: "",
-  };
+  resetBookingData();
 
-  currentStep = 1;
-  totalPrice = 90;
+  bookingState.currentStep = 1;
+  bookingState.totalPrice = 90;
 
   // Reset UI
   document.getElementById("bookingComplete").classList.add("hidden");

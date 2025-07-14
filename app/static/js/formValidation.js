@@ -1,7 +1,8 @@
 import { updateNextButton } from "./uiHelpers.js"; //passed
+import { bookingData } from "./bookingData.js";
 
 export function setupFormValidation() {
-  const fields = [
+  const requiredFields = [
     "firstName",
     "lastName",
     "email",
@@ -11,7 +12,10 @@ export function setupFormValidation() {
     "state",
     "zipCode",
   ];
-  fields.forEach((id) => {
-    document.getElementById(id).addEventListener("input", updateNextButton);
-  });
+
+
 }
+
+// requiredFields.forEach((id) => {
+//   document.getElementById(id).addEventListener("input", updateNextButton);
+// });

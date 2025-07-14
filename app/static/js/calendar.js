@@ -1,4 +1,5 @@
 import { bookingData } from "./bookingData.js"; //passed
+import { updateNextButton } from "./uiHelpers.js";
 
 export let currentCalendarDate = new Date();
 
@@ -106,7 +107,7 @@ export function selectDate(date) {
 }
 
 // Select time
-export function selectTime(time) {
+export function selectTime(time, event) {
   bookingData.selectedTime = time;
 
   // Update UI

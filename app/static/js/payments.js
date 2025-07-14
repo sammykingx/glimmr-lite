@@ -1,6 +1,7 @@
 import { bookingData } from "./bookingData.js";
+import { updateNextButton } from "./uiHelpers.js";
 
-export function selectPayment(method) {
+export function selectPayment(method, event) {
   bookingData.paymentMethod = method;
 
   // Update UI

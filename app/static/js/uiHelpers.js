@@ -1,8 +1,9 @@
-import { currentStep } from "./bookingData.js"; //passed
+import { bookingState } from "./bookingData.js"; //passed
 import { canProceed } from "./bookingSteps.js"; //passed
 
 // Update progress
 export function updateProgress() {
+  const currentStep = bookingState.currentStep;
   const progress = (currentStep / 8) * 100;
   document.getElementById(
     "stepIndicator"
@@ -15,10 +16,9 @@ export function updateProgress() {
 
 // Update next button
 export function updateNextButton() {
+  const currentStep = bookingState.currentStep;
   const nextBtn = document.getElementById("nextBtn");
   const bookBtn = document.getElementById("bookBtn");
-
-  console.log(`In updateNextButton, currentStep: ${currentStep}`);
 
   if (currentStep < 8) {
     if (canProceed(currentStep)) {

@@ -23,7 +23,7 @@
         <h3 class="text-lg font-semibold text-primary">Choose a Date</h3>
         <div class="flex items-center space-x-2">
           <button
-            onclick="previousMonth()"
+            id="prev-month"
             class="p-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <svg
@@ -45,7 +45,7 @@
             class="text-lg font-medium text-gray-900 min-w-[120px] text-center"
           ></span>
           <button
-            onclick="nextMonth()"
+            id="next-month"
             class="p-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
             <svg
@@ -101,7 +101,7 @@
       <h3 class="text-lg font-semibold text-primary mb-4">Choose a Time</h3>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <button
-          onclick="selectTime('8:00 AM - 10:00 AM')"
+          data-time="8:00 AM"
           class="time-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card"
         >
           <div class="text-center">
@@ -110,7 +110,7 @@
           </div>
         </button>
         <button
-          onclick="selectTime('10:00 AM - 12:00 PM')"
+          data-time="10:00 AM"
           class="time-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card"
         >
           <div class="text-center">
@@ -119,7 +119,7 @@
           </div>
         </button>
         <button
-          onclick="selectTime('12:00 PM - 2:00 PM')"
+          data-time="12:00 PM"
           class="time-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card"
         >
           <div class="text-center">
@@ -128,7 +128,7 @@
           </div>
         </button>
         <button
-          onclick="selectTime('2:00 PM - 4:00 PM')"
+          data-time="2:00 PM"
           class="time-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card"
         >
           <div class="text-center">
@@ -137,7 +137,7 @@
           </div>
         </button>
         <button
-          onclick="selectTime('4:00 PM - 6:00 PM')"
+          data-time="4:00 PM"
           class="time-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card"
         >
           <div class="text-center">

@@ -1,10 +1,11 @@
-import { bookingData, totalPrice } from "./bookingData.js";
+import { bookingData, bookingState } from "./bookingData.js";
 import { calculateBasePrice } from "./pricing.js"; //passed
 import { frequencyMultipliers, paymentMethods } from "./constants.js"; //passed
 
 // export function updateBookingSummary() { ... }
 
 export function updateBookingSummary() {
+  const totalPrice = bookingState.totalPrice;
   document.getElementById("summaryCategory").textContent =
     bookingData.category || "-";
   document.getElementById("summaryService").textContent =
@@ -40,7 +41,7 @@ export function updateBookingSummary() {
   document.getElementById("summaryContact").textContent =
     bookingData.personalInfo.firstName && bookingData.personalInfo.lastName
       ? `${bookingData.personalInfo.firstName} ${bookingData.personalInfo.lastName}`
-      : "-";
+      : "John Doe";
 
   // Add-ons
   const addOnsSection = document.getElementById("summaryAddOns");
