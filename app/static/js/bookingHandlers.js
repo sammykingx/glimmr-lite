@@ -8,21 +8,6 @@ import { updateTotalPrice } from "./pricing.js";
 export function handleBooking() {
   if (!canProceed(bookingState.currentStep)) return;
 
-  // Collect personal information
-  bookingData.personalInfo = {
-    firstName: document.getElementById("firstName").value,
-    lastName: document.getElementById("lastName").value,
-    email: document.getElementById("email").value,
-    phone: document.getElementById("phone").value,
-  };
-
-  bookingData.address = {
-    street: document.getElementById("street").value,
-    city: document.getElementById("city").value,
-    state: document.getElementById("state").value,
-    zipCode: document.getElementById("zipCode").value,
-  };
-
   bookingData.additionalInfo = document.getElementById("additionalInfo").value;
   const token =
     document.head.querySelector('meta[name="csrf-token"]')?.content || "";
@@ -99,7 +84,6 @@ export function resetBooking() {
   document.getElementById("bookBtn").classList.add("hidden");
 
   // Reset calendar
-  currentCalendarDate = new Date();
   updateCalendarDisplay();
 
   updateProgress();

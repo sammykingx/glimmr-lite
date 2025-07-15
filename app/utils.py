@@ -8,6 +8,12 @@ from datetime import date, time
 # Utility function to serialize booking data into a dictionary format.
 # This is useful for converting the booking data from the request into a format that can be easily
 # processed or stored in a database.
+
+# combined = f"{selectedDate} {selectedTime}"  # "Wed Jul 16 2025 10:00 AM"
+# dt = datetime.strptime(combined, "%a %b %d %Y %I:%M %p")
+
+# print(dt)  # Output: 2025-07-16 10:00:00
+
 def booking_data_serializer(booking_data: Dict) -> Dict:
     """Serializes booking data to a dictionary."""
     

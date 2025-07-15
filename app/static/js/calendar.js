@@ -1,7 +1,7 @@
 import { bookingData } from "./bookingData.js"; //passed
 import { updateNextButton } from "./uiHelpers.js";
 
-export let currentCalendarDate = new Date();
+let currentCalendarDate = new Date();
 
 const maxBookingDate = new Date();
 maxBookingDate.setDate(maxBookingDate.getDate() + 45);
@@ -13,6 +13,7 @@ export function initializeCalendar() {
 
 // Get the current month and year
 export function updateCalendarDisplay() {
+  currentCalendarDate = new Date();
   const monthNames = [
     "January",
     "February",
@@ -71,7 +72,7 @@ export function generateCalendarDays() {
     }`;
 
     dayElement.innerHTML = `
-                        <div class="text-lg font-medium">${day}</div>
+                        <div class="text-xs md:text-sm lg:text-lg font-medium">${day}</div>
                         <div class="text-xs text-gray-500">${currentDate.toLocaleDateString(
                           "en-US",
                           { weekday: "short" }

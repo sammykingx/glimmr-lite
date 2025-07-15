@@ -5,11 +5,12 @@ import {
   selectBathrooms,
   selectFrequency,
   toggleAddOn,
-} from "./services.js"; //passed
-import { selectPayment } from "./payments.js"; //passed
-import { previousMonth, nextMonth, selectTime } from "./calendar.js"; //passed
-import { nextStep, prevStep } from "./bookingNavigation.js"; //passed
-import { handleBooking, resetBooking } from "./bookingHandlers.js"; //passed
+} from "./services.js";
+import { selectPayment } from "./payments.js";
+import { previousMonth, nextMonth, selectTime } from "./calendar.js";
+import { nextStep, prevStep } from "./bookingNavigation.js";
+import { handleBooking, resetBooking } from "./bookingHandlers.js";
+import { setClientData } from "./clientData.js";
 
 export function attachEventHandlers() {
   // Category & Service selection
@@ -74,6 +75,17 @@ export function attachEventHandlers() {
   document.querySelectorAll(".payment-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       selectPayment(btn.dataset.payWith, e);
+    });
+  });
+
+  // Collect client Info
+  document.querySelectorAll("[data-group][data-field]").forEach((input) => {
+    input.addEventListener("input", (e) => {
+      const group = e.target.dataset.group;
+      const field = e.target.dataset.field;
+      const value = e.target.value.trim();
+
+      setClientData(group, field, value);
     });
   });
 

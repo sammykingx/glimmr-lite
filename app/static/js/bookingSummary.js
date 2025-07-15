@@ -6,10 +6,11 @@ import { frequencyMultipliers, paymentMethods } from "./constants.js"; //passed
 
 export function updateBookingSummary() {
   const totalPrice = bookingState.totalPrice;
+  bookingData.price = totalPrice;
   document.getElementById("summaryCategory").textContent =
-    bookingData.category || "-";
+    bookingData.category || "Not Available";
   document.getElementById("summaryService").textContent =
-    bookingData.service || "-";
+    bookingData.service || "Not Available";
   document.getElementById("summaryProperty").textContent = `${
     bookingData.bedrooms
   } bedroom${bookingData.bedrooms > 1 ? "s" : ""}, ${
@@ -82,6 +83,7 @@ export function updateBookingSummary() {
     document.getElementById("summaryAddOnPrice").classList.add("hidden");
   }
 
+  // Frequency display in price breakdown
   if (discountAmount > 0) {
     document.getElementById("summaryDiscount").classList.remove("hidden");
     document
