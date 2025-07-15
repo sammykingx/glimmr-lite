@@ -1,0 +1,22 @@
+<section id="bookingError" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center animate-fadeIn">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+
+        </div>
+        <h2 class="text-2xl font-bold text-red-500 mb-4">Oopsy!</h2>
+        <p id="errMsg" class="text-gray-600 mb-6">There was a problem processing your request. Give it another shot please!</p>
+        <!--
+        <div class="bg-red-50 rounded-lg p-4 mb-6">
+            <p class="text-sm text-gray-500">Booked Amount</p>
+            <p id="totalAmount" class="text-2xl font-bold text-green-500">$90</p>
+            <p id="confirmedSchedule" class="text-sm text-green-400 mt-2"></p>
+        </div>
+        -->
+        <button id="retryBooking" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-800 transition-colors">
+            Retry Booking
+        </button>
+    </div>
+</section>

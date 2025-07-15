@@ -62,3 +62,8 @@ export function resetBookingData() {
     additionalInfo: "",
   };
 }
+
+export const resetBookingState = () => {
+  bookingState.currentStep = 1;
+  bookingState.totalPrice = 90;
+};

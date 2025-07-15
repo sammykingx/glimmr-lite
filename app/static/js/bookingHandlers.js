@@ -1,4 +1,9 @@
-import { bookingData, bookingState, resetBookingData } from "./bookingData.js";
+import {
+  bookingData,
+  bookingState,
+  resetBookingData,
+  resetBookingState,
+} from "./bookingData.js";
 import { canProceed } from "./bookingSteps.js";
 import { updateCalendarDisplay } from "./calendar.js";
 import { updateProgress, updateNextButton } from "./uiHelpers.js";
@@ -15,44 +20,51 @@ export function handleBooking() {
   // Show loading modal
   document.getElementById("loadingModal").classList.remove("hidden");
 
-  // Simulate processing time
-  setTimeout(() => {
-    document.getElementById("loadingModal").classList.add("hidden");
+  fetch("/booking", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": token,
+    },
+    body: JSON.stringify(bookingData),
+  })
+    .then(async (response) => {
+      const data = await response.json();
 
-    // Show booking complete modal
-    document.getElementById("confirmedTotal").textContent =
-      "$" + bookingState.totalPrice;
+      // Hide loading animation
+      document.getElementById("loadingModal").classList.add("hidden");
 
-    // Show schedule in confirmation
-    if (bookingData.selectedDate && bookingData.selectedTime) {
-      const date = new Date(bookingData.selectedDate);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      document.getElementById(
-        "confirmedSchedule"
-      ).textContent = `Scheduled for ${formattedDate} at ${bookingData.selectedTime}`;
-    }
-
-    document.getElementById("bookingComplete").classList.remove("hidden");
-
-    console.log("Booking Data:", bookingData);
-  }, 2000);
+      if (response.status === 200) {
+        if (data.checkout_url) {
+          // redirect to checkout
+          window.location.href = data.checkout_url;
+        } else {
+          // No checkout URL — show confirmation modal
+          showConfirmationModal();
+        }
+      } else {
+        // Error response when status code not 200
+        showErrorModal(data);
+      }
+    })
+    .catch((error) => {
+      document.getElementById("loadingModal").classList.add("hidden");
+      showErrorModal(error);
+    });
 }
 
 // Reset booking
 export function resetBooking() {
-  // Reset data
+  // Reset booking data and booking state
   resetBookingData();
+  resetBookingState();
 
-  bookingState.currentStep = 1;
-  bookingState.totalPrice = 90;
+  // bookingState.currentStep = 1;
+  // bookingState.totalPrice = 90;
 
   // Reset UI
   document.getElementById("bookingComplete").classList.add("hidden");
+  document.getElementById("bookingError").classList.add("hidden");
   document
     .querySelectorAll(".step")
     .forEach((step) => step.classList.remove("active"));
@@ -89,4 +101,40 @@ export function resetBooking() {
   updateProgress();
   updateTotalPrice();
   updateNextButton();
+}
+
+function showConfirmationModal() {
+  document.getElementById("confirmedTotal").textContent =
+    "$" + bookingState.totalPrice;
+
+  // Show schedule in confirmation
+  if (bookingData.selectedDate && bookingData.selectedTime) {
+    const date = new Date(bookingData.selectedDate);
+    const formattedDate = date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    document.getElementById(
+      "confirmedSchedule"
+    ).textContent = `Scheduled for ${formattedDate} at ${bookingData.selectedTime}`;
+  }
+
+  document.getElementById("bookingComplete").classList.remove("hidden");
+
+  console.log("Booking Data:", bookingData);
+}
+
+function showErrorModal(data) {
+  document.getElementById("errMsg").textContent =
+    data?.message || "An error occurred while processing your booking.";
+
+  // document.getElementById("totalAmount").textContent = "$" + bookingData.price;
+
+  // document.getElementById(
+  //   "confirmedSchedule"
+  // ).textContent = `${bookingData.selectedDate} at ${bookingData.selectedTime}`;
+
+  document.getElementById("bookingError").classList.remove("hidden");
 }

@@ -9,14 +9,14 @@ from datetime import date, time
 # This is useful for converting the booking data from the request into a format that can be easily
 # processed or stored in a database.
 
-# combined = f"{selectedDate} {selectedTime}"  # "Wed Jul 16 2025 10:00 AM"
-# dt = datetime.strptime(combined, "%a %b %d %Y %I:%M %p")
-
-# print(dt)  # Output: 2025-07-16 10:00:00
-
 def booking_data_serializer(booking_data: Dict) -> Dict:
     """Serializes booking data to a dictionary."""
     
+    dt = datetime.strptime(
+        f"{booking_data.get('selectedDate')} {booking_data.get('selectedTime')}",
+        "%a %b %d %Y %I:%M %p"
+    )
+
     user_info = {
         "first_name": booking_data.get("personalInfo", {}).get("firstName", ""),
         "last_name": booking_data.get("personalInfo", {}).get("lastName", ""),
@@ -28,9 +28,9 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
         "street": booking_data.get("address", {}).get("street", ""),
         "city": booking_data.get("address", {}).get("city", ""),
         "state": booking_data.get("address", {}).get("state", ""),
-        "zip_code": booking_data.get("address", {}).get("zipCode", ""),
+        # "zip_code": booking_data.get("address", {}).get("zipCode", ""),
     }
-    
+
     return {
         "service": booking_data.get("service"),
         "service_category": booking_data.get("category"),
@@ -38,8 +38,8 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
         "bathrooms": booking_data.get("bathrooms"),
         "frequency": booking_data.get("frequency", "one-off"),
         "add_ons": booking_data.get("addOns", []),
-        "booking_date": booking_data.get("cleaningDate"),
-        "booking_time": booking_data.get("cleaningTime"),
+        "booking_date": dt.date(),#booking_data.get("selectedDate"),
+        "booking_time": dt.time(),#booking_data.get("selectedTime"),
         "price": booking_data.get("price", 0.0),
         "user_info": user_info,
         "address": address,
@@ -64,7 +64,6 @@ class ValidateBookingData(BaseModel):
     def validate_user_info(cls, user_payload):
         """Validates the user info dictionary."""
         
-        print("Validating user info")
         if not isinstance(user_payload, dict):
             raise ValueError("User info must be a dictionary.")
         
@@ -80,7 +79,6 @@ class ValidateBookingData(BaseModel):
     def validate_services(cls, value):
         """Validates the service type."""
         
-        print("Validating service type")
         if not value.strip():
             return ValueError("Service is required.")
         

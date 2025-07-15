@@ -94,6 +94,9 @@ export function attachEventHandlers() {
 
   // Reset
   document.getElementById("resetBtn")?.addEventListener("click", resetBooking);
+  document
+    .getElementById("retryBooking")
+    ?.addEventListener("click", resetBooking);
 
   // Navigation
   document.getElementById("nextBtn").addEventListener("click", nextStep);

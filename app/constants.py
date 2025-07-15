@@ -6,14 +6,14 @@ TORONRO_TZ = pytz.timezone("America/Toronto")
 
 
 ALLOWED_SERVICE_CATEGORY = [
-    "residential",
-    "commercial",
-    "industrial",
+    "standard cleaning",
+    "deep cleaning",
+    "specialized",
 ]
 
 ALLOWED_SERVICE_TYPE = [
-    "standard-cleaning",
-    "deep-cleaning",
+    "regular house cleaning",
+    "apartment cleaning",
     "move-in-move/out-cleaning",
     "post-renovation-cleaning",
     "office-cleaning",
@@ -29,8 +29,8 @@ ALLOWED_FREQUENCIES = [
 ]
 
 ALLOWED_SERVICE_ADDONS = [
-    "oven-cleaning",
-    "fridge-cleaning",
+    "oven cleaning",
+    "fridge cleaning",
     "laundry",
     "ironing",
     "carpet-shampooing",
