@@ -5,7 +5,7 @@ from app.models import User
 from app.utils import booking_data_serializer, ValidateBookingData
 from app.services.booking_service import BookingService
 from pydantic import ValidationError
-from app.constants import ALLOWED_FREQUENCIES, ALLOWED_SERVICE_CATEGORY, ALLOWED_SERVICE_TYPE, ALLOWED_SERVICE_ADDONS
+from app.constants import ALLOWED_FREQUENCIES, ALLOWED_SERVICE, ALLOWED_SERVICE_TYPE, ALLOWED_SERVICE_ADDONS
 
 main = Blueprint('main', __name__)
 
@@ -50,9 +50,15 @@ def place_booking():
         }
     )
 
+@main.route("/demo-data")
+def return_demo_data():
+  demo_data = create_sample_data()
+  
+  return jsonify(demo_data)
+
 from faker import Faker
     
-faker = Faker()
+faker = Faker("en_CA")
 
 # Sample data for testing
 # This data is used to test the booking endpoint.
@@ -61,14 +67,14 @@ def create_sample_data():
     from datetime import datetime
     
     return {
-        "category": faker.random_element(elements=ALLOWED_SERVICE_CATEGORY),
+        "category": faker.random_element(elements=ALLOWED_SERVICE.keys()),
         "service": faker.random_element(elements=ALLOWED_SERVICE_TYPE),
         "bedrooms": faker.random_int(min=1, max=6),
         "bathrooms": faker.random_int(min=1, max=3),
         "frequency": faker.random_element(elements=ALLOWED_FREQUENCIES),
         "addOns": [faker.random_element(elements=ALLOWED_SERVICE_ADDONS) for _ in range(faker.random_int(min=0, max=3))],
         "selectedDate": datetime.now().date(),
-        "selectedTime": datetime.now().time(),
+        "selectedTime": str(datetime.now().time()),
         "personalInfo": {
             "firstName": faker.first_name(),
             "lastName": faker.last_name(),
@@ -78,8 +84,8 @@ def create_sample_data():
         "address": {
             "street": faker.street_address(),
             "city": faker.city(),
-            "state": faker.state(),
-            "zipCode": faker.zipcode(),
+            "state": faker.administrative_unit(),
+            "zipCode": faker.postalcode(),
         },
         "price": float(faker.random_element(elements=[faker.pydecimal(left_digits=2, right_digits=2, positive=True) for _ in range(10)])),
         "additionalInfo": faker.sentence(),

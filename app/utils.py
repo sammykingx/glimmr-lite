@@ -1,4 +1,4 @@
-from app.constants import ALLOWED_SERVICE_TYPE, ALLOWED_SERVICE_CATEGORY, ALLOWED_FREQUENCIES, ALLOWED_SERVICE_ADDONS
+from app.constants import ALLOWED_SERVICE, ALLOWED_FREQUENCIES, ALLOWED_SERVICE_ADDONS
 from pydantic import BaseModel, field_validator
 from datetime import datetime
 from typing import Dict, List, Tuple, Union
@@ -74,18 +74,18 @@ class ValidateBookingData(BaseModel):
         return user_payload
     
         
-    @field_validator('service', mode='before')
-    @classmethod
-    def validate_services(cls, value):
-        """Validates the service type."""
+    # @field_validator('service', mode='before')
+    # @classmethod
+    # def validate_services(cls, value):
+    #     """Validates the service type."""
         
-        if not value.strip():
-            return ValueError("Service is required.")
+    #     if not value.strip():
+    #         return ValueError("Service is required.")
         
-        if value.lower() not in ALLOWED_SERVICE_TYPE:
-            return ValueError("Invalid service type.")
+    #     if value.lower() not in ALLOWED_SERVICE_TYPE:
+    #         return ValueError("Invalid service type.")
         
-        return value.strip()
+    #     return value.strip()
     
     @field_validator('service_category', mode='before')
     @classmethod
@@ -93,7 +93,7 @@ class ValidateBookingData(BaseModel):
         if not value.strip():
             return ValueError("Service category is required.")
         
-        if value.lower() not in ALLOWED_SERVICE_CATEGORY:
+        if value.lower() not in ALLOWED_SERVICE.keys():
             return ValueError("Invalid service category.")
         
         return value.strip()
@@ -104,7 +104,7 @@ class ValidateBookingData(BaseModel):
         if not value.strip():
             raise ValueError("Frequency is required.")
         
-        if value.lower() not in ALLOWED_FREQUENCIES:
+        if value.lower() not in set(ALLOWED_FREQUENCIES):
             raise ValueError("Invalid frequency.")
         
         return value.strip()
@@ -153,9 +153,10 @@ class ValidateBookingData(BaseModel):
         if not isinstance(value, (list, tuple)):
             raise ValueError("Add-ons must be a list or tuple.")
         
-        for item in value:
-            if item.lower() not in ALLOWED_SERVICE_ADDONS:
-                raise ValueError(f"Invalid add-on: {value}. Allowed add-ons are: {ALLOWED_SERVICE_ADDONS}")
+        allowed_addons = set(ALLOWED_SERVICE_ADDONS)
+        
+        if not all(addon in allowed_addons for addon in value):
+            raise ValueError("One or more selected add-ons are not allowed.")
         
         return value
     
