@@ -1,8 +1,10 @@
 import { canProceed } from "./bookingSteps.js";
 import {
+  bookingData,
   bookingState,
   decreaseCurrentStep,
   increaseCurrentStep,
+  setCurrentStep,
 } from "./bookingData.js"; //passed
 import { updateProgress, updateNextButton } from "./uiHelpers.js"; //passed
 import { updateBookingSummary } from "./bookingSummary.js"; //passed
@@ -12,10 +14,21 @@ export function nextStep() {
   if (!canProceed(bookingState.currentStep)) return;
 
   if (bookingState.currentStep < 8) {
+    // makes it a horizontal flow
+    // disabling this part converts it to a vertical flow
     document
       .getElementById(`step${bookingState.currentStep}`)
       .classList.remove("active");
-    increaseCurrentStep();
+
+    if (
+      bookingState.currentStep === 1 &&
+      bookingData.category !== "residential_cleaning"
+    ) {
+      setCurrentStep(3);
+    } else {
+      increaseCurrentStep();
+    }
+
     document
       .getElementById(`step${bookingState.currentStep}`)
       .classList.add("active");
@@ -43,7 +56,15 @@ export function prevStep() {
     document
       .getElementById(`step${bookingState.currentStep}`)
       .classList.remove("active");
-    decreaseCurrentStep();
+    if (
+      bookingState.currentStep === 3 &&
+      bookingData.category !== "residential_cleaning"
+    ) {
+      setCurrentStep(1);
+    } else {
+      decreaseCurrentStep();
+    }
+
     document
       .getElementById(`step${bookingState.currentStep}`)
       .classList.add("active");

@@ -1,11 +1,13 @@
-import { bookingData } from "./bookingData.js";
-import { serviceCategories } from "./constants.js";
+import { bookingData, bookingState, setServiceCost } from "./bookingData.js";
 import { updateNextButton, updateProgress } from "./uiHelpers.js";
 import { updateTotalPrice } from "./pricing.js";
+import { residentialPricing } from "./constants.js";
 
 // Select category
 export function selectCategory(category, event) {
   bookingData.category = category;
+  bookingData.service = null;
+  setServiceCost(0); // always start the price at zero
 
   // Update UI
   document.querySelectorAll(".category-btn").forEach((btn) => {
@@ -15,39 +17,25 @@ export function selectCategory(category, event) {
   event.target
     .closest(".category-btn")
     .classList.add("border-primary", "bg-green-50");
-  event.target.closest(".category-btn").classList.remove("border-gray-200");
-
-  // Show service options
-  const serviceSelection = document.getElementById("serviceSelection");
-  const serviceOptions = document.getElementById("serviceOptions");
-  serviceOptions.innerHTML = "";
-
-  serviceCategories[category].forEach((service) => {
-    const button = document.createElement("button");
-    button.className =
-      "service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card";
-    button.dataset.service = service;
-    button.innerHTML = `<span class="font-medium">${service}</span>`;
-    serviceOptions.appendChild(button);
-  });
-
-  serviceSelection.classList.remove("hidden");
-
-  // Attach service button click handlers immediately
-  // since service was dynamically added to the DOM
-  document.querySelectorAll(".service-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const selected = btn.dataset.service;
-      selectService(selected, e);
-    });
-  });
+  //event.target.closest(".category-btn").classList.remove("border-gray-200");
 
   updateNextButton();
+  updateTotalPrice();
 }
 
 // Select service
-export function selectService(service, event) {
+export function selectService(service, amount, label, event) {
   bookingData.service = service;
+  bookingState.serviceLabel = label
+    ? bookingData !== "residential_cleaning"
+    : "";
+  const excludedCategories = ["residential_cleaning", "commercial_cleaning"];
+  if (!excludedCategories.includes(bookingData.category)) {
+    setServiceCost(amount);
+  } else if (bookingData.category === "residential_cleaning") {
+    bookingData.bathrooms = "studio";
+    renderBedAndBathOptions(bookingData.service);
+  }
 
   // Update UI
   document.querySelectorAll(".service-btn").forEach((btn) => {
@@ -67,6 +55,7 @@ export function selectService(service, event) {
 // Select bedrooms
 export function selectBedrooms(num, event) {
   bookingData.bedrooms = num;
+  renderBathrooms(bookingData.service, num);
 
   // Update UI
   document.querySelectorAll(".bedroom-btn").forEach((btn) => {
@@ -93,14 +82,19 @@ export function selectBathrooms(num, event) {
   event.target.classList.add("border-primary", "bg-green-50");
   event.target.classList.remove("border-gray-200");
 
-  document.getElementById("bathroomDisplay").textContent = num;
+  const bathroomDisplay =
+    Number.isInteger(+num) && +num > 0
+      ? `${num} bath${+num > 1 ? "s" : ""}`
+      : `${num}`;
+
+  document.getElementById("bathroomDisplay").textContent = bathroomDisplay;
   updateTotalPrice();
   updateNextButton();
 }
 
 // Toggle add-on
-export function toggleAddOn(addOn, event) {
-  const index = bookingData.addOns.indexOf(addOn);
+export function toggleAddOn(addOn, amount, event) {
+  const index = bookingData.addOns.findIndex((a) => a.name === addOn);
   const button = event.target.closest(".addon-btn");
 
   if (index > -1) {
@@ -108,7 +102,8 @@ export function toggleAddOn(addOn, event) {
     button.classList.remove("border-primary", "bg-green-50");
     button.classList.add("border-gray-200");
   } else {
-    bookingData.addOns.push(addOn);
+    const newAddon = { name: addOn, price: amount };
+    bookingData.addOns.push(newAddon);
     button.classList.add("border-primary", "bg-green-50");
     button.classList.remove("border-gray-200");
   }
@@ -118,15 +113,19 @@ export function toggleAddOn(addOn, event) {
   const count = document.getElementById("addOnCount");
   const total = document.getElementById("addOnTotal");
 
+  updateTotalPrice();
+
   if (bookingData.addOns.length > 0) {
     summary.classList.remove("hidden");
     count.textContent = bookingData.addOns.length;
-    total.textContent = "+$" + bookingData.addOns.length * 30;
+    total.textContent = bookingState.addonPrice.toLocaleString("en-CA", {
+      style: "currency",
+      currency: "CAD",
+    });
   } else {
     summary.classList.add("hidden");
   }
 
-  updateTotalPrice();
   updateNextButton();
 }
 
@@ -144,4 +143,64 @@ export function selectFrequency(frequency, event) {
 
   updateTotalPrice();
   updateNextButton();
+}
+
+function renderBedAndBathOptions(service) {
+  const pricing = residentialPricing[service];
+  const bedroomOptionsContainer = document.getElementById("bedroomOptions");
+  const bathroomOptionsContainer = document.getElementById("bathroomOptions");
+
+  // Clear existing options
+  bedroomOptionsContainer.innerHTML = "";
+  // bathroomOptionsContainer.innerHTML = "";
+
+  if (!pricing) return;
+
+  // Get sorted list of bedrooms
+  const bedroomKeys = Object.keys(pricing).sort((a, b) => +a - +b); // [1,2,3,..., studio]
+
+  // Populate bedrooms
+  bedroomKeys.forEach((bedroom) => {
+    const button = document.createElement("button");
+    button.className =
+      "bedroom-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card";
+    button.setAttribute("data-bedrooms", bedroom);
+    button.innerHTML = `<span class="text-primary font-bold text-lg">${bedroom}</span>`;
+    button.addEventListener("click", (e) => {
+      selectBedrooms(Number(e.target.dataset.bedrooms), e);
+    });
+    bedroomOptionsContainer.appendChild(button);
+  });
+
+  // Automatically trigger bathroom rendering for first bedroom
+  const defaultBedroom = bedroomKeys[0];
+  renderBathrooms(service, defaultBedroom);
+  const bathroomDisplay = "studio"; //default is studio
+  document.getElementById("bathroomDisplay").textContent = bathroomDisplay;
+}
+
+// Renders bathrooms when a bedroom is selected
+function renderBathrooms(service, bedroom) {
+  const pricing = residentialPricing[service];
+  const bathrooms = pricing?.[bedroom];
+  const bathroomOptionsContainer = document.getElementById("bathroomOptions");
+
+  bathroomOptionsContainer.innerHTML = "";
+
+  if (!bathrooms) return;
+
+  const bathroomKeys = Object.keys(bathrooms);
+
+  bathroomKeys.forEach((bathroom) => {
+    const label = bathroom === "studio" ? "Studio" : bathroom;
+    const button = document.createElement("button");
+    button.className =
+      "bathroom-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 hover:shadow-md hover-card";
+    button.setAttribute("data-bathrooms", bathroom);
+    button.innerHTML = `<span class="text-primary font-bold text-lg">${label}</span>`;
+    button.addEventListener("click", (e) => {
+      selectBathrooms(e.target.dataset.bathrooms, e);
+    });
+    bathroomOptionsContainer.appendChild(button);
+  });
 }

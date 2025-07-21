@@ -1,5 +1,4 @@
 import { bookingData, bookingState } from "./bookingData.js";
-import { calculateBasePrice } from "./pricing.js"; //passed
 import { frequencyMultipliers, paymentMethods } from "./constants.js"; //passed
 
 // export function updateBookingSummary() { ... }
@@ -7,10 +6,20 @@ import { frequencyMultipliers, paymentMethods } from "./constants.js"; //passed
 export function updateBookingSummary() {
   const totalPrice = bookingState.totalPrice;
   bookingData.price = totalPrice;
+
+  // service Details
+  let selectedCategory = bookingData.category;
+  selectedCategory = selectedCategory
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
   document.getElementById("summaryCategory").textContent =
-    bookingData.category || "Not Available";
-  document.getElementById("summaryService").textContent =
-    bookingData.service || "Not Available";
+    selectedCategory || "Not Available";
+
+  document.getElementById("summaryService").textContent = bookingData.service;
+  // ? bookingData.category === "residential_cleaning"
+  // : `${bookingData.service} (${bookingState.serviceLabel})`;
+
   document.getElementById("summaryProperty").textContent = `${
     bookingData.bedrooms
   } bedroom${bookingData.bedrooms > 1 ? "s" : ""}, ${
@@ -52,7 +61,15 @@ export function updateBookingSummary() {
     bookingData.addOns.forEach((addOn) => {
       const div = document.createElement("div");
       div.className = "flex justify-between";
-      div.innerHTML = `<span>${addOn}</span><span>+$30</span>`;
+      div.innerHTML = `<span class="text-xs md:text-sm text-gray-400">${
+        addOn.name
+      }</span><span class="text-xs md:text-sm text-gray-400">+${addOn.price.toLocaleString(
+        "en-CA",
+        {
+          style: "currency",
+          currency: "CAD",
+        }
+      )}</span>`;
       addOnsList.appendChild(div);
     });
     addOnsSection.classList.remove("hidden");
@@ -61,38 +78,55 @@ export function updateBookingSummary() {
   }
 
   // Price breakdown
-  const basePrice = calculateBasePrice(
-    bookingData.bedrooms,
-    bookingData.bathrooms
-  );
-  const frequencyMultiplier = bookingData.frequency
-    ? frequencyMultipliers[bookingData.frequency]
-    : 1;
-  const addOnPrice = bookingData.addOns.length * 30;
-  const discountAmount = basePrice - basePrice * frequencyMultiplier;
-
+  // base service display in price breakdown
   document.getElementById("summaryBasePrice").textContent =
-    "$" + Math.round(basePrice * frequencyMultiplier);
+    bookingState.subtotal.toLocaleString("en-CA", {
+      style: "currency",
+      currency: "CAD",
+    });
 
-  if (addOnPrice > 0) {
+  // addon services in  price breakdown
+  if (bookingData.addOns.length > 0) {
     document.getElementById("summaryAddOnPrice").classList.remove("hidden");
     document
       .getElementById("summaryAddOnPrice")
-      .querySelector("span:last-child").textContent = "+$" + addOnPrice;
+      .querySelector("span:last-child").textContent =
+      "+" +
+      bookingState.addonPrice.toLocaleString("en-CA", {
+        style: "currency",
+        currency: "CAD",
+      });
   } else {
     document.getElementById("summaryAddOnPrice").classList.add("hidden");
   }
 
   // Frequency display in price breakdown
-  if (discountAmount > 0) {
+  if (bookingState.discountPrice > 0) {
     document.getElementById("summaryDiscount").classList.remove("hidden");
     document
       .getElementById("summaryDiscount")
       .querySelector("span:last-child").textContent =
-      "-$" + Math.round(discountAmount);
+      "- " +
+      bookingState.discountPrice.toLocaleString("en-CA", {
+        style: "currency",
+        currency: "CAD",
+      });
   } else {
     document.getElementById("summaryDiscount").classList.add("hidden");
   }
 
-  document.getElementById("summaryTotal").textContent = "$" + totalPrice;
+  document
+    .getElementById("taxAmount")
+    .querySelector("span:last-child").textContent =
+    "+ " +
+    bookingState.tax.toLocaleString("en-CA", {
+      style: "currency",
+      currency: "CAD",
+    });
+
+  document.getElementById("summaryTotal").textContent =
+    bookingState.totalPrice.toLocaleString("en-CA", {
+      style: "currency",
+      currency: "CAD",
+    });
 }

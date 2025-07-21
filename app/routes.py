@@ -1,11 +1,11 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from flask_wtf.csrf import CSRFError, validate_csrf
-from app.extensions import db
+from app.extensions import db, htmx
 from app.models import User
 from app.utils import booking_data_serializer, ValidateBookingData
 from app.services.booking_service import BookingService
 from pydantic import ValidationError
-from app.constants import ALLOWED_FREQUENCIES, ALLOWED_SERVICE, ALLOWED_SERVICE_TYPE, ALLOWED_SERVICE_ADDONS
+from app.constants import ALLOWED_FREQUENCIES, ALLOWED_SERVICE, ALLOWED_SERVICE_ADDONS
 
 main = Blueprint('main', __name__)
 
@@ -17,9 +17,9 @@ def place_booking():
         validate_csrf(csrf_token)
     
         data = booking_data_serializer(request.get_json())
-        cleaned_data = ValidateBookingData(**data)
-        Booking = BookingService(cleaned_data)
-        booked_service = Booking.place_booking()
+        # cleaned_data = ValidateBookingData(**data)
+        # Booking = BookingService(cleaned_data)
+        # booked_service = Booking.place_booking()
 
     except CSRFError as e:
       # return jsonify({'status': 'error', 'message': 'CSRF validation failed'}), 403
@@ -56,6 +56,16 @@ def return_demo_data():
   
   return jsonify(demo_data)
 
+@main.route("/service-options/<category>")
+def render_service_options(category):
+  if not htmx or category not in ALLOWED_SERVICE.keys():
+    return "", 400
+  
+  return render_template(
+    "htmx-partials/services-selection.html",
+    service=ALLOWED_SERVICE.get(category),
+  )
+
 from faker import Faker
     
 faker = Faker("en_CA")
@@ -68,7 +78,7 @@ def create_sample_data():
     
     return {
         "category": faker.random_element(elements=ALLOWED_SERVICE.keys()),
-        "service": faker.random_element(elements=ALLOWED_SERVICE_TYPE),
+        "service": faker.random_element(elements=ALLOWED_SERVICE.values()),
         "bedrooms": faker.random_int(min=1, max=6),
         "bathrooms": faker.random_int(min=1, max=3),
         "frequency": faker.random_element(elements=ALLOWED_FREQUENCIES),

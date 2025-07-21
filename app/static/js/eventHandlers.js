@@ -1,6 +1,7 @@
 // eventHandlers.js
 import {
   selectCategory,
+  selectService,
   selectBedrooms,
   selectBathrooms,
   selectFrequency,
@@ -13,7 +14,7 @@ import { handleBooking, resetBooking } from "./bookingHandlers.js";
 import { setClientData } from "./clientData.js";
 
 export function attachEventHandlers() {
-  // Category & Service selection
+  // Category Selection
   document.querySelectorAll(".category-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const category = btn.dataset.category;
@@ -21,19 +22,31 @@ export function attachEventHandlers() {
     });
   });
 
-  // Bedrooms
-  document.querySelectorAll(".bedroom-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      selectBedrooms(Number(e.target.dataset.bedrooms), e);
-    });
+  // Service selection after htmx response
+  document.body.addEventListener("htmx:afterSettle", function (evt) {
+    const target = evt.target;
+
+    // Restrict to only the service or category areas
+    if (
+      target.closest("#serviceSelection") ||
+      target.closest("#serviceOptions")
+    ) {
+      document.querySelectorAll(".service-btn").forEach((btn) => {
+        if (!btn.dataset.listenerAttached) {
+          btn.dataset.listenerAttached = "true";
+          btn.addEventListener("click", (event) => {
+            const selectedService = btn.dataset.service;
+            const amount = btn.dataset.amount;
+            const label = btn.dataset.label;
+            selectService(selectedService, amount, label, event);
+          });
+        }
+      });
+    }
   });
 
-  // Bathrooms
-  document.querySelectorAll(".bathroom-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      selectBathrooms(Number(e.target.dataset.bathrooms), e);
-    });
-  });
+  // Event handlers for bedrooms and bathrooms are dynamically added
+  // to the DOM in service.js
 
   // Frequency
   document.querySelectorAll(".frequency-btn").forEach((btn) => {
@@ -45,7 +58,7 @@ export function attachEventHandlers() {
   // Add-ons
   document.querySelectorAll(".addon-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      toggleAddOn(btn.dataset.addons, e);
+      toggleAddOn(btn.dataset.addons, Number(btn.dataset.addonsAmount), e);
     });
   });
 

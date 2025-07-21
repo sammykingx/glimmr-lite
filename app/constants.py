@@ -6,57 +6,108 @@ TORONRO_TZ = pytz.timezone("America/Toronto")
 
 
 ALLOWED_SERVICE = {
-    "residential cleaning": [
-        "house cleaning", "deep cleaning",
-        "move-in-out cleaning", "airbnb cleaning",
-    ],
-    "commercial cleaning": {
-        "small": {"size": "<2,000sqft", "multiplier": 0.2},
-        "medium": {"size": "2,000sqft - 5,000sqft", "multiplier": 0.18},
-        "large": {"size": "5,000sqft - 10,000sqft", "multiplier": 0.16},
-        "custom": {"size": ">10,000sqft"},
+    "residential_cleaning": {
+        "type": "list",
+        "options": [
+            "house_cleaning",
+            "deep_cleaning",
+            "move_in_move_out_cleaning",
+            "airbnb_cleaning"
+        ]
     },
-    "church cleaning": {
-        "small": {"size": "<3,000sqft", "amount": 180},
-        "medium": {"size": "3,000sqft - 6,000sqft", "amount": 300},
-        "large": {"size": ">6,000sqft", "amount": 500},
+    "commercial_cleaning": {
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<2,000sqft", "multiplier": 0.2},
+            "medium": {"label": "2,000sqft - 5,000sqft", "multiplier": 0.18},
+            "large": {"label": "5,000sqft - 10,000sqft", "multiplier": 0.16},
+            "custom": {"label": ">10,000sqft"}
+        }
     },
-    "child care": {
-        "small": {"size": "<2,000sqft", "amount": 250},
-        "medium": {"size": "<2,000sqft - 5,000sqft", "amount": 350},
-        "large": {"size": ">5,000sqft", "amount": 500},
+    "church_cleaning": {
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<3,000sqft", "amount": 180},
+            "medium": {"label": "3,000sqft - 6,000sqft", "amount": 300},
+            "large": {"label": ">6,000sqft", "amount": 500}
+        }
+    },
+    "child_care": {
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<2,000sqft", "amount": 250},
+            "medium": {"label": "2,000sqft - 5,000sqft", "amount": 350},
+            "large": {"label": ">5,000sqft", "amount": 500}
+        }
     },
     "gym": {
-        "small": {"size": "<3,000sqft", "amount": 300},
-        "medium": {"size": "<3,000sqft - 7,000sqft", "amount": 450},
-        "large": {"size": ">7,000sqft", "amount": 650},
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<3,000sqft", "amount": 300},
+            "medium": {"label": "3,000sqft - 7,000sqft", "amount": 450},
+            "large": {"label": ">7,000sqft", "amount": 650}
+        }
     },
-    "salon cleaning": {
-        "small": {"size": "<1,500sqft", "amount": 150},
-        "medium": {"size": "1,500sqft - 3,000sqft", "amount": 200},
-        "large": {"size": ">3,000sqft", "amount": 300},
+    "salon_cleaning": {
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<1,500sqft", "amount": 150},
+            "medium": {"label": "1,500sqft - 3,000sqft", "amount": 200},
+            "large": {"label": ">3,000sqft", "amount": 300}
+        }
     },
-    "retail cleaning": {
-        "small": {"size": "<3,000sqft", "amount": 200},
-        "medium": {"size": "2,000sqft - 5,000sqft", "amount": 350},
-        "large": {"size": ">5,000sqft", "amount": 500},
+    "retail_cleaning": {
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<3,000sqft", "amount": 200},
+            "medium": {"label": "2,000sqft - 5,000sqft", "amount": 350},
+            "large": {"label": ">5,000sqft", "amount": 500}
+        }
     },
-    "office cleaning": {
-        "small": {"size": "<2,000sqft", "amount": 180},
-        "medium": {"size": "2,000sqft - 5,000sqft", "amount": 300},
-        "large": {"size": ">5,000sqft", "amount": 500},
+    "office_cleaning": {
+        "type": "size_based",
+        "sizes": {
+            "small": {"label": "<2,000sqft", "amount": 180},
+            "medium": {"label": "2,000sqft - 5,000sqft", "amount": 300},
+            "large": {"label": ">5,000sqft", "amount": 500}
+        }
     }
 }
 
-ALLOWED_SERVICE_TYPE = [
-    "regular house cleaning",
-    "apartment cleaning",
-    "move-in-move/out-cleaning",
-    "post-renovation-cleaning",
-    "office-cleaning",
-    "carpet-cleaning",
-    "window-cleaning",
-]
+RESIDENTIAL_SERVICE_PRICING = {
+    "house_cleaning": {
+    1: { "studio": 90, 1: 110, 2: 120 },
+    2: { 1: 130, 2: 145, 3: 160 },
+    3: { 1: 145, 2: 160, 3: 175 },
+    4: { 1: 175, 2: 190, 3: 210 },
+    5: { 1: 190, 2: 210, 3: 230 },
+    6: { 1: 230, 2: 245, 3: 260 },
+  },
+  "deep_cleaning": {
+    1: { "studio": 170, 1: 190 },
+    2: { 1: 210, 2: 225, 3: 240 },
+    3: { 1: 220, 2: 240, 3: 255 },
+    4: { 1: 250, 2: 270, 3: 290 },
+    5: { 1: 270, 2: 290, 3: 310 },
+    6: { 1: 310, 2: 325, 3: 340 },
+  },
+  "airbnb_cleaning": {
+    1: { "studio": 130, 1: 150 },
+    2: { 1: 170, 2: 185, 3: 205 },
+    3: { 1: 185, 2: 200, 3: 215 },
+    4: { 1: 210, 2: 230, 3: 250 },
+    5: { 1: 230, 2: 250, 3: 270 },
+    6: { 1: 260, 2: 280, 3: 300 },
+  },
+  "move_in_move_out_cleaning": {
+    1: { "studio": 190, 1: 210 },
+    2: { 1: 230, 2: 245, 3: 260 },
+    3: { 1: 250, 2: 260, 3: 275 },
+    4: { 1: 270, 2: 290, 3: 310 },
+    5: { 1: 290, 2: 310, 3: 330 },
+    6: { 1: 320, 2: 340, 3: 360 },
+  },
+}
 
 ALLOWED_FREQUENCIES = [
     "one-off",

@@ -17,8 +17,8 @@
         <main>
             <section class="max-w-4xl mx-auto px-4 py-8">
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                    <!-- Step 1: Service Selection -->
-                    {% include "steps/service-selection.html" %}
+                    <!-- Step 1: Category Selection -->
+                    {% include "steps/category-selection.html" %}
 
                     <!-- Step 2: Room Selection -->
                     {% include "steps/room-selection.html" %}
@@ -56,6 +56,7 @@
             {% include "steps/booking-error-modal.html" %}
             
         </main>
+        <script src={{ url_for("static", filename="htmx/htmx.min.js") }}></script>
         <script src={{ url_for("static", filename="js/main.js") }} type="module" defer></script>
     </body>
 </html>

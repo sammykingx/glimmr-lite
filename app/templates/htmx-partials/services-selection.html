@@ -1,0 +1,32 @@
+<label class="block text-sm font-medium text-gray-700 mb-3">Choose specific service</label>
+<div id="serviceOptions" class="grid grid-cols-1 text-green-800 md:grid-cols-2 gap-4">
+    {% if service.type == "list" %}
+        {% for item in service.options %}
+            <button data-service="{{ item }}" class="service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card">
+                <span class="font-medium">{{ item.replace("_", " ")|title }}</span>
+            </button>
+        {% endfor %}
+    {% elif service.type == "size_based" %}
+        {% for size_key, size_data in service.sizes.items() %}
+            <button 
+                data-service="{{ size_key }}"
+                data-amount="{{ size_data.amount }}"
+                data-label="{{ size_data.label }}"
+                data-multiplier="{{ size_data.multiplier }}"
+                class="service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card">
+                    <span class="font-medium">{{ size_key.title() }}</span>
+                    <span class="text-xs md:text-sm">({{ size_data.label }})</span>
+            </button>
+        {% endfor %}
+    {% else %}
+        <button data-service="demo service 1" class="service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card">
+            <span class="font-medium">demo service 1</span>
+        </button>
+        <button data-service="demo service 2" class="service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card">
+            <span class="font-medium">demo service 2</span>
+        </button>
+        <button data-service="demo service 3" class="service-btn p-4 rounded-lg border-2 border-gray-200 hover:border-gray-300 transition-all duration-200 text-left hover:shadow-md hover-card">
+            <span class="font-medium">demo service 3</span>
+        </button>
+    {% endif %}
+</div>

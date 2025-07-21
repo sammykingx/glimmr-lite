@@ -7,7 +7,8 @@ export function canProceed(currentStep) {
     case 2:
       return bookingData.bedrooms && bookingData.bathrooms;
     case 3:
-      return bookingData.frequency;
+      return true;
+    // return bookingData.frequency;
     case 4:
       return true;
     case 5:

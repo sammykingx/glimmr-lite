@@ -41,6 +41,7 @@ export function handleBooking() {
         } else {
           // No checkout URL — show confirmation modal
           showConfirmationModal();
+          console.log(bookingData);
         }
       } else {
         // Error response when status code not 200
