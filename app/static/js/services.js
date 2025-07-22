@@ -26,9 +26,8 @@ export function selectCategory(category, event) {
 // Select service
 export function selectService(service, amount, label, event) {
   bookingData.service = service;
-  bookingState.serviceLabel = label
-    ? bookingData !== "residential_cleaning"
-    : "";
+  bookingState.serviceLabel =
+    bookingData.category !== "residential_cleaning" ? label : "";
   const excludedCategories = ["residential_cleaning", "commercial_cleaning"];
   if (!excludedCategories.includes(bookingData.category)) {
     setServiceCost(amount);

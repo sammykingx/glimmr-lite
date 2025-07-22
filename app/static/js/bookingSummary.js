@@ -1,5 +1,5 @@
 import { bookingData, bookingState } from "./bookingData.js";
-import { frequencyMultipliers, paymentMethods } from "./constants.js"; //passed
+import { paymentMethods } from "./constants.js"; //passed
 
 // export function updateBookingSummary() { ... }
 
@@ -16,20 +16,31 @@ export function updateBookingSummary() {
   document.getElementById("summaryCategory").textContent =
     selectedCategory || "Not Available";
 
-  document.getElementById("summaryService").textContent = bookingData.service;
+  document.getElementById("summaryService").textContent = bookingData.service
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
   // ? bookingData.category === "residential_cleaning"
   // : `${bookingData.service} (${bookingState.serviceLabel})`;
 
-  document.getElementById("summaryProperty").textContent = `${
-    bookingData.bedrooms
-  } bedroom${bookingData.bedrooms > 1 ? "s" : ""}, ${
-    bookingData.bathrooms
-  } bathroom${bookingData.bathrooms > 1 ? "s" : ""}`;
-  document.getElementById("summaryFrequency").textContent =
-    bookingData.frequency
-      ? bookingData.frequency.charAt(0).toUpperCase() +
-        bookingData.frequency.slice(1)
-      : "-";
+  let propertyDisplay = null;
+
+  if (bookingData.category === "residential_cleaning") {
+    propertyDisplay = `${bookingData.bedrooms} bedroom${
+      bookingData.bedrooms > 1 ? "s" : ""
+    }, ${bookingData.bathrooms} bathroom${
+      bookingData.bathrooms > 1 ? "s" : ""
+    }`;
+  } else {
+    propertyDisplay = bookingState.serviceLabel;
+  }
+
+  document.getElementById("summaryProperty").textContent = propertyDisplay;
+
+  const freq = bookingData.frequency || "one off";
+  document.getElementById("summaryFrequency").textContent = freq.replace(
+    /\b\w/g,
+    (c) => c.toUpperCase()
+  );
 
   // Schedule
   if (bookingData.selectedDate) {

@@ -41,7 +41,6 @@ export function handleBooking() {
         } else {
           // No checkout URL — show confirmation modal
           showConfirmationModal();
-          console.log(bookingData);
         }
       } else {
         // Error response when status code not 200
@@ -102,6 +101,9 @@ export function resetBooking() {
   updateProgress();
   updateTotalPrice();
   updateNextButton();
+
+  // temporal fix
+  location.reload(true);
 }
 
 function showConfirmationModal() {
@@ -124,7 +126,6 @@ function showConfirmationModal() {
 
   document.getElementById("bookingComplete").classList.remove("hidden");
 
-  console.log("Booking Data:", bookingData);
 }
 
 function showErrorModal(data) {
