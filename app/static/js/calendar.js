@@ -80,7 +80,7 @@ export function generateCalendarDays() {
                     `;
 
     if (!isPast && !isBeyondLimit) {
-      dayElement.onclick = () => selectDate(currentDate);
+      dayElement.onclick = (e) => selectDate(currentDate, e);
     }
 
     calendarDays.appendChild(dayElement);
@@ -100,24 +100,61 @@ export function nextMonth() {
 }
 
 // Select date
-export function selectDate(date) {
-  bookingData.selectedDate = date.toDateString();
+export function selectDate(date, event) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-based
+  const day = String(date.getDate()).padStart(2, "0");
+  bookingData.selectedDate = `${year}-${month}-${day}`;
+
+  // Update UI
+  // document.querySelectorAll(".calendar-day").forEach((btn) => {
+  //   btn.classList.remove("border-primary", "bg-green-50");
+  //   btn.classList.add("border-gray-100");
+  // });
+  // event.target.classList.add("border-primary", "bg-green-50");
+  // event.target.classList.remove("border-gray-100");
+
+  availableTimeByDay();
+
   updateCalendarDisplay();
   updateScheduleSummary();
   updateNextButton();
 }
 
+function availableTimeByDay() {
+  const availableTime = availabilityMap[bookingData.selectedDate];
+  const timeButtonEls = document.querySelectorAll(".time-btn");
+
+  timeButtonEls.forEach((btn) => {
+    const time = btn.getAttribute("data-time"); // "8:00 AM"
+    // const parsed = convertTo24Hour(rawTime);       // e.g. "08:00"
+
+    if (availableTime.includes(time)) {
+      btn.classList.remove("cursor-not-allowed", "bg-red-50", "text-gray-400");
+      btn.classList.add("hover:border-primary", "text-green-950");
+      btn.disabled = false;
+      btn.onclick = (e) => selectTime(time, e);
+    } else {
+      btn.classList.add("cursor-not-allowed", "bg-red-50", "text-gray-400");
+      btn.classList.remove("hover:border-primary");
+      btn.disabled = true;
+      btn.onclick = null;
+    }
+  });
+}
+
 // Select time
 export function selectTime(time, event) {
   bookingData.selectedTime = time;
+  console.log(time);
 
   // Update UI
   document.querySelectorAll(".time-btn").forEach((btn) => {
     btn.classList.remove("border-primary", "bg-green-50");
-    btn.classList.add("border-gray-200");
+    btn.classList.add("border-gray-100");
   });
   event.target.classList.add("border-primary", "bg-green-50");
-  event.target.classList.remove("border-gray-200");
+  event.target.classList.remove("border-gray-100");
 
   updateScheduleSummary();
   updateNextButton();
@@ -136,9 +173,27 @@ export function updateScheduleSummary() {
       month: "long",
       day: "numeric",
     });
-    scheduleText.textContent = `${formattedDate} at ${bookingData.selectedTime}`;
+    const formattedTime = formatTo12Hour(bookingData.selectedTime);
+    scheduleText.textContent = `${formattedDate} at ${formattedTime}`;
     summary.classList.remove("hidden");
   } else {
     summary.classList.add("hidden");
   }
+}
+
+function formatTo12Hour(time24) {
+  const [hour, minute] = time24.split(":").map(Number);
+  const period = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minute.toString().padStart(2, "0")}${period}`;
+}
+
+let availabilityMap = null;
+export function bookingAvailability() {
+  fetch("/available-slots")
+    .then((res) => res.json())
+    .then((data) => {
+      availabilityMap = data;
+      // generateCalendarDays(); // render days with availability in mind
+    });
 }

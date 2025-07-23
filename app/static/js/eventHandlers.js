@@ -71,11 +71,11 @@ export function attachEventHandlers() {
   document.getElementById("next-month").addEventListener("click", nextMonth);
 
   // Select Time
-  document.querySelectorAll(".time-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      selectTime(btn.dataset.time, e);
-    });
-  });
+  // document.querySelectorAll(".time-btn").forEach((btn) => {
+  //   btn.addEventListener("click", (e) => {
+  //     selectTime(btn.dataset.time, e);
+  //   });
+  // });
 
   // Time selection
   // document.querySelectorAll(".time-btn").forEach((btn) => {

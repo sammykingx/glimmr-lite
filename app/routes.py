@@ -56,6 +56,11 @@ def return_demo_data():
   
   return jsonify(demo_data)
 
+@main.route("/available-slots")
+def retrun_available_slots():
+  from app.booking_availability import generate_sample_availability
+  return jsonify(generate_sample_availability())
+
 @main.route("/service-options/<category>")
 def render_service_options(category):
   if not htmx or category not in ALLOWED_SERVICE.keys():
