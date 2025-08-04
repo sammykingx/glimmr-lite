@@ -25,9 +25,10 @@ export function updateBookingSummary() {
   let propertyDisplay = null;
 
   if (bookingData.category === "residential_cleaning") {
+    const displayBath = bookingData.bathrooms > 1 ? `bathroom` : "";
     propertyDisplay = `${bookingData.bedrooms} bedroom${
       bookingData.bedrooms > 1 ? "s" : ""
-    }, ${bookingData.bathrooms} bathroom${
+    }, ${bookingData.bathrooms} ${displayBath}${
       bookingData.bathrooms > 1 ? "s" : ""
     }`;
   } else {

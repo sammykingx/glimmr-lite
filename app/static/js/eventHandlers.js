@@ -2,8 +2,6 @@
 import {
   selectCategory,
   selectService,
-  selectBedrooms,
-  selectBathrooms,
   selectFrequency,
   toggleAddOn,
 } from "./services.js";

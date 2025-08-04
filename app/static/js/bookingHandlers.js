@@ -59,9 +59,6 @@ export function resetBooking() {
   resetBookingData();
   resetBookingState();
 
-  // bookingState.currentStep = 1;
-  // bookingState.totalPrice = 90;
-
   // Reset UI
   document.getElementById("bookingComplete").classList.add("hidden");
   document.getElementById("bookingError").classList.add("hidden");
@@ -83,6 +80,10 @@ export function resetBooking() {
     .forEach((btn) => {
       btn.classList.remove("border-primary", "bg-green-50");
       btn.classList.add("border-gray-200");
+
+      if (btn.classList.contains("service-btn")) {
+        btn.dataset.listenerAttached = false;
+      }
     });
 
   // Hide service selection and summaries
@@ -125,18 +126,11 @@ function showConfirmationModal() {
   }
 
   document.getElementById("bookingComplete").classList.remove("hidden");
-
 }
 
 function showErrorModal(data) {
   document.getElementById("errMsg").textContent =
     data?.message || "An error occurred while processing your booking.";
-
-  // document.getElementById("totalAmount").textContent = "$" + bookingData.price;
-
-  // document.getElementById(
-  //   "confirmedSchedule"
-  // ).textContent = `${bookingData.selectedDate} at ${bookingData.selectedTime}`;
 
   document.getElementById("bookingError").classList.remove("hidden");
 }

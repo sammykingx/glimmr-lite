@@ -13,7 +13,7 @@ export function initializeCalendar() {
 
 // Get the current month and year
 export function updateCalendarDisplay() {
-  currentCalendarDate = new Date();
+  //currentCalendarDate = new Date();
   const monthNames = [
     "January",
     "February",
@@ -61,7 +61,11 @@ export function generateCalendarDays() {
     const currentDate = new Date(year, month, day);
     const isPast = currentDate < today;
     const isBeyondLimit = currentDate > maxBookingDate;
-    const isSelected = bookingData.selectedDate === currentDate.toDateString();
+    const pad = (n) => (n < 10 ? "0" + n : n);
+    const formattedCurrentDate = `${currentDate.getFullYear()}-${pad(
+      currentDate.getMonth() + 1
+    )}-${pad(currentDate.getDate())}`;
+    const isSelected = bookingData.selectedDate === formattedCurrentDate;
 
     dayElement.className = `calendar-day p-2 rounded-lg border-2 transition-all duration-200 ${
       isPast || isBeyondLimit
@@ -80,7 +84,7 @@ export function generateCalendarDays() {
                     `;
 
     if (!isPast && !isBeyondLimit) {
-      dayElement.onclick = (e) => selectDate(currentDate, e);
+      dayElement.onclick = () => selectDate(currentDate);
     }
 
     calendarDays.appendChild(dayElement);
@@ -100,19 +104,11 @@ export function nextMonth() {
 }
 
 // Select date
-export function selectDate(date, event) {
+export function selectDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0"); // JS months are 0-based
   const day = String(date.getDate()).padStart(2, "0");
   bookingData.selectedDate = `${year}-${month}-${day}`;
-
-  // Update UI
-  // document.querySelectorAll(".calendar-day").forEach((btn) => {
-  //   btn.classList.remove("border-primary", "bg-green-50");
-  //   btn.classList.add("border-gray-100");
-  // });
-  // event.target.classList.add("border-primary", "bg-green-50");
-  // event.target.classList.remove("border-gray-100");
 
   availableTimeByDay();
 
@@ -126,12 +122,11 @@ function availableTimeByDay() {
   const timeButtonEls = document.querySelectorAll(".time-btn");
 
   timeButtonEls.forEach((btn) => {
-    const time = btn.getAttribute("data-time"); // "8:00 AM"
-    // const parsed = convertTo24Hour(rawTime);       // e.g. "08:00"
+    const time = btn.getAttribute("data-time"); // ["8:00", "14:00"]
 
     if (availableTime.includes(time)) {
       btn.classList.remove("cursor-not-allowed", "bg-red-50", "text-gray-400");
-      btn.classList.add("hover:border-primary", "text-green-950");
+      btn.classList.add("hover:border-primary");
       btn.disabled = false;
       btn.onclick = (e) => selectTime(time, e);
     } else {
@@ -146,7 +141,6 @@ function availableTimeByDay() {
 // Select time
 export function selectTime(time, event) {
   bookingData.selectedTime = time;
-  console.log(time);
 
   // Update UI
   document.querySelectorAll(".time-btn").forEach((btn) => {

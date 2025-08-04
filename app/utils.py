@@ -12,11 +12,6 @@ from datetime import date, time
 def booking_data_serializer(booking_data: Dict) -> Dict:
     """Serializes booking data to a dictionary."""
     
-    dt = datetime.strptime(
-        f"{booking_data.get('selectedDate')} {booking_data.get('selectedTime')}",
-        "%a %b %d %Y %I:%M %p"
-    )
-
     user_info = {
         "first_name": booking_data.get("personalInfo", {}).get("firstName", ""),
         "last_name": booking_data.get("personalInfo", {}).get("lastName", ""),
@@ -33,28 +28,30 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
 
     return {
         "service": booking_data.get("service"),
-        "service_category": booking_data.get("category"),
+        "category": booking_data.get("category"),
         "bedrooms": booking_data.get("bedrooms"),
         "bathrooms": booking_data.get("bathrooms"),
         "frequency": booking_data.get("frequency", "one-off"),
         "add_ons": booking_data.get("addOns", []),
-        "booking_date": dt.date(),#booking_data.get("selectedDate"),
-        "booking_time": dt.time(),#booking_data.get("selectedTime"),
+        "booking_date": booking_data.get("selectedDate"),
+        "booking_time": booking_data.get("selectedTime"),
         "price": booking_data.get("price", 0.0),
+        "payment_method": booking_data.get("paymentMethod", "interac"),
         "user_info": user_info,
         "address": address,
         "additional_info": booking_data.get("additionalInfo", "")
     }
 class ValidateBookingData(BaseModel):
     service: str
-    service_category: str
+    category: str
     bedrooms: int
-    bathrooms: int
+    bathrooms: Union[int, str]
     frequency: str = "one-off"
     add_ons: Union[List[str], Tuple[str, ...]] = None
     booking_date: Union[date, str] = None  # ISO format date string
     booking_time: Union[time,str]
     price:float = 0.0
+    payment_method: str
     user_info: Dict[str, str]
     address: Dict[str, str]
     additional_info: str = None
@@ -87,7 +84,7 @@ class ValidateBookingData(BaseModel):
         
     #     return value.strip()
     
-    @field_validator('service_category', mode='before')
+    @field_validator('category', mode='before')
     @classmethod
     def validate_service_category(cls, value):
         if not value.strip():
