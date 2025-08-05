@@ -9,12 +9,14 @@ export function getBasePrice() {
       residentialPricing[bookingData.service]?.[bookingData.bedrooms]?.[
         bookingData.bathrooms
       ] ?? 0;
-  } else if (bookingData.category === "commercial_cleaning") {
-    // basePrice = size * multiplier;
-    basePrice = 200 * 0.2;
   } else {
     basePrice = bookingState.serviceCost;
   }
+
+  // else if (bookingData.category === "commercial_cleaning") {
+  //   // basePrice = size * multiplier;
+  //   basePrice = 200 * 0.2;
+  // }
 
   return basePrice;
 }

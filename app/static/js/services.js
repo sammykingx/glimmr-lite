@@ -25,10 +25,23 @@ export function selectCategory(category, event) {
 
 // Select service
 export function selectService(service, amount, label, event) {
+  if (
+    bookingData.category === "commercial_cleaning" &&
+    service.toLowerCase() === "custom"
+  ) {
+    bookingData.category = "";
+    document.querySelectorAll(".category-btn").forEach((btn) => {
+      btn.classList.remove("border-primary", "bg-green-50");
+      btn.classList.add("border-gray-200");
+    });
+    location.href =
+      "mailto:booking@oliveglitters.com?subject=Custom Cleaning Service Request";
+    return;
+  }
   bookingData.service = service;
   bookingState.serviceLabel =
     bookingData.category !== "residential_cleaning" ? label : "";
-  const excludedCategories = ["residential_cleaning", "commercial_cleaning"];
+  const excludedCategories = ["residential_cleaning"]; //"commercial_cleaning"];
   if (!excludedCategories.includes(bookingData.category)) {
     setServiceCost(amount);
   } else if (bookingData.category === "residential_cleaning") {

@@ -18,9 +18,9 @@ ALLOWED_SERVICE = {
     "commercial_cleaning": {
         "type": "size_based",
         "sizes": {
-            "small": {"label": "<2,000sqft", "multiplier": 0.2},
-            "medium": {"label": "2,000sqft - 5,000sqft", "multiplier": 0.18},
-            "large": {"label": "5,000sqft - 10,000sqft", "multiplier": 0.16},
+            "small": {"label": "<2,000sqft", "multiplier": 0.2, "amount": 400},
+            "medium": {"label": "2,000sqft - 5,000sqft", "multiplier": 0.18, "amount": 900},
+            "large": {"label": "5,000sqft - 10,000sqft", "multiplier": 0.16, "amount": 1600},
             "custom": {"label": ">10,000sqft"}
         }
     },
