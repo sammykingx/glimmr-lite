@@ -2,7 +2,7 @@
 // Bedrooms as parent keys and bathrooms as child keys
 export const residentialPricing = {
   house_cleaning: {
-    1: { studio: 90, 1: 110 },
+    1: { 1: 110, studio: 90 },
     2: { 1: 130, 2: 145, 3: 160 },
     3: { 1: 145, 2: 160, 3: 175 },
     4: { 1: 175, 2: 190, 3: 210 },
@@ -10,7 +10,7 @@ export const residentialPricing = {
     //6: { 1: 230, 2: 245, 3: 260 },
   },
   deep_cleaning: {
-    1: { studio: 170, 1: 190 },
+    1: { 1: 190, studio: 170 },
     2: { 1: 210, 2: 225, 3: 240 },
     3: { 1: 220, 2: 240, 3: 255 },
     4: { 1: 250, 2: 270, 3: 290 },
@@ -18,7 +18,7 @@ export const residentialPricing = {
     6: { 1: 310, 2: 325, 3: 340 },
   },
   airbnb_cleaning: {
-    1: { studio: 130, 1: 150 },
+    1: { 1: 150, studio: 130 },
     2: { 1: 170, 2: 185, 3: 205 },
     3: { 1: 185, 2: 200, 3: 215 },
     4: { 1: 210, 2: 230, 3: 250 },
@@ -26,7 +26,7 @@ export const residentialPricing = {
     6: { 1: 260, 2: 280, 3: 300 },
   },
   move_in_move_out_cleaning: {
-    1: { studio: 190, 1: 210 },
+    1: { 1: 210, studio: 190 },
     2: { 1: 230, 2: 245, 3: 260 },
     3: { 1: 250, 2: 260, 3: 275 },
     4: { 1: 270, 2: 290, 3: 310 },

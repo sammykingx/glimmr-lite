@@ -43,9 +43,10 @@ export function selectService(service, amount, label, event) {
     bookingData.category !== "residential_cleaning" ? label : "";
   const excludedCategories = ["residential_cleaning"]; //"commercial_cleaning"];
   if (!excludedCategories.includes(bookingData.category)) {
+    //
     setServiceCost(amount);
   } else if (bookingData.category === "residential_cleaning") {
-    bookingData.bathrooms = "studio";
+    //bookingData.bathrooms = "studio";
     renderBedAndBathOptions(bookingData.service);
   }
 
@@ -67,6 +68,7 @@ export function selectService(service, amount, label, event) {
 // Select bedrooms
 export function selectBedrooms(num, event) {
   bookingData.bedrooms = num;
+  bookingData.bathrooms = 0; // reset bathrooms to 0 when bedrooms change after selecting bedrooms and bathrooms
   renderBathrooms(bookingData.service, num);
 
   // Update UI
@@ -77,7 +79,6 @@ export function selectBedrooms(num, event) {
   event.target.classList.add("border-primary", "bg-green-50");
   event.target.classList.remove("border-gray-200");
 
-  document.getElementById("bedroomDisplay").textContent = num;
   updateTotalPrice();
   updateNextButton();
 }
@@ -102,6 +103,7 @@ export function selectBathrooms(num, event) {
   document.getElementById("bathroomDisplay").textContent = bathroomDisplay;
   updateTotalPrice();
   updateNextButton();
+  displayPropertySummary();
 }
 
 // Toggle add-on
@@ -158,6 +160,8 @@ export function selectFrequency(frequency, event) {
 }
 
 function renderBedAndBathOptions(service) {
+  if (!residentialPricing[service]) return;
+
   const pricing = residentialPricing[service];
   const bedroomOptionsContainer = document.getElementById("bedroomOptions");
   const bathroomOptionsContainer = document.getElementById("bathroomOptions");
@@ -166,10 +170,8 @@ function renderBedAndBathOptions(service) {
   bedroomOptionsContainer.innerHTML = "";
   // bathroomOptionsContainer.innerHTML = "";
 
-  if (!pricing) return;
-
   // Get sorted list of bedrooms
-  const bedroomKeys = Object.keys(pricing).sort((a, b) => +a - +b); // [1,2,3,..., studio]
+  const bedroomKeys = Object.keys(pricing).sort((a, b) => +a - +b);
 
   // Populate bedrooms
   bedroomKeys.forEach((bedroom) => {
@@ -187,8 +189,7 @@ function renderBedAndBathOptions(service) {
   // Automatically trigger bathroom rendering for first bedroom
   const defaultBedroom = bedroomKeys[0];
   renderBathrooms(service, defaultBedroom);
-  const bathroomDisplay = "studio"; //default is studio
-  document.getElementById("bathroomDisplay").textContent = bathroomDisplay;
+  //const bathroomDisplay = "studio"; //default is studio
 }
 
 // Renders bathrooms when a bedroom is selected
@@ -215,4 +216,26 @@ function renderBathrooms(service, bedroom) {
     });
     bathroomOptionsContainer.appendChild(button);
   });
+}
+
+function displayPropertySummary() {
+  const { bedrooms, bathrooms, service } = bookingData;
+
+  // Exit if any of the required fields are missing
+  if (!bedrooms || !bathrooms || !service) return;
+
+  const price = residentialPricing?.[service]?.[bedrooms]?.[bathrooms] || 0;
+
+  document.getElementById("bedroomDisplay").textContent = bedrooms;
+  document.getElementById("bathroomDisplay").textContent = bathrooms;
+  document.getElementById("propertyPrice").textContent = price.toLocaleString(
+    "en-CA",
+    { style: "currency", currency: "CAD" }
+  );
+
+  const summary = document.getElementById("propertySummary");
+  if (summary) {
+    // only show if the summary element exists
+    summary.classList.remove("hidden");
+  }
 }

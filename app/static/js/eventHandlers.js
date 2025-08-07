@@ -82,6 +82,11 @@ export function attachEventHandlers() {
   //   });
   // });
 
+  /* Time selection is handled in the calendar.js file
+   * to ensure that the time selection is dynamic and can be updated
+   * based on the selected date and available slots.
+   */
+
   // Payment method
   document.querySelectorAll(".payment-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {

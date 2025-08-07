@@ -3,7 +3,7 @@ export let bookingData = {
   category: "",
   service: "",
   bedrooms: 1,
-  bathrooms: 0, // values are [studio, 0, 1, 2, 3]
+  bathrooms: 0, // values are [studio, 1, 2, 3]
   frequency: "",
   addOns: [],
   selectedDate: "",

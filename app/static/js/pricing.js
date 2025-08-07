@@ -1,25 +1,40 @@
 import { bookingData, bookingState, setTotalPrice } from "./bookingData.js"; // passed
 import { residentialPricing, frequencyMultipliers } from "./constants.js"; // passed
 
+function getFirstKey(bedrooms, bathObj) {
+  // returns the first key when the for bathrooms mapp
+  // when the bedrooms is 1 else returns studio
+  if (bedrooms === 1) {
+    return "studio";
+  }
+  return Object.keys(bathObj)[0];
+}
 // service base prices
 export function getBasePrice() {
+  // Default to 0 in case no matching pricing is found
   let basePrice = 0;
-  if (bookingData.category === "residential_cleaning") {
-    basePrice =
-      residentialPricing[bookingData.service]?.[bookingData.bedrooms]?.[
-        bookingData.bathrooms
-      ] ?? 0;
-  } else {
-    basePrice = bookingState.serviceCost;
-  }
 
-  // else if (bookingData.category === "commercial_cleaning") {
-  //   // basePrice = size * multiplier;
-  //   basePrice = 200 * 0.2;
-  // }
+  const { category, service, bedrooms, bathrooms } = bookingData;
+
+  // Only handle residential cleaning in this function for now
+  if (category === "residential_cleaning") {
+    const servicePricing = residentialPricing[service];
+    const bedroomPricing = servicePricing?.[bedrooms];
+
+    if (bedroomPricing) {
+      // Use first available bathroom key if bathroom is 0
+      const selectedBathroom =
+        bathrooms !== 0 ? bathrooms : getFirstKey(bedrooms, bedroomPricing);
+      basePrice = bedroomPricing?.[selectedBathroom] ?? 0;
+    }
+  } else {
+    // Fallback for other categories
+    basePrice = bookingState.serviceCost ?? 0;
+  }
 
   return basePrice;
 }
+
 
 // updates app's total price
 export function updateTotalPrice() {
