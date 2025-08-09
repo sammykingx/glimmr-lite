@@ -3,6 +3,7 @@ import random
 
 TIME_SLOTS = ["08:00", "10:00", "12:00", "14:00", "16:00"]
 
+
 def generate_sample_availability():
     today = datetime.today().date()
     availability = {}
@@ -22,7 +23,9 @@ def generate_sample_availability():
 
     return availability
 
+
 # Example usage
 if __name__ == "__main__":
     import json
+
     print(json.dumps(generate_sample_availability(), indent=2))

@@ -145,15 +145,25 @@ export function toggleAddOn(addOn, amount, event) {
 
 // Select frequency
 export function selectFrequency(frequency, event) {
-  bookingData.frequency = frequency;
+  const isSelected = bookingData.frequency === frequency;
+  bookingData.frequency = isSelected ? "one_off" : frequency;
 
-  // Update UI
-  document.querySelectorAll(".frequency-btn").forEach((btn) => {
-    btn.classList.remove("border-primary", "bg-green-50");
-    btn.classList.add("border-gray-200");
-  });
-  event.target.classList.add("border-primary", "bg-green-50");
-  event.target.classList.remove("border-gray-200");
+  // Reset all buttons
+  document
+    .querySelectorAll(".frequency-btn")
+    .forEach(
+      (btn) =>
+        btn.classList.toggle("border-primary", false) ||
+        btn.classList.toggle("bg-green-50", false) ||
+        btn.classList.toggle("border-gray-200", true)
+    );
+
+  // Highlight only if newly selected
+  if (!isSelected) {
+    event.target.classList.toggle("border-primary", true);
+    event.target.classList.toggle("bg-green-50", true);
+    event.target.classList.toggle("border-gray-200", false);
+  }
 
   updateTotalPrice();
   updateNextButton();
@@ -227,7 +237,12 @@ function displayPropertySummary() {
   const price = residentialPricing?.[service]?.[bedrooms]?.[bathrooms] || 0;
 
   document.getElementById("bedroomDisplay").textContent = bedrooms;
-  document.getElementById("bathroomDisplay").textContent = bathrooms;
+  document.getElementById("bathroomDisplay").textContent = Number.isInteger(
+    +bathrooms
+  )
+    ? `${+bathrooms} bath${+bathrooms > 1 ? "s" : ""}`
+    : bathrooms;
+  console.log(Number.isInteger(+bathrooms), typeof bathrooms);
   document.getElementById("propertyPrice").textContent = price.toLocaleString(
     "en-CA",
     { style: "currency", currency: "CAD" }

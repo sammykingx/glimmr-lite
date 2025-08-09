@@ -19,6 +19,7 @@ export function handleBooking() {
 
   // Show loading modal
   document.getElementById("loadingModal").classList.remove("hidden");
+  console.log("Booking data being sent:", bookingData);
 
   fetch("/booking", {
     method: "POST",
@@ -55,55 +56,55 @@ export function handleBooking() {
 
 // Reset booking
 export function resetBooking() {
-  // Reset booking data and booking state
-  resetBookingData();
-  resetBookingState();
+  // // Reset booking data and booking state
+  // resetBookingData();
+  // resetBookingState();
 
-  // Reset UI
-  document.getElementById("bookingComplete").classList.add("hidden");
-  document.getElementById("bookingError").classList.add("hidden");
-  document
-    .querySelectorAll(".step")
-    .forEach((step) => step.classList.remove("active"));
-  document.getElementById("step1").classList.add("active");
+  // // Reset UI
+  // document.getElementById("bookingComplete").classList.add("hidden");
+  // document.getElementById("bookingError").classList.add("hidden");
+  // document
+  //   .querySelectorAll(".step")
+  //   .forEach((step) => step.classList.remove("active"));
+  // document.getElementById("step1").classList.add("active");
 
-  // Reset form fields
-  document
-    .querySelectorAll("input, textarea")
-    .forEach((field) => (field.value = ""));
+  // // Reset form fields
+  // document
+  //   .querySelectorAll("input, textarea")
+  //   .forEach((field) => (field.value = ""));
 
-  // Reset buttons
-  document
-    .querySelectorAll(
-      ".category-btn, .service-btn, .bedroom-btn, .bathroom-btn, .frequency-btn, .addon-btn, .time-btn, .payment-btn"
-    )
-    .forEach((btn) => {
-      btn.classList.remove("border-primary", "bg-green-50");
-      btn.classList.add("border-gray-200");
+  // // Reset buttons
+  // document
+  //   .querySelectorAll(
+  //     ".category-btn, .service-btn, .bedroom-btn, .bathroom-btn, .frequency-btn, .addon-btn, .time-btn, .payment-btn"
+  //   )
+  //   .forEach((btn) => {
+  //     btn.classList.remove("border-primary", "bg-green-50");
+  //     btn.classList.add("border-gray-200");
 
-      if (btn.classList.contains("service-btn")) {
-        btn.dataset.listenerAttached = false;
-      }
-    });
+  //     if (btn.classList.contains("service-btn")) {
+  //       btn.dataset.listenerAttached = false;
+  //     }
+  //   });
 
-  // Hide service selection and summaries
-  document.getElementById("serviceSelection").classList.add("hidden");
-  document.getElementById("addOnSummary").classList.add("hidden");
-  document.getElementById("scheduleSummary").classList.add("hidden");
+  // // Hide service selection and summaries
+  // document.getElementById("serviceSelection").classList.add("hidden");
+  // document.getElementById("addOnSummary").classList.add("hidden");
+  // document.getElementById("scheduleSummary").classList.add("hidden");
 
-  // Reset navigation
-  document.getElementById("prevBtn").classList.add("hidden");
-  document.getElementById("nextBtn").classList.remove("hidden");
-  document.getElementById("bookBtn").classList.add("hidden");
+  // // Reset navigation
+  // document.getElementById("prevBtn").classList.add("hidden");
+  // document.getElementById("nextBtn").classList.remove("hidden");
+  // document.getElementById("bookBtn").classList.add("hidden");
 
-  // Reset calendar
-  updateCalendarDisplay();
+  // // Reset calendar
+  // updateCalendarDisplay();
 
-  updateProgress();
-  updateTotalPrice();
-  updateNextButton();
+  // updateProgress();
+  // updateTotalPrice();
+  // updateNextButton();
 
-  // temporal fix
+  // Reset booking data and state by reloading the page
   location.reload(true);
 }
 

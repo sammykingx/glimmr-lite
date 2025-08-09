@@ -28,9 +28,6 @@
 
 ---
 
-
----
-
 ## 🌟 Vision Behind Glimmr
 
 Glimmr is not just a booking platform — it’s a scalable **service operations engine** for modern home and office cleaning providers. Glimmr Lite serves as a tactical MVP to:

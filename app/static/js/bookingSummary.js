@@ -58,12 +58,14 @@ export function updateBookingSummary() {
     bookingData.selectedTime || "-";
 
   // Payment & Contact
-  document.getElementById("summaryPayment").textContent =
+  document.getElementById("paymentMethod").textContent =
     bookingData.paymentMethod ? paymentMethods[bookingData.paymentMethod] : "-";
-  document.getElementById("summaryContact").textContent =
+  document.getElementById("contactName").textContent =
     bookingData.personalInfo.firstName && bookingData.personalInfo.lastName
       ? `${bookingData.personalInfo.firstName} ${bookingData.personalInfo.lastName}`
       : "John Doe";
+  document.getElementById("contactEmail").textContent =
+    bookingData.personalInfo.email || "jonhndoe@example.com";
 
   // Add-ons
   const addOnsSection = document.getElementById("summaryAddOns");

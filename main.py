@@ -4,12 +4,13 @@ from app.constants import ALLOWED_SERVICE, ALLOWED_SERVICE_ADDONS
 
 app = create_app()
 
-@app.route('/')
+
+@app.route("/")
 def index():
     return render_template(
-        'index.html',
-        categories=ALLOWED_SERVICE.keys(),
-        addons=ALLOWED_SERVICE_ADDONS)
+        "index.html", categories=ALLOWED_SERVICE.keys(), addons=ALLOWED_SERVICE_ADDONS
+    )
+
 
 if __name__ == "__main__":
     app.run()

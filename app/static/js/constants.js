@@ -36,9 +36,9 @@ export const residentialPricing = {
 };
 
 export const frequencyMultipliers = {
-  oneOff: { multiplier: 1, discount: 0 },
+  one_off: { multiplier: 1, discount: 0 },
   weekly: { multiplier: 1, discount: 0.05 },
-  "bi-weekly": { multiplier: 2, discount: 0.1 },
+  bi_weekly: { multiplier: 2, discount: 0.1 },
   monthly: { multiplier: 4, discount: 0.15 },
 };
 

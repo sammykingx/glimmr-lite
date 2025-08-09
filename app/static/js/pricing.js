@@ -41,7 +41,7 @@ export function updateTotalPrice() {
   const basePrice = getBasePrice();
   const cleaningFrequency = frequencyMultipliers[bookingData.frequency]
     ? frequencyMultipliers[bookingData.frequency]
-    : frequencyMultipliers["oneOff"];
+    : frequencyMultipliers["one_off"];
   const calculatedPrice = basePrice * cleaningFrequency.multiplier;
   const discountedPrice = calculatedPrice * cleaningFrequency.discount;
   const addOnPrice = bookingData.addOns.reduce((sum, addon) => {
@@ -77,14 +77,14 @@ export function updateTotalPrice() {
 function updateFrequnecyUI(basePrice) {
   const weeklyPrice = basePrice * frequencyMultipliers["weekly"]["multiplier"];
   const biWeeklyPrice =
-    basePrice * frequencyMultipliers["bi-weekly"]["multiplier"];
+    basePrice * frequencyMultipliers["bi_weekly"]["multiplier"];
   const monthlyPrice =
     basePrice * frequencyMultipliers["monthly"]["multiplier"];
 
   const weeklyDiscount =
     weeklyPrice * frequencyMultipliers["weekly"]["discount"];
   const biWeeklyDiscount =
-    biWeeklyPrice * frequencyMultipliers["bi-weekly"]["discount"];
+    biWeeklyPrice * frequencyMultipliers["bi_weekly"]["discount"];
   const monthlyDiscount =
     monthlyPrice * frequencyMultipliers["monthly"]["discount"];
 

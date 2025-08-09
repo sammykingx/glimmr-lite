@@ -4,7 +4,7 @@ export let bookingData = {
   service: "",
   bedrooms: 1,
   bathrooms: 0, // values are [studio, 1, 2, 3]
-  frequency: "",
+  frequency: "one_off", // default frequency, can be "one_off", "weekly", "bi-weekly", or "monthly"
   addOns: [],
   selectedDate: "",
   selectedTime: "",
@@ -20,7 +20,7 @@ export let bookingData = {
     street: "",
     city: "",
     state: "",
-    zipCode: "",
+    country: "canada", // default country
   },
   additionalInfo: "",
 };
@@ -49,7 +49,7 @@ export function resetBookingData() {
     service: "",
     bedrooms: 1,
     bathrooms: 0,
-    frequency: "",
+    frequency: "one_off",
     addOns: [],
     selectedDate: "",
     selectedTime: "",
@@ -65,7 +65,6 @@ export function resetBookingData() {
       street: "",
       city: "",
       state: "",
-      zipCode: "",
     },
     additionalInfo: "",
   };
