@@ -11,6 +11,14 @@ def index():
         "index.html", categories=ALLOWED_SERVICE.keys(), addons=ALLOWED_SERVICE_ADDONS
     )
 
+@app.route("/test")
+def test_template():
+    return render_template("public/index.html", role="admin")
+
+
+@app.route("/login")
+def test_login():
+    return render_template("auth/login.html")
 
 if __name__ == "__main__":
     app.run()

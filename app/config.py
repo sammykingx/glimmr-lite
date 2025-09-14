@@ -19,7 +19,7 @@ class Config:
     WTF_CSRF_METHODS = ["POST"]  # allowed methods for CSRF protection
     WTF_CSRF_HEADERS = [
         "X-CSRFToken",
-    ]  # allowed headers for CSRF protection
+    ]
 
     # Flask-Mail configuration
     MAIL_SERVER = os.getenv("MAIL_SERVER")

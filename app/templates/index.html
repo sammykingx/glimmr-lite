@@ -6,14 +6,14 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="Glimmr - Your trusted cleaning service for homes and offices. Book now for a sparkling clean space!">
         <meta name="keywords" content="cleaning service, home cleaning, office cleaning, professional cleaners, deep cleaning, standard cleaning, specialized cleaning, olive glitters, glimmr, sammykingx">
-        <title>Booking Service - Olive Glitters Cleaning Service</title>
+        <title>Guest Booking Service - Olive Glitters Cleaning Service</title>
         <link rel="icon" type="image/png" href={{ url_for("static", filename="image/favicon.png") }}>
         <link rel="stylesheet" href={{ url_for("static", filename="css/output.css") }}>
         <link rel="stylesheet" href={{ url_for("static", filename="css/animations.css") }}>
     </head> 
     <body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <!-- Header -->
-        {% include "components/header.html" %}
+        {% include "components/guest_booking/header.html" %}
         <main>
             <section class="max-w-4xl mx-auto px-4 py-8">
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -42,7 +42,7 @@
                     {% include "steps/booking-summary.html" %}
 
                     <!-- Navigation -->
-                    {% include "components/bottom-navigation.html" %}
+                    {% include "components/guest_booking/bottom-navigation.html" %}
                 </div>
             </section>
 
@@ -56,7 +56,7 @@
             {% include "steps/booking-error-modal.html" %}
             
         </main>
-        <script src={{ url_for("static", filename="htmx/htmx.min.js") }}></script>
-        <script src={{ url_for("static", filename="js/main.js") }} type="module" defer></script>
+        <script src={{ url_for("static", filename="js/vendors/htmx.min.js") }}></script>
+        <script src={{ url_for("static", filename="js/guest_booking/main.js") }} type="module" defer></script>
     </body>
 </html>

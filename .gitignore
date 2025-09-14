@@ -15,8 +15,8 @@ copy.html
 *.log
 secrets
 instance/
-bolt-src/
 node_modules/
 dist/
 dist-ssr
 *.local
+TODOS.md

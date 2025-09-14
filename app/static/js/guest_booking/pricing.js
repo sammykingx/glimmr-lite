@@ -1,4 +1,8 @@
-import { bookingData, bookingState, setTotalPrice } from "./bookingData.js"; // passed
+import {
+  bookingData,
+  bookingState,
+  setTotalPrice,
+} from "./bookingData.js"; // passed
 import { residentialPricing, frequencyMultipliers } from "./constants.js"; // passed
 
 function getFirstKey(bedrooms, bathObj) {
@@ -34,7 +38,6 @@ export function getBasePrice() {
 
   return basePrice;
 }
-
 
 // updates app's total price
 export function updateTotalPrice() {

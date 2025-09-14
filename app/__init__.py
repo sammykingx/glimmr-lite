@@ -2,6 +2,7 @@ from flask import Flask
 from app.extensions import csrf, db, migrate, init_extensions
 from app.config import DevelopmentConfig
 from app.routes import main as main_blueprint
+from app.auth import bp as auth_blueprint
 
 
 def create_app(config_object=DevelopmentConfig):
@@ -16,5 +17,6 @@ def create_app(config_object=DevelopmentConfig):
 
     # register blueprints
     app.register_blueprint(main_blueprint)
+    app.register_blueprint(auth_blueprint)
 
     return app

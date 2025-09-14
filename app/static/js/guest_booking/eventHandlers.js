@@ -8,7 +8,10 @@ import {
 import { selectPayment } from "./payments.js";
 import { previousMonth, nextMonth, selectTime } from "./calendar.js";
 import { nextStep, prevStep } from "./bookingNavigation.js";
-import { handleBooking, resetBooking } from "./bookingHandlers.js";
+import {
+  handleBooking,
+  resetBooking,
+} from "./bookingHandlers.js";
 import { setClientData } from "./clientData.js";
 
 export function attachEventHandlers() {

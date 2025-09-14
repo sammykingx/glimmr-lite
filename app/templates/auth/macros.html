@@ -1,0 +1,97 @@
+{% macro input_field(name, type="text", label="", placeholder="") %}
+<div class="relative">
+	<label for="{{ name }}" class="block text-sm md:text-base text-primary pb-2 pl-1">{{ label }}</label>
+	<input
+		type="{{ type }}"
+		id="{{ name }}"
+		name="{{ name }}"
+		placeholder="{{ placeholder }}"
+		class="peer block w-full rounded-md border border-gray-300 bg-transparent p-3 text-base text-gray-900
+		focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50
+		dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-green-400 dark:focus:ring-green-500"
+		required
+		/>
+</div>
+{% endmacro %}
+{% macro password_field(name="password", label="Password", placeholder="********") %}
+<div class="relative">
+	<label for="{{ name }}" class="block text-sm md:text-base text-primary pb-2 pl-1">{{ label }}</label>
+	<input
+		type="password"
+		id="{{ name }}"
+		placeholder="{{ placeholder }}"
+		class="peer block w-full rounded-md border border-gray-300 bg-transparent p-3 text-base text-gray-900
+		focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50
+		dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 dark:focus:border-green-400 dark:focus:ring-green-500"
+		required
+		/>
+	<!-- Eye Icon -->
+	<button 
+		type="button"
+		onclick="togglePassword()"
+		class="absolute inset-y-3 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+		>
+		<!-- Eye SVG -->
+		<svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="mt-7 h-5 w-5" 
+			fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+				d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+				d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 
+				9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+		</svg>
+	</button>
+</div>
+{% endmacro %}
+{% macro lottie_animation(lottie_file) %}
+<dotlottie-wc
+	src="{{ url_for('static', filename='lottie/' ~ lottie_file) }}"
+	class="w-full max-w-xs sm:max-w-sm md:w-[300px] md:h-[300px]"
+	speed="1"
+	autoplay
+	
+	></dotlottie-wc>
+{% endmacro %}
+{% macro social_button(provider, provider_url, text_prefix="Continue with") %}
+    {% set colors = {
+        "google": "hover:border-red-400",
+        "facebook": "hover:border-blue-400"
+    } %}
+    {% set logos = {
+        "google": "google.svg",
+        "facebook": "facebook.svg"
+    } %}
+    
+    <button
+        onclick="window.location.href='{{ provider_url }}'"
+        class="flex items-center justify-center w-full px-4 py-2 mt-4 text-xs md:text-sm font-medium
+               leading-5 text-gray-700 transition-colors duration-150 border border-gray-300
+               {{ colors[provider] }} rounded-lg dark:text-gray-400 active:bg-transparent
+               focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
+    >
+        {% if provider == "google" %}
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.49 12.27c0-.82-.07-1.6-.21-2.36H12v4.47h6.44c-.28 1.45-1.12 2.68-2.38 
+                    3.51v2.91h3.84c2.25-2.07 3.55-5.12 3.55-8.53z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.07 7.93-2.9l-3.84-2.91c-1.07.72-2.45 
+                    1.15-4.09 1.15-3.14 0-5.8-2.12-6.75-4.97H1.29v3.09C3.26 21.3 7.31 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.25 14.37a7.21 7.21 0 01-.38-2.37c0-.82.14-1.62.38-2.37V6.54H1.29A11.94 
+                    11.94 0 000 12c0 1.9.45 3.7 1.29 5.46l3.96-3.09z"/>
+                <path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.59 1.78l3.42-3.42C17.95 
+                    1.13 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.54l3.96 3.09C6.2 6.87 8.86 4.75 12 4.75z"/>
+		    </svg>
+        {% elif provider == "facebook" %}
+            <svg class="w-4 h-4 mr-2" aria-hidden="true" viewBox="0 0 24 24">
+                <path 
+                    fill="#1877F2" 
+                    d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.028 
+                    4.388 11.022 10.125 11.927v-8.438H7.078v-3.489h3.047V9.413c0-3.007 
+                    1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.513c-1.492 
+                    0-1.953.928-1.953 1.879v2.25h3.328l-.532 3.489h-2.796v8.438C19.612 
+                    23.095 24 18.101 24 12.073z"
+                    />
+            </svg>
+        {% endif %}
+        {{ text_prefix }} {{ provider|capitalize }}
+    </button>
+{% endmacro %}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html x-data="theme" :class="{ 'dark': dark }" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block page_title %}Base Template{% endblock %} - Olive Glitters</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/primary.css') }}">
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+  
+  <section class="flex items-center min-h-screen px-4 py-4 sm:p-6 bg-gray-50 dark:bg-gray-800">
+    <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+      <div class="flex flex-col overflow-y-auto md:flex-row">
+
+        <!-- Left: Lottie -->
+        <div class="flex items-center justify-center py-4 sm:py-8 md:h-auto md:w-1/2 bg-green-50">
+          {% block lottie %}
+            {{ lottie_animation("login.lottie") }}
+          {% endblock %}
+        </div>
+
+        <!-- Right: Form -->
+        <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+          {% block form_data %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script type="module" src="{{ url_for('static', filename='js/vendors/lottie/dotlottie-wc.js') }}"></script>
+  {% block page_js_file %}{% endblock %}
+</body>
+</html>

@@ -58,7 +58,7 @@ class Booking(db.Model):
     service = db.Column(db.String(50), nullable=False)
     service_category = db.Column(db.String(50), nullable=False)
     bedrooms = db.Column(db.Integer, nullable=False)
-    bathrooms = db.Column(db.Integer, nullable=False)
+    bathrooms = db.Column(db.String(12), nullable=False)
     frequency = db.Column(
         db.String(20),
         default="one-off",

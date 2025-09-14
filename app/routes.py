@@ -19,6 +19,7 @@ def place_booking():
         validate_csrf(csrf_token)
 
         data = booking_data_serializer(request.get_json())
+        current_app.logger.info(f"Received booking data: {data}")
         cleaned_data = ValidateBookingData(**data)
         Booking = BookingService(cleaned_data)
         # booked_service = Booking.place_booking()

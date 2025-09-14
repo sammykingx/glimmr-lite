@@ -10,11 +10,6 @@ from typing import Dict, List, Tuple, Union
 from datetime import date, time
 
 
-# Utility function to serialize booking data into a dictionary format.
-# This is useful for converting the booking data from the request into a format that can be easily
-# processed or stored in a database.
-
-
 def booking_data_serializer(booking_data: Dict) -> Dict:
     """Serializes booking data to a dictionary."""
 
@@ -52,10 +47,10 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
 class ValidateBookingData(BaseModel):
     service: str
     category: str
-    bedrooms: int
+    bedrooms: Union[int, str]
     bathrooms: Union[int, str]
     frequency: str
-    add_ons: Union[List[str], Tuple[str, ...]] = []
+    add_ons: List[Dict[str, Union[str, int]]]
     booking_date: Union[date, str] = None  # ISO format date string
     booking_time: Union[time, str]
     price: float = 0.0
@@ -87,21 +82,38 @@ class ValidateBookingData(BaseModel):
         if value.lower() not in ALLOWED_SERVICE.keys():
             return ValueError("Invalid service category.")
 
-        if value.lower() == "residential_cleaning":
-            if (
-                cls.bedrooms
-                not in RESIDENTIAL_SERVICE_PRICING[cls.service.lower()].keys()
-                or cls.bathrooms
-                not in RESIDENTIAL_SERVICE_PRICING[cls.service.lower()][
-                    cls.bedrooms
-                ].keys()
-            ):
-                raise ValueError(
-                    "Invalid number of bedrooms/bathrooms for residential cleaning."
-                )
-
-        return value.strip()
-
+        return value.strip().lower()
+    
+    @field_validator("bedrooms", mode="before")
+    @classmethod
+    def validate_bedrooms(cls, value):
+        if isinstance(value, str):
+            if not value.isdigit() or int(value) < 0:
+                raise ValueError("Bedrooms must be a non-negative integer.")
+            value = int(value)
+            
+        elif not isinstance(value, int) or value < 0:
+            raise ValueError("Bedrooms must be a non-negative integer.")
+        
+        if value not in range(7):
+            raise ValueError("Bedrooms must be between 0 and 6.")
+        
+        return value
+    
+    @field_validator("bathrooms", mode="before")
+    @classmethod
+    def validate_bathrooms(cls, value):
+        # if bathrooms is a string and not equall to 'studio' raise error
+        # if the bathrooms is a postive integer greater than 3 then raise error
+        if isinstance(value, str):
+            if value.strip().lower() != "studio":
+                raise ValueError("Bathrooms must be 'studio' or a non-negative integer.")
+            
+        elif not isinstance(value, int) or value < 0:
+            raise ValueError("Bathrooms must be a non-negative integer or 'studio'.")
+        
+        return value
+    
     @field_validator("frequency", mode="before")
     @classmethod
     def validate_frequency(cls, value):
