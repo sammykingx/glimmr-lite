@@ -1,0 +1,15 @@
+{% macro stat_card(icon, icon_bg, icon_color, title, value) %}
+    <div class="flex items-center p-5 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+        <div class="p-3 mr-4 {{ icon_color }} {{ icon_bg }} rounded-full">
+            {{ icon|safe }}
+        </div>
+        <div>
+            <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                {{ title }}
+            </p>
+            <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                {{ value }}
+            </p>
+        </div>
+    </div>
+{% endmacro %}
