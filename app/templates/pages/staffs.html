@@ -1,7 +1,7 @@
 {% extends "layouts/base-layout.html" %}
 {% from "components/utils/macros.html" import stat_card %}
 
-{% block page_title %}Admin - Clients{% endblock %}
+{% block page_title %}Admin - Staffs{% endblock %}
 
 {% block content %}
 <div class="grid gap-6 mb-16 md:grid-cols-2 xl:grid-cols-4">
@@ -13,8 +13,8 @@
 		</svg>',
 		"text-pink-600",
 		"bg-pink-100",
-		"Total Clients",
-		clients_stat.total_clients
+		"Total Staffs",
+		staff_stats.total_staffs
 	) }}
 
 	{{ stat_card(
@@ -28,8 +28,8 @@
 		</svg>',
 		"text-green-500",
 		"bg-green-100",
-		"Registered Clients",
-		clients_stat.registered_clients
+		"Active Staffs",
+		staff_stats.active_staffs
 	) }}
 
 	{{ stat_card(
@@ -42,8 +42,8 @@
 		</svg>',
 		"text-teal-500",
 		"bg-teal-100",
-		"Guest Clients",
-		clients_stat.guest_clients
+		"Cleaning Agents",
+		staff_stats.cleaning_agent
 	) }}
 
 	{{ stat_card(
@@ -56,23 +56,23 @@
 		</svg>',
 		"text-yellow-600",
 		"bg-yellow-100",
-		"Active Clients",
-		"874"
+		"On-Duty Staffs",
+		staff_stats.managers
 	) }}
 </div>
 
 <!--<h4
 	class="ml-2 mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
 	>
-	All Clients
+	All staffs
 </h4>-->
 
-<div class="flex items-center justify-between mb-4 gap-2 bg-gray-50">
-  <!-- Title -->
-  <h4 class="pl-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-    All Clients
-  </h4>
-
+<div class="flex items-center justify-between mb-4 gap-2">
+  
+    <!-- Title -->
+	<h4 class="pl-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+		All Staffs
+	</h4>
 
   <!-- Filters -->
   <div>
@@ -80,11 +80,9 @@
       class="form-select rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-gray-500 dark:text-gray-200 text-sm px-3 py-2 focus:outline-none focus:ring-1 focus:ring-secondary focus:border-none"
     >
       <option value="">Filter</option>
-      <option value="guest">Guest</option>
-      <option value="inactive">Inactive</option>
-      <option value="active">Active</option>
-      <option value="bookings">Bookings</option>
-      <option value="lifetime">Lifetime Value</option>
+      <option value="admin">Admin</option>
+      <option value="agent">Agent</option>
+      <option value="manager">Manager</option>
     </select>
   </div>
 </div>
@@ -96,19 +94,17 @@
 				<tr
 					class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-100 dark:text-gray-400 dark:bg-gray-800"
 					>
-					<th class="px-4 py-3">Client</th>
+					<th class="px-4 py-3">Staff</th>
 					<th class="px-4 py-3">Contact</th>
-					<th class="px-4 py-3">Bookings</th>
-					<th class="px-4 py-3">Spent</th>
-					<!--<th class="px-4 py-3">Last Booking</th>-->
+					<th class="px-4 py-3">Role</th>
 					<th class="px-4 py-3">Actions</th>
 				</tr>
 			</thead>
 			<tbody
 				class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
 				>
-				{% if clients_info %}
-					{% for client in clients_info %}
+				{% if staffs_info %}
+					{% for staff in staffs_info %}
 						<tr class="text-gray-700 dark:text-gray-100">
 							<td class="px-4 py-3">
 								<div class="flex items-center text-sm">
@@ -118,7 +114,7 @@
 										>
 										<img
 											class="object-cover w-full h-full rounded-full"
-											src={{ url_for('static', filename='image/user_profile/' ~ client.profile_img) }}
+											src={{ url_for('static', filename='image/user_profile/' ~ staff.profile_img) }}
 											alt=""
 											loading="lazy"
 											/>
@@ -128,45 +124,39 @@
 											></div>
 									</div>
 									<div>
-										<p class="text-xs md:test-sm font-semibold">{{ client.name }}</p>
+										<p class="text-xs md:test-sm font-semibold">{{ staff.name }}</p>
 										<p class="text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
-											{{ client.city }}, {{ client.province }}
+											{{ staff.city }}, {{ staff.province }}
 										</p>
 									</div>
 								</div>
 							</td>
 							<td class="px-4 py-3 text-sm">
 								<div>
-									<p class="test-sm">{{ client.email }}</p>
+									<p class="test-sm">{{ staff.email }}</p>
 									<p class="text-xs text-gray-600 dark:text-gray-400">
-										{{ client.phone }}
+										{{ staff.phone }}
 									</p>
 								</div>
 							</td>
 							<td class="px-4 py-3 text-xs md:text-sm">
 								<span
 									class="px-2 py-1 leading-tight 
-                     					{% if client.status == 'Active' %} text-green-600 bg-green-100 dark:text-white dark:bg-green-600
-                     					{% elif client.status == 'Inactive' %} text-yellow-600 bg-yellow-100 dark:text-white dark:bg-red-600
-                     					{% else %} text-gray-600 bg-gray-100 dark:text-white dark:bg-gray-600
+                     					{% if staff.status == 'agent' %} text-green-600 bg-green-100 dark:text-white dark:bg-green-600
+                     					{% elif staff.status == 'manager' %} text-fuchsia-600 bg-fuchsia-100 dark:text-white dark:bg-fuchsia-600
+                     					{% else %} text-blue-600 bg-blue-100 dark:text-white dark:bg-blue-600
                      					{% endif %}
 										rounded-full"
 									>
-									{{ client.status }}
+									{{ staff.status }}
 								</span>
-								<p class="mt-2 text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
-									{{ client.bookings }} Bookings
-								</p>
-							</td>
-							<td class="px-4 py-3 text-xs md:text-sm whitespace-nowrap">
-								$ {{ client.total_spent }}
 							</td>
 							<td class="px-4 py-3">
 								<div class="flex items-center space-x-4 text-sm">
 									<button
 										class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-gray-300 rounded-lg dark:text-gray-400"
 										aria-label="Edit"
-										title="Edit Client Information"
+										title="Edit staff Information"
 										>
 										<svg
 											class="w-5 h-5"
@@ -182,7 +172,7 @@
 									<button
 										class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-gray-400 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
 										aria-label="Delete"
-										title="Delete Client"
+										title="Delete staff"
 										>
 										<svg
 											class="w-5 h-5"
@@ -202,7 +192,7 @@
 						</tr>
 					{% endfor %}
 				{% else %}
-					<tr class="text-gray-700 dark:text-green-800">
+					<tr class="text-gray-700 dark:text-gray-300">
 						<td class="px-4 py-3">
 							<div class="flex items-center text-sm">
 								<!-- Avatar with inset shadow -->
@@ -254,7 +244,7 @@
 								<button
 									class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-secondary rounded-lg dark:text-gray-400"
 									aria-label="Edit"
-									title="Edit Client Information"
+									title="Edit staff Information"
 								>
 									<svg
 											class="w-5 h-5"
@@ -270,7 +260,7 @@
 									<button
 										class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-secondary rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
 										aria-label="Delete"
-										title="Delete Client"
+										title="Delete staff"
 										>
 										<svg
 											class="w-5 h-5"
