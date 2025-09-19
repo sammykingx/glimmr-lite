@@ -34,6 +34,8 @@
                         >
                             {% block dashboard_menu_tile %}{% endblock %}
                         </h2>
+                        
+                        {% include "components/alerts/success-alert.html" %}
                         {% block content %}{% endblock %}
                     </section>
                 </main>
@@ -52,5 +54,6 @@
 		<script src={{ url_for("static", filename="js/vendors/chartjs.umd.js") }} defer></script>
 		<script src={{ url_for('static', filename='assets/js/charts-lines.js') }} defer></script>
 		<script src={{ url_for('static', filename='assets/js/charts-pie.js') }} defer></script>
+        <script src={{ url_for("static", filename="js/utils/dismiss-alert.js") }} defer></script>
     </body>
 </html>
