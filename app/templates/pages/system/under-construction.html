@@ -1,0 +1,41 @@
+{% extends "layouts/base-layout.html" %}
+{% from "components/utils/macros.html" import stat_card %}
+
+{% block page_title %}Coming Soon - Olive Glitters{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center text-center px-4 py-2">
+    
+    <!-- Custom SVG from static folder -->
+    <img src="{{ url_for('static', filename='svg/under-construction.svg') }}" 
+         alt="Coming Soon Icon" 
+         class="w-full max-w-md mb-10 opacity-80 dark:hidden"
+    />
+
+    <img src="{{ url_for('static', filename='svg/construction_dark.svg') }}" 
+         alt="Coming Soon Icon" 
+         class="w-full max-w-md mb-10 opacity-80 hidden dark:block"
+    />
+
+    <!-- Title -->
+    <h1 class="text-2xl font-semibold text-primary dark:text-gray-200 mb-3">
+        Coming Soon
+    </h1>
+
+    <!-- Description -->
+    <p class="max-w-md text-gray-600 dark:text-gray-400 mb-2">
+        We're still working on this feature. Once it's ready, 
+        you'll be among the first to know. 
+    </p>
+    <p class="text-gray-600 dark:text-gray-400 mb-4">
+        Stay tuned!
+        <span class="inline-block w-2 h-2 bg-green-400 rounded-full align-middle ml-1"></span> 
+    </p>
+
+    <!-- Link -->
+    <a href="{{ url_for('admin.admin_dashboard') }}"
+       class="text-secondary font-medium hover:underline dark:text-green-300">
+        Back to Dashboard
+    </a>
+</div>
+{% endblock %}

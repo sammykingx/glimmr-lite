@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --minify",
-    "watch:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/output.css --watch",
+    "watch:css": "tailwindcss -i ./app/static/css/input.css -o ./app/static/css/primary.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

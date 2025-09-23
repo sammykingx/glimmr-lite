@@ -11,14 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
       alert.classList.add("opacity-100", "translate-y-0");
     });
 
-    // auto dismiss after 5s
-    setTimeout(() => dismissAlert(alert), 5000);
+    // auto dismiss after 6s
+    setTimeout(() => dismissAlert(alert), 6000);
 
     // close button click
-    const closeBtn = alert.querySelector(".close-btn");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => dismissAlert(alert));
-    }
+    // const closeBtn = alert.querySelector(".close-btn");
+    // if (closeBtn) {
+    //   closeBtn.addEventListener("click", () => dismissAlert(alert));
+    // }
   });
 
   function dismissAlert(alert) {

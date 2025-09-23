@@ -8,12 +8,17 @@ app = create_app()
 @app.route("/")
 def index():
     return render_template(
-        "index.html", categories=ALLOWED_SERVICE.keys(), addons=ALLOWED_SERVICE_ADDONS
+        "index.html",
+        categories=ALLOWED_SERVICE.keys(),
+        addons=ALLOWED_SERVICE_ADDONS,
     )
 
-@app.route("/login")
-def test_login():
-    return render_template("auth/login.html")
+@app.route("/coming-soon")
+def coming_soon():
+    return render_template(
+        "pages/system/under-construction.html",
+        role="admin",
+    )
 
 if __name__ == "__main__":
     app.run()
