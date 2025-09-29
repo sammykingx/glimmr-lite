@@ -5,6 +5,7 @@ from flask_wtf.csrf import CSRFProtect
 from app.security import APP_CSP_POLICY
 from flask_mail import Mail
 from flask_htmx import HTMX
+from flask_login import LoginManager
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -12,6 +13,7 @@ talisman = Talisman()
 csrf = CSRFProtect()
 mail = Mail()
 htmx = HTMX()
+login_manager = LoginManager()
 
 
 def init_extensions(app):
@@ -36,5 +38,18 @@ def init_extensions(app):
     #     # strict_transport_security_max_age=31536000,  # 1 year
     #     # strict_transport_security_include_subdomains=True
     # )
+    login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
 
     return app
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    """
+        Given *user_id*, return the associated User object.
+        :param unicode user_id: user_id (email) user to retrieve
+    """
+    from app.models.user_profile import UserProfile
+
+    return UserProfile.query.get(user_id)

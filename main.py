@@ -23,7 +23,7 @@ def coming_soon():
 @app.route("/user-profile")
 def test_user_profile():
     return render_template(
-        "pages/acct-profile.html",
+        "pages/accounts/user-profile.html",
         role="admin",
     )
 

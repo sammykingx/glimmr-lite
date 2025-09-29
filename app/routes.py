@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, jsonify, request, render_template
 from flask_wtf.csrf import CSRFError, validate_csrf
 from app.extensions import htmx
-from app.models import User
+from app.models.user_profile import UserProfile
 from app.utils import booking_data_serializer, ValidateBookingData
 from app.services.booking_service import BookingService
 from app.helpers import demo_booking_data

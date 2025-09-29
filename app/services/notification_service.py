@@ -2,7 +2,7 @@
 from flask import current_app
 from flask_mail import Message
 from app.extensions import mail
-from app.models import User
+from app.models.user_profile import UserProfile as User
 from app.constants import ADMIN_EMAILS as admins_list
 
 

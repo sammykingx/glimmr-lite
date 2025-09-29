@@ -1,8 +1,8 @@
-# Booking Service Module
-# This module handles the booking process, including validation, saving to the database,
-# payment processing, and notifications.
 from flask import render_template
-from app.models import Address, Booking, RecurringBooking, User, db
+from app.extensions import db
+from app.models.user_profile import UserProfile
+from app.models.address import UserAddress
+from app.models.bookings import Booking
 from app.services.payment_service import PaymentService
 from app.services.notification_service import NotificationService
 
@@ -23,11 +23,11 @@ class BookingService:
 
         # gets user record by email if the user object is not set
         if not self.user:
-            self.user = User.query.filter_by(email=self.user_info.get("email")).first()
+            self.user = UserProfile.query.filter_by(email=self.user_info.get("email")).first()
 
             # if user does not exist in the db, create a new one
             if not self.user:
-                self.user = User(**self.user_info)
+                self.user = UserProfile(**self.user_info)
                 db.session.add(self.user)
                 db.session.commit()
 
@@ -37,7 +37,7 @@ class BookingService:
         """Creates or returns a new address for the user."""
 
         if not self.user.address:
-            self.address = Address(user_id=self.user.id, **self.address)
+            self.address = UserAddress(user_id=self.user.id, **self.address)
 
             db.session.add(self.address)
             db.session.commit()
