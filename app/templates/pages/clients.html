@@ -40,8 +40,8 @@
   			<path d="M4 20c0-2.5 2.7-4.5 5-4.5h4c2.3 0 5 2 5 4.5"/>
   			<circle cx="18.5" cy="6.5" r="3.5" stroke-dasharray="2 2"/>
 		</svg>',
-		"text-teal-500",
-		"bg-teal-100",
+		"text-orange-500",
+		"bg-orange-100",
 		"Guest Clients",
 		clients_stat.guest_clients
 	) }}
@@ -164,6 +164,7 @@
 							<td class="px-4 py-3">
 								<div class="flex items-center space-x-4 text-sm">
 									<button
+										@click="$store.modals.userProfileInfo = true"
 										class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-gray-300 rounded-lg dark:text-gray-400"
 										aria-label="Edit"
 										title="Edit Client Information"
@@ -378,5 +379,5 @@
 	</div>
 </div>
 
-
+{% include "pages/accounts/user-info.html" %}
 {% endblock %}

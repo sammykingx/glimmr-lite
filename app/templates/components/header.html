@@ -51,7 +51,7 @@
 		</div>
 		<ul class="flex items-center flex-shrink-0 space-x-6">
 			
-      <!-- Theme toggler -->
+      		<!-- Theme toggler -->
 			<li class="flex">
 				<button
 					class="rounded-md focus:outline-none focus:shadow-outline-purple"
@@ -87,7 +87,7 @@
 				</button>
 			</li>
 			
-      <!-- Notifications menu -->
+      		<!-- Notifications menu -->
 			<li class="relative" x-data="notificationsMenu">
 				<button
 					class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
@@ -161,6 +161,7 @@
 					</ul>
 				</template>
 			</li>
+			
 			<!-- Profile menu -->
 			<li class="relative" x-data="profileMenu">
 				<button
@@ -170,12 +171,12 @@
 					aria-label="Account"
 					aria-haspopup="true"
 					>
-				<img
-				class="object-cover w-8 h-8 rounded-full"
-				src={{ url_for("static", filename="image/user_profile/profile-img.jpeg") }}
-				alt="User avatar"
-				aria-hidden="true"
-				/>
+					<img
+					class="object-cover w-8 h-8 rounded-full"
+					src={{ url_for("static", filename="image/user_profile/profile-img.jpeg") }}
+					alt="User avatar"
+					aria-hidden="true"
+					/>
 				</button>
 				<template x-if="isOpen">
 					<ul
@@ -193,7 +194,7 @@
 						<li class="flex">
 							<a
 								class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-								href="#"
+								href="{{ url_for('test_user_profile') }}"
 								>
 								<svg
 									class="w-4 h-4 mr-3"
@@ -201,13 +202,14 @@
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
-									>
+									xmlns="http://www.w3.org/2000/svg"
+								>
 									<path
 										stroke-linecap="round"
 										stroke-linejoin="round"
 										stroke-width="2"
-										d="M5.121 17.804A9 9 0 1118.364 4.56a9 9 0 01-13.243 13.243z"
-										/>
+										d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 20c0-2.21 3.58-4 6-4s6 1.79 6 4v1H6v-1z"
+									></path>
 								</svg>
 								<span>Profile</span>
 							</a>

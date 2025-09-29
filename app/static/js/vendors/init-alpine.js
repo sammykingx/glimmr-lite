@@ -71,7 +71,7 @@ document.addEventListener("alpine:init", () => {
   // ----------------------------
   // 💬 MODAL HANDLER
   // ----------------------------
-  Alpine.data("modal", () => ({
+  /*Alpine.data("modal", () => ({
     isOpen: false,
     trapCleanup: null,
 
@@ -83,7 +83,12 @@ document.addEventListener("alpine:init", () => {
       this.isOpen = false;
       if (this.trapCleanup) this.trapCleanup();
     },
-  }));
+  }));*/
+  Alpine.store("modals", {
+    profileInfo: false,
+    profileAddress: false,
+    userProfileInfo: false,
+  });
 });
 
 // ----------------------------
