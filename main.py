@@ -19,13 +19,6 @@ def coming_soon():
         "pages/system/under-construction.html",
         role="admin",
     )
-    
-@app.route("/user-profile")
-def test_user_profile():
-    return render_template(
-        "pages/accounts/user-profile.html",
-        role="admin",
-    )
 
 if __name__ == "__main__":
     app.run()

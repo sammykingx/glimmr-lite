@@ -1,5 +1,4 @@
 {% extends "layouts/base-layout.html" %}
-{% from "components/utils/macros.html" import stat_card %}
 
 {% block page_title %}Coming Soon - Olive Glitters{% endblock %}
 
@@ -33,7 +32,7 @@
     </p>
 
     <!-- Link -->
-    <a href="{{ url_for('admin.admin_dashboard') }}"
+    <a href="{{ url_for('accounts.dashboard') }}"
        class="text-secondary font-medium hover:underline dark:text-green-300">
         Back to Dashboard
     </a>

@@ -5,13 +5,13 @@
 {% extends "layouts/base-layout.html" %}
 {% from "macros/cards.html" import stat_card %}
 
-{% block page_title %}Agents - Dashboard{% endblock %}
+{% block page_title %}Clients - Dashboard{% endblock %}
 
 {% block dashboard_menu_tile %}Wellcome Foster ☺️{% endblock %}
 
 {% block content %}
 
-<a
+<!--<a
 	class="flex items-center justify-between
 			p-4 mb-8 text-sm font-semibold text-white
 			dark:text-primary bg-primary dark:bg-purple-100 
@@ -33,7 +33,7 @@
 		Download report</span>
 	</div>
 	<span>&RightArrow;</span>
-</a>
+</a> -->
 
 <div class="grid gap-6 mb-16 md:grid-cols-2 xl:grid-cols-4">
   {{ stat_card(
@@ -70,7 +70,7 @@
     </svg>',
     "text-green-600",
     "bg-green-100",
-    "Earnings",
+    "Upcomeing Bookings",
     "$12,875"
   ) }}
 
@@ -82,7 +82,7 @@
     </svg>',
     "text-purple-600",
     "bg-purple-100",
-    "Performance Rating",
+    "Coupons",
     "4.89 / 5"
   ) }}
 {% endblock %}
