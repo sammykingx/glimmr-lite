@@ -1,7 +1,11 @@
 from app.extensions import db
 from sqlalchemy import func
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from app.models.Oauth import OAuth
+from app.models.address import UserAddress
 from enum import Enum
+from typing import Dict
 
 
 class UserRole(Enum):
@@ -15,25 +19,20 @@ class UserProfile(db.Model, UserMixin):
     __tablename__ = "user_profiles"
 
     id = db.Column(db.Integer, primary_key=True, index=True)
-    first_name = db.Column(db.String(20), nullable=False)
-    last_name = db.Column(db.String(20), nullable=False)
+    first_name = db.Column(db.String(20), nullable=True)
+    last_name = db.Column(db.String(20), nullable=True)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
-    phone = db.Column(db.String(20), unique=True, nullable=False)
+    phone = db.Column(db.String(20), unique=True, nullable=True)
+    password = db.Column(db.String(178), nullable=False)
     role = db.Column(db.Enum(UserRole), default=UserRole.Client, nullable=False)
     profile_picture = db.Column(db.String(50), nullable=True)
     social_links = db.Column(db.JSON, nullable=True)
-    oauth_accounts = db.relationship("OAuth", backref="user", lazy=True)
-    addresses = db.relationship("UserAddress", backref="user", lazy=True)
+    oauth_accounts = db.relationship(OAuth, backref="user", lazy=True)
+    addresses = db.relationship(UserAddress, backref="user", lazy=True)
     joined_at = db.Column(db.DateTime, default=func.now())
     is_active = db.Column(db.Boolean, default=True)
     is_verified = db.Column(db.Boolean, default=False)
     
-    
-    def get_id(self) -> str:
-        return self.email
-    
-    def full_name(self) -> str:
-        return f"{self.first_name} {self.last_name}"
 
     def __repr__(self) -> str:
         return f"<UserProfile(first_name={self.first_name}, last_name={self.last_name}," \
@@ -48,6 +47,25 @@ class UserProfile(db.Model, UserMixin):
             self.role
         )
 
+    def get_id(self) -> str:
+        return self.email
+    
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+    
+    def hash_pwd(self) -> None:
+        self.password = generate_password_hash(self.password)
+        
+    def verify_pwd(self, raw_pwd) -> bool:
+        return check_password_hash(self.password, raw_pwd)
+    
+    def serialize(self) -> Dict[str, str]:
+        """Serializes the user object for db insertion"""
+        return {
+            "email": self.email,
+            "password": self.password,
+        }
+        
     def to_dict(self):
         return {
             "email": self.email,

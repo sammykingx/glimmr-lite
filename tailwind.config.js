@@ -3,6 +3,7 @@ import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import daisyui from "daisyui";
+import tailwindcssMotion from "tailwindcss-motion";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -44,6 +45,6 @@ export default {
       },
     },
   },
-  plugins: [forms, typography, aspectRatio, daisyui],
+  plugins: [forms, typography, aspectRatio, daisyui, tailwindcssMotion],
   darkMode: "class", // for multi-theme support (light/dark)
 };

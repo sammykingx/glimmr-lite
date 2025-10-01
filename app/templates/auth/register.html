@@ -8,11 +8,32 @@
 {% endblock %}
 
 {% block form_data %}
-<form method="POST" action="#" class="w-full form-container space-y-4">
+<form id="registerForm" method="POST" action="" class="w-full form-container space-y-3 motion-blur-in-md motion-duration-[2s]">
   
   {{ ui.input_field("email", "email", "Email Address", "user@example.com") }}
-  {{ ui.input_field("raw_password", "password", "Password", "xxxxxxxx") }}
-  {{ ui.password_field("password", "Confirm Password", "********") }}
+  <p id="emailErr" class="hidden text-xs text-red-500 pl-2 pb-2">
+    Invalid email address.
+  </p>
+ <p class="blnkErr hidden text-xs text-red-500 pl-2 pb-2">
+    This field is required.
+  </p>
+
+  {{ ui.password_field("raw_password", "Password", "********") }}
+  <p class="blnkErr hidden text-xs text-red-500 pl-2 pb-2">
+    This field is required.
+  </p>
+
+  
+  {{ ui.input_field("password", "password", "Confirm Password", "************") }}
+  <p id="pwdErr" class="hidden text-xs text-red-500 pl-2 pb-2">
+    Password does not match.
+  </p>
+  <p class="blnkErr hidden text-xs text-red-500 pl-2 pb-2">
+    This field is required.
+  </p>
+  <p class="hidden text-xs text-green-500 pl-2">
+    password match.
+  </p>
 
   <button
     type="submit"
@@ -42,18 +63,6 @@
 </form>
 {% endblock %}
 {% block page_js_file %}
-  <script>
-        function togglePassword() {
-        const passwordInput = document.getElementById("password");
-        const eyeIcon = document.getElementById("eyeIcon");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            eyeIcon.setAttribute("stroke", "green");
-        } else {
-            passwordInput.type = "password";
-            eyeIcon.setAttribute("stroke", "currentColor");
-        }
-        }
-    </script>
+  <script type="module" src={{ url_for("static", filename="js/auth/togglePassword.js") }}></script>
+  <script type="module" src={{ url_for("static", filename="js/auth/userRegistration.js") }}></script>
 {% endblock %}

@@ -9,4 +9,4 @@ def dashboard() -> Response:
     
     :return: HTTP Response containing rendered HTML template
     """
-    return render_template("dashboards/s.html", role="admin",)
+    return render_template("dashboards/admin.html", role="admin",)

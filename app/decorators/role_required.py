@@ -4,6 +4,7 @@ from flask import flash, request
 from flask_login import current_user
 from typing import List, Tuple, Union
 
+
 def role_required(allowed_roles: Union[List[str], Tuple[str, ...]]):
     """
     Flask decorator to restrict access to routes based on user role.

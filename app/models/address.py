@@ -7,7 +7,6 @@ class UserAddress(db.Model):
 
     # Relationship to user
     user_id = db.Column(db.Integer, db.ForeignKey("user_profiles.id"), nullable=False)
-    user = db.relationship("UserProfile", backref="addresses")
 
     # Address fields
     street_line_1 = db.Column(db.String(150), nullable=False)

@@ -16,17 +16,17 @@ class Config:
     WTF_CSRF_SECRET_KEY = os.getenv("CSRF_SECRET_KEY")
     WTF_CSRF_TIME_LIMIT = 900  # 15 minutes in seconds
     SESSION_COOKIE_NAME = "glimmr_session"
-    WTF_CSRF_METHODS = ["POST"]  # allowed methods for CSRF protection
+    WTF_CSRF_METHODS = ["POST", "PUT", "PATCH", "DELETE"]
     WTF_CSRF_HEADERS = [
         "X-CSRFToken",
     ]
 
     # Flask-Mail configuration
     MAIL_SERVER = os.getenv("MAIL_SERVER")
-    MAIL_PORT = 465  # Use 465 for SSL, or 587 for TLS
+    MAIL_PORT = 465
     MAIL_USE_SSL = bool(os.getenv("MAIL_USE_SSL", "true"))
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
-    MAIL_PASSWORD = "af1LTpr#ty.#"
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
     MAIL_MAX_EMAILS = int(os.getenv("MAIL_MAX_EMAILS", 20))
 
