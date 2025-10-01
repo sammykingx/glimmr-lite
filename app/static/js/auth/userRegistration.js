@@ -1,35 +1,38 @@
-// import validator from "validator";
-
 document
   .getElementById("registerForm")
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
     let email = document.getElementById("email").value;
-    const raw_password = document.getElementById("raw_password").value;
+    const raw_password = document.getElementById("password-2").value;
     let password = document.getElementById("password").value;
 
     if (!email || !raw_password || !password) {
       document.querySelector(".blnkErr").classList.toggle("hidden", false);
       return;
     }
-    
-    // if (!validator.isEmail(email)) {
-    //   document.getElementById("emailErr").classList.toggle("hidden", false);
-    //   return;
-    // }
-      
+
+    if (!validator.isEmail(email)) {
+      document.getElementById("emailErr").classList.toggle("hidden", false);
+      return;
+    }
+
     if (raw_password !== password) {
       document.getElementById("pwdErr").classList.toggle("hidden", false);
       return;
     }
 
-    // email = validator.normalizeEmail(email);
-    // password = validator.escape(password); 
+    // if (!validator.isStrongPassword(password)) {
+    //   document.getElementById("pwdErr").textContent =
+    //     "Password is not strong enough.";
+    //   document.getElementById("pwdErr").classList.toggle("hidden", false);
+    //   return;
+    // }
+
+    email = validator.normalizeEmail(email);
+    password = validator.escape(password);
     const token =
-          document.head.querySelector('meta[name="csrf-token"]')?.content || "";
-      
-    console.log(`Sanitized data: Email - ${email}, Password - ${password}`);
+      document.head.querySelector('meta[name="csrf-token"]')?.content || "";
 
     try {
       const response = await fetch("/auth/create-account", {
@@ -38,7 +41,7 @@ document
           "Content-Type": "application/json",
           "X-CSRFToken": token,
         },
-        body: JSON.stringify({ email, raw_password, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const result = await response.json();
@@ -48,7 +51,7 @@ document
           result.message ||
             "Registration successful! Please check your email to verify your account."
         );
-        window.location.href = "{{ url_for('auth.user_login') }}";
+        window.location.href = result.redirect;
       } else {
         alert(result.error || "Registration failed. Please try again.");
       }

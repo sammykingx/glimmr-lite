@@ -12,7 +12,7 @@ function togglePassword() {
 }
 
 document
-  .getElementById("password")
+  .getElementById("togglePassword")
   .addEventListener("click", function () {
     togglePassword();
   });

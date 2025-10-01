@@ -39,7 +39,7 @@ def init_extensions(app):
     #     # strict_transport_security_include_subdomains=True
     # )
     login_manager.init_app(app)
-    login_manager.login_view = "auth.login"
+    login_manager.login_view = "auth.user_login"
 
     return app
 
@@ -52,4 +52,4 @@ def load_user(user_id):
     """
     from app.models.user_profile import UserProfile
 
-    return UserProfile.query.get(user_id)
+    return UserProfile.query.filter_by(email=user_id).first()
