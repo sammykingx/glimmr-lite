@@ -18,7 +18,7 @@ class BaseService:
         
         return self.model.query.filter(getattr(self.model, field) == value).first()
 
-    def create(self, unique_field: str, unique_value, **kwargs):
+    def create(self, unique_field: str, unique_value, obj):
         """
         Create a new record if it doesn't exist, else return existing.
 
@@ -36,8 +36,7 @@ class BaseService:
         existing = self.get_by_field(unique_field, unique_value)
         if existing:
             return existing
-
-        obj = self.model(**kwargs)
+        
         try:
             db.session.add(obj)
             db.session.commit()
@@ -53,6 +52,8 @@ class BaseService:
         for key, value in kwargs.items():
             if hasattr(obj, key):
                 setattr(obj, key, value)
+            else:
+                raise AttributeError(f"{self.model.__name__} has no attribute '{key}'")
         try:
             db.session.commit()
             db.session.refresh(obj)

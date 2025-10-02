@@ -22,7 +22,7 @@ def user_checkpiont():
     if not user or not user.verify_pwd(data.get("password", None)):
         return {
             "status": "error",
-            "message": "Incorrect email or password"
+            "message": "Incorrect credentials provided"
         }, 401
     
     login_user(user, remember=data.get("remember", False))

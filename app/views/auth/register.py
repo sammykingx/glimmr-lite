@@ -1,7 +1,6 @@
 from . import bp
 from flask import current_app, render_template, request, url_for
-from app.models.user_profile import UserProfile, UserRole
-from app.services.base_services import BaseService
+from app.services.user_service import UserService
 from app.decorators.verify_csrf_token import verify_csrf
 
 
@@ -14,14 +13,8 @@ def register_user():
 @verify_csrf
 def create_account():
     data = request.get_json()
-    new_user = UserProfile(
-        email=data.get("email"),
-        password=data.get("password"),
-        role=UserRole.ADMIN
-    )
-    new_user.hash_pwd()
-    account_service = BaseService(UserProfile)
-    account_service.create("email", data.get("email"), **new_user.serialize())
+    account_service = UserService()
+    account_service.create_user(**data)
         
     return {
         "status": "Succcess",

@@ -12,7 +12,7 @@ class UserRole(Enum):
     ADMIN = "admin"
     MANAGER = "manager"
     AGENT = "agent"
-    Client = "client"
+    CLIENT = "client"
     
     
 class UserProfile(db.Model, UserMixin):
@@ -24,7 +24,7 @@ class UserProfile(db.Model, UserMixin):
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=True)
     password = db.Column(db.String(178), nullable=False)
-    role = db.Column(db.Enum(UserRole), default=UserRole.Client, nullable=False)
+    role = db.Column(db.Enum(UserRole), default=UserRole.CLIENT, nullable=False)
     profile_picture = db.Column(db.String(50), nullable=True)
     social_links = db.Column(db.JSON, nullable=True)
     oauth_accounts = db.relationship(OAuth, backref="user", lazy=True)
@@ -32,6 +32,10 @@ class UserProfile(db.Model, UserMixin):
     joined_at = db.Column(db.DateTime, default=func.now())
     is_active = db.Column(db.Boolean, default=True)
     is_verified = db.Column(db.Boolean, default=False)
+    reset_token = db.Column(db.String(50), index=True, unique=True)
+    reset_token_used = db.Column(db.Boolean, default=False)
+    reset_token_used_at = db.Column(db.DateTime)
+    last_login_at = db.Column(db.DateTime)
     
 
     def __repr__(self) -> str:
@@ -64,6 +68,7 @@ class UserProfile(db.Model, UserMixin):
         return {
             "email": self.email,
             "password": self.password,
+            "role": self.role,
         }
         
     def to_dict(self):
