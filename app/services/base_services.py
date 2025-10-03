@@ -13,9 +13,35 @@ class BaseService:
         self.model = model
 
     def get_by_field(self, field: str, value: str):
+        """
+            Retrieve a single record by matching a field/value pair.
+
+            This method requires that the field specified is unique (e.g., email, username, id).
+            If the field is not unique, a ValueError is raised since multiple records could
+            match the same value. For non-unique lookups or fetching multiple results, you
+            should inherit from this class and use the query object directly.
+
+            Args:
+                field (str): The column name to filter by (must be a unique column).
+                value (str): The value to compare against the given field.
+
+            Raises:
+                AttributeError: If the field does not exist on the model.
+                ValueError: If the field is not defined as unique on the model.
+
+            Returns:
+                The model instance if found, otherwise None.
+        """
         if not hasattr(self.model, field):
             raise AttributeError(f"{self.model.__name__} has no attribute '{field}'")
         
+        column = getattr(self.model, field)
+
+        if not getattr(column.property.columns[0], "unique", False):
+            raise ValueError(
+                f"The field '{field}' is not unique. Use a unique field to match against the value."
+            )
+            
         return self.model.query.filter(getattr(self.model, field) == value).first()
 
     def create(self, unique_field: str, unique_value, obj):

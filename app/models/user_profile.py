@@ -32,7 +32,7 @@ class UserProfile(db.Model, UserMixin):
     joined_at = db.Column(db.DateTime, default=func.now())
     is_active = db.Column(db.Boolean, default=True)
     is_verified = db.Column(db.Boolean, default=False)
-    reset_token = db.Column(db.String(50), index=True, unique=True)
+    reset_token = db.Column(db.String(178), index=True, unique=True)
     reset_token_used = db.Column(db.Boolean, default=False)
     reset_token_used_at = db.Column(db.DateTime)
     last_login_at = db.Column(db.DateTime)

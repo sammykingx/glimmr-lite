@@ -1,10 +1,6 @@
-import uuid
 from flask import current_app
-from sqlalchemy import Table
-from sqlalchemy.orm import Session
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
-from app.constants import TORONRO_TZ
-from datetime import datetime
+import uuid
 
 
 class TokenManagerMixin:
@@ -16,22 +12,27 @@ class TokenManagerMixin:
     def _get_serializer(self) -> URLSafeTimedSerializer:
         return URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
 
-    def generate_token(self, user_id: int, purpose: str = "general") -> str:
+    def generate_token(self) -> str:
         """
-        Generate a unique, signed, URL-safe token.
-        Includes a UUID so every token is unique, even for same user.
+        Generate a unique, URL-safe token.
+        
+        THis token can further be serialized to encode data by the serializer method
         """
-        token_uuid = uuid.uuid4().hex
-        data = {"user_id": user_id, "uuid": token_uuid, "purpose": purpose}
+        return uuid.uuid4().hex
 
+    def serialize_token(self, token, purpose) -> str:
+        data = {"token": token, "purpose": purpose}
         s = self._get_serializer()
         return s.dumps(data, salt=f"{purpose}-salt")
-
-    def verify_token(self, token: str, max_age: int = 1800, purpose: str = "general") -> dict | bool:
+        
+    def verify_token(self, token: str, max_age: int = 3600, purpose: str = "general") -> dict | bool:
         """
         Verify token validity and expiration.
         Returns payload dict if valid, else None.
-        Enforces one-time use by checking DB.
+        
+        Args:
+            token: the token string which is a result from URLSafeTimedSerializer
+            max_age: maximun age of the string in seconds, defaults to 3,600 which is 60 minutes
         """
         s = self._get_serializer()
         try:
@@ -43,20 +44,3 @@ class TokenManagerMixin:
             return False
         
         return data
-
-    def is_token_used(self, token_uuid: str, model: Table) -> bool:
-        """Check if a token UUID has already been used."""
-    
-        
-        used = model.query.filter_by(reset_token=token_uuid, reset_token_used=True).first()
-        return True if used else False
-
-    def mark_token_used(self, token_uuid: str, model:Table, session: Session):
-        """
-        Store a used token in DB to enforce one-time use.
-        """
-        used = model.query.filter_by(reset_token=token_uuid).first()
-        used.reset_token_used = True
-        used.reset_token_used_at = datetime.now(tz=TORONRO_TZ)
-        session.add(used)
-        session.commit()

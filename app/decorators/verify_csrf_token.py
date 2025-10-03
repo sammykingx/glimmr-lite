@@ -6,11 +6,13 @@ from flask_wtf.csrf import CSRFError, validate_csrf
 def verify_csrf(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        if request.method == "GET":
+            return func(*args, **kwargs)
         try:
             token = request.headers.get("X-CSRFToken")
             validate_csrf(token)
         except CSRFError:
-            print("Missing/Invalid or expired CSRF token.")
+            flash("Missing/Invalid or expired CSRF token.")
             return (
                 jsonify(
                     {

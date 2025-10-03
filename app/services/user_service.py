@@ -4,15 +4,15 @@
 # change the pwd for logggeed in user
 # update the prfile info
 # user on-boarding steps
-from flask import current_app
+from flask import render_template, url_for
 from flask_mail import Message
-from itsdangerous import URLSafeTimedSerializer
 from flask_sqlalchemy.query import Query, Pagination
 from app.extensions import db
 from app.extensions import mail
 from app.models.user_profile import UserProfile, UserRole
 from app.services.base_services import BaseService
 from app.mixins.token_manager import TokenManagerMixin
+from datetime import datetime, timedelta
 from typing import Union
 
 
@@ -24,21 +24,28 @@ class UserService(BaseService, TokenManagerMixin):
     def __init__(self):
         super().__init__(UserProfile)
         
-    def get_user(self, user_email) -> UserProfile | None:
-        """Fetch a user record by email.
-        
-        This could be current logged-in user or any user by email.
-        
-        :param email: User's email address.
-        :return: UserProfile instance or None if not found.
+    def get_user(self, unique_field_name, field_value) -> UserProfile | None:
         """
-        return self.get_by_field("email", user_email)
+            Retrieve a user record from the database.
+
+            This method returns a single user matching the given field/value pair. 
+            The field must be unique (e.g., email, reset_token, id). If the field is 
+            not unique, the first matching record will be returned.
+
+            Args:
+                unique_field_name: The column name to filter by (must be unique for accurate results).
+                field_value: The value to match against the specified field.
+
+            Returns:
+                A UserProfile instance if a matching record exists, otherwise None.
+        """
+        return self.get_by_field(unique_field_name, field_value)
     
-    def get_users(self, role:Union[UserRole, None]=None, page:int=1, per_page:int=7) -> Pagination:
-        """Fetch multiple users, optionally filtered by role."""
+    def get_users_by(self, page:int=1, per_page:int=7, **kwargs) -> Pagination:
+        """Fetch multiple users, optionally filtered by kwargs"""
         query:Query = self.model.query
-        if role:
-            query = query.filter_by(role=role)
+        if kwargs:
+            query = query.filter_by(**kwargs)
         return query.paginate(page=page, per_page=per_page, error_out=False)
 
     def create_user(self, is_admin=False, **kwargs) -> UserProfile:
@@ -61,39 +68,49 @@ class UserService(BaseService, TokenManagerMixin):
             user.is_active = False
             db.session.commit()
             return user
+        
         return self.delete(user)
 
-    def assign_role(self, user_obj: UserProfile, role: str) -> UserProfile:
-        """Assign a role to a user."""
-        user_obj.role = role
-        db.session.commit()
-        return user_obj
+    def save_user_token(self, user: UserProfile) -> Union[str, None]:
+        """
+            Generate and save a unique reset token for the user.
+            Enforces one-time use and 7-day cooldown after usage.
 
-    def generate_reset_token(user_id: int) -> str:
-        import uuid
-        s = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
-        token = uuid.uuid4().hex
-        return s.dumps(
-            {
-                "user_id": user_id,
-                "token": token,
-            }, salt="password-reset-salt")
+            :param user: UserProfile instance
+            :return: Token string or None if cooldown not passed
+        """
+        if user.reset_token and not user.reset_token_used:
+            return user.reset_token
 
-    def send_password_reset_email(self, email: str) -> bool:
-        # notification service should handle email
-        # just load the email template message
-        user = self.get_by_field("email", email)
-        if not user:
-            return False
+        if user.reset_token_used and user.reset_token_used_at:
+            cooldown_until = user.reset_token_used_at + timedelta(days=7)
+            if datetime.now() < cooldown_until:
+                return None
 
-        email_msg = None
+        token = self.generate_token()
+        self.update(user, reset_token=token)
+        return token
+
+    def send_reset_email(self, user: UserProfile, token: str) -> bool:
+        reset_token = self.serialize_token(token, purpose="password reset")
+
+        if not user or not isinstance(user, UserProfile):
+            raise ValueError("The user object is required")
+
+        email_msg = render_template(
+            "email/auth/password-reset.html",
+            reset_url = url_for("auth.reset_password", verf_id=reset_token)
+        )
+        # send email via mail notification service
         try:
             msg = Message(
                 subject="Password Reset Request",
-                recipients=[email],
+                recipients=[user.email],
                 html=email_msg
             )
             mail.send(msg)
     
         except Exception as e:
             return False
+        
+        return True
