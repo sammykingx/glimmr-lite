@@ -1,5 +1,5 @@
 from . import accounts_bp
-from flask import render_template, Response
+from flask import render_template, Response,url_for
 from flask_login import current_user, login_required
 from app.constants.templates_map import Templates
 from app.models.user_profile import UserRole

@@ -1,5 +1,7 @@
 # 🧼 Glimmr Lite – Cleaning Service Booking MVP
 
+![Project Dashboard](project_assets/dashboard_img.png)
+
 **Glimmr Lite** is the minimal yet powerful MVP of the Glimmr App — a modern, tech-forward web application for booking professional cleaning services. This version focuses on **streamlining client bookings** and syncing them to **Google Calendar**, ensuring both clients and service providers stay aligned in real-time.
 
 > This MVP is crafted for early validation, rapid deployment, and client interaction, a crucial foundation for Glimmr’s full-featured Django application.

@@ -36,6 +36,7 @@ class UserProfile(db.Model, UserMixin):
     reset_token_used = db.Column(db.Boolean, default=False)
     reset_token_used_at = db.Column(db.DateTime)
     last_login_at = db.Column(db.DateTime)
+    onboarding_complete = db.Column(db.Boolean, default=False)
     
 
     def __repr__(self) -> str:
