@@ -1,9 +1,4 @@
-from app.constants import (
-    ALLOWED_SERVICE,
-    ALLOWED_FREQUENCIES,
-    ALLOWED_SERVICE_ADDONS,
-    RESIDENTIAL_SERVICE_PRICING,
-)
+from app.constants.services import ALLOWED_SERVICE, ALLOWED_FREQUENCIES
 from pydantic import BaseModel, field_validator
 from datetime import datetime
 from typing import Dict, List, Tuple, Union

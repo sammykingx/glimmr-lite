@@ -10,6 +10,13 @@
 		"accounts.dashboard",
 	) }}
 
+    {{ menu_item(
+		"Services",
+		url_for('coming_soon'),
+		'<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>',
+		'coming_soon'
+	) }}
+
 	{{ menu_item(
 		"Bookings",
 		url_for('booking.view_bookings'),
@@ -29,6 +36,14 @@
 		 <path d="M12 6v12"></path>',
 		 'payments.process_payment'
 	) }}
+
+	{{ menu_item(
+		"Coupons",
+		url_for('coupons.manage_coupons'),
+		'<path d="M3 8a2 2 0 012-2h14a2 2 0 012 2v2a2 2 0 010 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 010-4V8z"></path>
+		 <path d="M9 9h.01M9 15h.01M15 9h.01M15 15h.01"></path>'
+		'coupons.manage_coupons'
+	)}}
 	
 	{{ menu_dropdown(
 		"Live Tracking",

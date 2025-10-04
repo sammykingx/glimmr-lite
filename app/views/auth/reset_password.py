@@ -2,29 +2,57 @@ from . import bp
 from flask import current_app, flash, render_template, redirect, request, url_for
 from app.decorators.verify_csrf_token import verify_csrf
 from app.services.user_service import UserService
+from app.constants.templates_map import Templates
+from app.constants.email_subjects import EmailHeaders
+from app.constants.token_purposes import TokenPurposes
 
+account_manager = UserService()
 
-@bp.route("/recover-account")
-def password_reset_link():
-    return render_template("auth/forgot-password.html")
-
-@bp.route("/send-reset-link", methods=["POST"])
+@bp.route("/recover-account", methods=["GET", "POST"])
 @verify_csrf
-def send_reset_link():
-    """Sends a password reset link to the user's email."""
-    email = request.get_json().get("email")
-    
+def password_reset_link():
+    template = Templates.Auth.FORGOT_PASSWORD
+    message = None
+    category = "info"
+
+    if request.method == "POST":
+        email = request.form.get("email")
+        user = account_manager.get_user("email", email)
+
+        if not user:
+            message = "Recovery instructions sent to user (if account exists)."
+        else:
+            reset_token = account_manager.save_user_token(user)
+            is_sent = account_manager.send_user_token(
+                user=user,
+                template_name=Templates.Emails.PASSWORD_RESET,
+                token_purpose=TokenPurposes.PASSWORD_RESET,
+                token=reset_token,
+                subject=EmailHeaders.Auth.PASSWORD_RESET,
+            )
+
+            if is_sent:
+                message = "Check your email for reset instructions."
+                category = "success"
+            else:
+                message = "Email service unavailable. Please try again later."
+                category = "error"
+
+        flash(message, category)
+
+    return render_template(template)
 
 @bp.route("/reset-password", methods=["GET", "POST"])
-def reset_password(token):
-    
-    account_manager = UserService()
+@verify_csrf
+def reset_password():
+    template = Templates.Auth.RESET_PASSWORD
     verf_token = request.args.get("verf_id")
     token_data = account_manager.verify_token(verf_token, purpose="password reset")
     
     if not token_data:
+        print("NO/INVALID REQUEST TOKEN")
         flash("Invalid reset link", "warning")
-        return render_template("auth/reset-password.html", disable_input=True)
+        return render_template(template, disable_input=True)
     
     if request.method == "POST":
         form_data = request.form.to_dict()
@@ -34,4 +62,4 @@ def reset_password(token):
         return redirect(url_for("auth.user_checkpiont"))
         
     # GET Request
-    return render_template("auth/reset-password.html")
+    return render_template(template)

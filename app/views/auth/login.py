@@ -2,23 +2,23 @@ from . import bp
 from flask import current_app, render_template, request, url_for
 from flask_login import login_user
 from urllib.parse import urlparse
-from app.models.user_profile import UserProfile
+from app.services.user_service import UserService
 from app.decorators.verify_csrf_token import verify_csrf
-import json
+from app.constants.templates_map import Templates
 
 
 @bp.route("/login")
 def user_login():
-    return render_template("auth/login.html")
+    return render_template(Templates.Auth.LOGIN)
 
 
 @bp.route("/checkpiont", methods=["POST"])
 @verify_csrf
 def user_checkpiont():
+    account_manager = UserService()
     data = request.get_json()
     next_url = data.get("next")
-    # current_app.logger.info(f"PAYLOAD: {json.dumps(data, indent=2)}")
-    user = UserProfile.query.filter_by(email=data.get("email")).first()
+    user = account_manager.get_user("email", data.get("email"))
     if not user or not user.verify_pwd(data.get("password", None)):
         return {
             "status": "error",

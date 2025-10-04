@@ -5,7 +5,7 @@ from app.utils import booking_data_serializer, ValidateBookingData
 from app.services.booking_service import BookingService
 from app.helpers import demo_booking_data
 from pydantic import ValidationError
-from app.constants import ALLOWED_SERVICE
+from app.constants.services import ALLOWED_SERVICE
 
 main = Blueprint("main", __name__)
 

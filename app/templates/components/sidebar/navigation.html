@@ -5,14 +5,14 @@
 	Olive Glitters
 	</a>
 
-	{% if role == "admin" %}
+	{% if user.role.value == "admin" %}
 		{% include "components/sidebar/menus/admin.html" %}
 
-	{% elif role == "agent" %}
-		{% include "components/sidebar/menus/agent.html" %}
+	{% elif user.role.value == "agent" %}
+		{% include "components/sidebar/menus/agents.html" %}
 
-	{% elif role == "client" %}
-		{% include "components/sidebar/menus/client.html" %}
+	{% elif user.role.value == "client" %}
+		{% include "components/sidebar/menus/clients.html" %}
 	
 	{% endif %}
 </div>

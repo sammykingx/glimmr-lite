@@ -1,5 +1,6 @@
 from flask import current_app
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+from app.constants.token_purposes import TokenPurposes
 import uuid
 
 
@@ -20,12 +21,12 @@ class TokenManagerMixin:
         """
         return uuid.uuid4().hex
 
-    def serialize_token(self, token, purpose) -> str:
+    def serialize_token(self, token, purpose: TokenPurposes = TokenPurposes.EMAIL_VERIFICATION) -> str:
         data = {"token": token, "purpose": purpose}
         s = self._get_serializer()
-        return s.dumps(data, salt=f"{purpose}-salt")
+        return s.dumps(data, salt=f"{purpose}_salt")
         
-    def verify_token(self, token: str, max_age: int = 3600, purpose: str = "general") -> dict | bool:
+    def verify_token(self, token: str, max_age: int = 3600, purpose: TokenPurposes = TokenPurposes.EMAIL_VERIFICATION) -> dict | bool:
         """
         Verify token validity and expiration.
         Returns payload dict if valid, else None.
@@ -38,9 +39,7 @@ class TokenManagerMixin:
         try:
             data = s.loads(token, salt=f"{purpose}-salt", max_age=max_age)
 
-        except SignatureExpired:
-            return False
-        except BadSignature:
+        except (SignatureExpired, BadSignature, Exception):
             return False
         
         return data

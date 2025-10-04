@@ -9,7 +9,11 @@ def verify_csrf(func):
         if request.method == "GET":
             return func(*args, **kwargs)
         try:
-            token = request.headers.get("X-CSRFToken")
+            token = (
+                request.headers.get("X-CSRFToken") or
+                request.cookies.get("csrf_token")
+            )
+            
             validate_csrf(token)
         except CSRFError:
             flash("Missing/Invalid or expired CSRF token.")

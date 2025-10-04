@@ -11,6 +11,7 @@ from app.extensions import db
 from app.extensions import mail
 from app.models.user_profile import UserProfile, UserRole
 from app.services.base_services import BaseService
+from app.services.notification_service import EmailService
 from app.mixins.token_manager import TokenManagerMixin
 from datetime import datetime, timedelta
 from typing import Union
@@ -50,8 +51,27 @@ class UserService(BaseService, TokenManagerMixin):
 
     def create_user(self, is_admin=False, **kwargs) -> UserProfile:
         """
-        Create a new user if not exists, else return existing.
-        Handles password hashing.
+            Create and persist a new user profile, or return an existing one.
+
+            This method initializes a `UserProfile` object with the provided keyword
+            arguments, assigns the appropriate role (admin or client), hashes the
+            supplied password, and attempts to create the user in the database.
+            If a user with the same unique field (e.g., email) already exists,
+            the existing record is returned instead of creating a duplicate.
+
+            Args:
+                is_admin (bool, optional): Flag indicating whether the new user should
+                    be assigned the `ADMIN` role. Defaults to False (assigned `CLIENT` role).
+                **kwargs: Arbitrary keyword arguments corresponding to `UserProfile`
+                    fields (e.g., `email`, `password`, `full_name`, etc.).
+
+            Returns:
+                UserProfile: The newly created `UserProfile` object, or the existing one
+                if a user with the same unique identifier already exists.
+
+            Raises:
+                ValueError: If required fields (e.g., `email`, `password`) are missing
+                in `kwargs`.
         """
         user_obj = UserProfile(
             **kwargs, role=UserRole.ADMIN if is_admin else UserRole.CLIENT
@@ -91,26 +111,42 @@ class UserService(BaseService, TokenManagerMixin):
         self.update(user, reset_token=token)
         return token
 
-    def send_reset_email(self, user: UserProfile, token: str) -> bool:
-        reset_token = self.serialize_token(token, purpose="password reset")
+    def send_user_token(
+        self, 
+        user: UserProfile,
+        template_name: str,
+        token_purpose: str,
+        token: str, 
+        subject: str,
+        **kwargs
+    ) -> bool:
+        """
+            Generate an email with a serialized token and send it.
+        
+            Args:
+                user (UserProfile): The user receiving the email.
+                token (str): The token to include in the email.
+                template_name (str): The Jinja2 template for rendering the email.
+                token_purpose (str): Purpose of the token (e.g., "reset", "verify").
+                subject (str): Email subject line.
+                **kwargs: Additional context for the template.
+
+            Returns:
+                bool: True if sent successfully, False otherwise.
+        """
+        serialized_token = self.serialize_token(token, purpose=token_purpose)
 
         if not user or not isinstance(user, UserProfile):
             raise ValueError("The user object is required")
 
         email_msg = render_template(
-            "email/auth/password-reset.html",
-            reset_url = url_for("auth.reset_password", verf_id=reset_token)
+            template_name,
+            url = url_for("auth.reset_password", verf_id=serialized_token, _external=True),
+            **kwargs
         )
-        # send email via mail notification service
-        try:
-            msg = Message(
-                subject="Password Reset Request",
-                recipients=[user.email],
-                html=email_msg
-            )
-            mail.send(msg)
-    
-        except Exception as e:
-            return False
         
-        return True
+        return EmailService.send_email(
+            subject=subject,
+            to_email=user.email,
+            html_content=email_msg
+        )

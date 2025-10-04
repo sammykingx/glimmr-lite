@@ -1,7 +1,7 @@
 from app.extensions import db
 from datetime import datetime
 from enum import Enum
-from app.constants import TORONRO_TZ
+from app.constants.app_meta import TORONTO_TZ
 
 
 class FrequencyEnum(Enum):
@@ -25,8 +25,8 @@ class Booking(db.Model):
     frequency = db.Column(db.Enum(FrequencyEnum), default=FrequencyEnum.ONE_OFF, nullable=False)
     add_ons = db.Column(db.JSON)
     cleaning_date = db.Column(db.DateTime, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now(TORONRO_TZ))
-    updated_at = db.Column(db.DateTime, default=datetime.now(TORONRO_TZ), onupdate=datetime.now(TORONRO_TZ))
+    created_at = db.Column(db.DateTime, default=datetime.now(TORONTO_TZ))
+    updated_at = db.Column(db.DateTime, default=datetime.now(TORONTO_TZ), onupdate=datetime.now(TORONTO_TZ))
     price = db.Column(db.Float, nullable=False, default=0.0)
     recurring = db.Column(db.Boolean, default=False)
     status = db.Column(db.String(20), default="pending")

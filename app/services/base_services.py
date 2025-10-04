@@ -75,6 +75,20 @@ class BaseService:
         return obj
 
     def update(self, obj, **kwargs):
+        """
+            Update a model instance with the given field values.
+
+            Args:
+                obj: The SQLAlchemy model instance to update.
+                **kwargs: Field-value pairs to set on the object.
+
+            Returns:
+                The updated model instance.
+
+            Raises:
+                AttributeError: If a field is not a valid model attribute.
+                SQLAlchemyError: If the database commit fails.
+        """
         for key, value in kwargs.items():
             if hasattr(obj, key):
                 setattr(obj, key, value)
@@ -89,6 +103,18 @@ class BaseService:
         return obj
 
     def delete(self, obj):
+        """
+            Permanently delete a model instance from the database.
+
+            This performs a hard delete. For soft deletes, use the `update` method 
+            to mark the record as inactive, trashed, or similar instead.
+
+            Args:
+                obj: The SQLAlchemy model instance to delete.
+
+            Raises:
+                SQLAlchemyError: If the database commit fails.
+        """
         try:
             db.session.delete(obj)
             db.session.commit()

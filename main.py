@@ -1,9 +1,13 @@
 from app import create_app
 from flask import render_template
-from app.constants import ALLOWED_SERVICE, ALLOWED_SERVICE_ADDONS
+from flask_login import current_user
+from app.constants.services import ALLOWED_SERVICE, ALLOWED_SERVICE_ADDONS
 
 app = create_app()
 
+@app.context_processor
+def inject_globals():
+    return dict(user=current_user)
 
 @app.route("/")
 def index():

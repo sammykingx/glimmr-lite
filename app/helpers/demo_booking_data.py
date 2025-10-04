@@ -1,5 +1,5 @@
 from faker import Faker
-from app.constants import ALLOWED_SERVICE, ALLOWED_FREQUENCIES, ALLOWED_SERVICE_ADDONS
+from app.constants.services import ALLOWED_SERVICE, ALLOWED_FREQUENCIES, ALLOWED_SERVICE_ADDONS
 
 
 faker = Faker("en_CA")

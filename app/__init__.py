@@ -14,6 +14,7 @@ from app.views.payments import pay_bp as payments_blueprint
 def create_app(config_object=DevelopmentConfig):
     app = Flask(__name__)
 
+    app.url_map.strict_slashes = False
     app.config.from_object(config_object)
     app = init_extensions(app)
     # talisman configurations
