@@ -18,7 +18,7 @@ def enforce_onboarding():
             "static"}
         if (not current_user.onboarding_complete
             and request.endpoint not in exempt_routes
-            and not request.endpoint.startswith("static")):
+        ):
             return redirect(url_for("accounts.onboarding_user"))
 
 

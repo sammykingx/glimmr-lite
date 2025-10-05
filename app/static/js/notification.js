@@ -7,6 +7,7 @@ function showNotification(message) {
   setTimeout(() => {
     notification.classList.remove("top-[-100px]");
     notification.classList.add("top-6");
+    console.log("hello world");
   }, 10);
 
   // Hide after 2.5 seconds, then slide up and reload

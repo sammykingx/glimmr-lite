@@ -1,0 +1,654 @@
+{% extends "layouts/base-layout.html" %}
+{% from "macros/cards.html" import stat_card %}
+{% block page_title %}Onboarding - Olive Glitters{% endblock %}
+
+{% block content %}
+<div
+	class="flex items-center justify-between
+			p-4 mb-8 text-sm font-semibold text-white
+			dark:text-primary bg-primary dark:bg-purple-100 
+			rounded-lg shadow-md focus:outline-none 
+			focus:shadow-outline-purple animate-slide-fade"
+	href="#"
+>
+	<div class="flex items-center">
+		<svg
+            class="w-5 h-5 mr-2 text-white dark:text-green-900"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"
+            />
+        </svg>
+
+		<span class="">
+		Complete account setup</span>
+	</div>
+	<span class="bg-gray-200 dark:bg-gray-300 p-2 rounded-lg text-xs md:text-sm
+     text-primary hover:cursor-pointer dark:text-gray-600">Save &RightArrow;</span>
+</div>
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+	<div class="space-y-6">
+		<div
+			class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+			>
+			<div class="px-5 py-4 sm:px-6 sm:py-5">
+				<h3
+					class="text-sm md:text-base font-medium text-gray-800 dark:text-white/90"
+					>
+					Personal Information
+				</h3>
+			</div>
+			<div
+				class="space-y-6 border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800"
+			>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                            >
+                            First Name <span class="text-red-300">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="first_name"
+                            placeholder="Angela"
+                            class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                            >
+                        Last Name <span class="text-red-300">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="last_name"
+                            placeholder="Jones"
+                            class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+                        />
+                    </div>
+				</div>
+				
+                <!-- Email -->
+				<div>
+					<label
+						class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+					>
+					    Email <span class="text-red-300">*</span>
+					</label>
+					<div class="relative">
+						<span
+							class="absolute top-1/2 left-0 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400"
+						>
+							<svg
+								width="20"
+								height="20"
+								viewBox="0 0 20 20"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								>
+								<path
+									fill-rule="evenodd"
+									clip-rule="evenodd"
+									d="M3.04175 7.06206V14.375C3.04175 14.6511 3.26561 14.875 3.54175 14.875H16.4584C16.7346 14.875 16.9584 14.6511 16.9584 14.375V7.06245L11.1443 11.1168C10.457 11.5961 9.54373 11.5961 8.85638 11.1168L3.04175 7.06206ZM16.9584 5.19262C16.9584 5.19341 16.9584 5.1942 16.9584 5.19498V5.20026C16.9572 5.22216 16.946 5.24239 16.9279 5.25501L10.2864 9.88638C10.1145 10.0062 9.8862 10.0062 9.71437 9.88638L3.07255 5.25485C3.05342 5.24151 3.04202 5.21967 3.04202 5.19636C3.042 5.15695 3.07394 5.125 3.11335 5.125H16.8871C16.9253 5.125 16.9564 5.15494 16.9584 5.19262ZM18.4584 5.21428V14.375C18.4584 15.4796 17.563 16.375 16.4584 16.375H3.54175C2.43718 16.375 1.54175 15.4796 1.54175 14.375V5.19498C1.54175 5.1852 1.54194 5.17546 1.54231 5.16577C1.55858 4.31209 2.25571 3.625 3.11335 3.625H16.8871C17.7549 3.625 18.4584 4.32843 18.4585 5.19622C18.4585 5.20225 18.4585 5.20826 18.4584 5.21428Z"
+									fill="#667085"
+									/>
+							</svg>
+						</span>
+						<input
+							type="email"
+							placeholder="{{ user.email }}"
+							class="dark:bg-dark-900 focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-400 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pl-[62px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 cursor-not-allowed"
+                            disabled
+						/>
+					</div>
+				</div>
+				
+                <!-- Phone Number -->
+				<div
+					x-data="{
+					selectedCountry: 'CA',
+					countryCodes: {
+					'US': '+1',
+					'GB': '+44',
+					'CA': '+1',
+					'AU': '+61'
+					},
+					phoneNumber: ''
+					}"
+					>
+					<label
+						class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+						>
+					Phone Number <span class="text-red-300">*</span>
+					</label>
+					<div class="relative">
+						<div class="absolute">
+							<select
+								x-model="selectedCountry"
+								@change="phoneNumber = countryCodes[selectedCountry]"
+								class="focus:border-green-300 focus:ring-green-500/10 appearance-none rounded-l-lg border-0 border-r border-gray-200 bg-transparent bg-none py-3 pr-8 pl-3.5 leading-tight text-gray-700 focus:ring-3 focus:outline-hidden dark:border-gray-800 dark:text-gray-400"
+								>
+								<option
+									value="US"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									US
+								</option>
+								<option
+									value="GB"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									GB
+								</option>
+								<option
+									value="CA"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									CA
+								</option>
+								<option
+									value="AU"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									AU
+								</option>
+								<!-- Add more country codes as needed -->
+							</select>
+							<div
+								class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-700 dark:text-gray-400"
+								>
+								<svg
+									class="stroke-current"
+									width="20"
+									height="20"
+									viewBox="0 0 20 20"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									>
+									<path
+										d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396"
+										stroke=""
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										/>
+								</svg>
+							</div>
+						</div>
+						<input
+							placeholder="+1 (555) 000-0000"
+							x-model="phoneNumber"
+							type="tel"
+							class="dark:bg-dark-900 shadow-theme-xs focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellowd-400 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 pr-4 pl-[84px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+							/>
+					</div>
+				</div>
+
+                <!-- Alt Phone Number -->
+				<div
+					x-data="{
+					selectedCountry: 'CA',
+					countryCodes: {
+					'US': '+1',
+					'GB': '+44',
+					'CA': '+1',
+					'AU': '+61'
+					},
+					phoneNumber: ''
+					}"
+					>
+					<label
+						class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+						>
+					Alt Phone Number
+					</label>
+					<div class="relative">
+						<div class="absolute">
+							<select
+								x-model="selectedCountry"
+								@change="phoneNumber = countryCodes[selectedCountry]"
+								class="focus:border-green-300 focus:ring-green-500/10 appearance-none rounded-l-lg border-0 border-r border-gray-200 bg-transparent bg-none py-3 pr-8 pl-3.5 leading-tight text-gray-700 focus:ring-3 focus:outline-hidden dark:border-gray-800 dark:text-gray-400"
+								>
+								<option
+									value="US"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									US
+								</option>
+								<option
+									value="GB"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									GB
+								</option>
+								<option
+									value="CA"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									CA
+								</option>
+								<option
+									value="AU"
+									class="text-gray-700 dark:bg-gray-900 dark:text-gray-400"
+									>
+									AU
+								</option>
+								<!-- Add more country codes as needed -->
+							</select>
+							<div
+								class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-700 dark:text-gray-400"
+								>
+								<svg
+									class="stroke-current"
+									width="20"
+									height="20"
+									viewBox="0 0 20 20"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									>
+									<path
+										d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396"
+										stroke=""
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										/>
+								</svg>
+							</div>
+						</div>
+						<input
+							placeholder="+1 (547) XXX-XXX"
+							x-model="phoneNumber"
+							type="tel"
+							class="dark:bg-dark-900 shadow-theme-xs focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-400 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-3 pr-4 pl-[84px] text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+							/>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div
+			class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+			>
+			<div class="px-5 py-4 sm:px-6 sm:py-5">
+				<h3
+					class="text-sm md:text-base font-medium text-gray-800 dark:text-white/90"
+					>
+					Upload Profile Picture
+				</h3>
+			</div>
+			<div
+				class="space-y-6 border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800"
+				>
+				<form
+                    id="uploadPicture"
+                    action="/upload"
+                    class="relative cursor-pointer rounded-xl border border-dashed border-gray-300 bg-gray-50 p-7 lg:p-10 hover:border-green-400 dark:hover:border-yellow-400 dark:border-gray-700 dark:bg-gray-900"
+                >
+                    <!-- Invisible file input overlay -->
+                    <input
+                        id="fileInput"
+                        type="file"
+                        accept=".png,.jpg,.jpeg,.webp,.svg"
+                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    />
+
+                    <div class="dz-message relative z-0 flex flex-col items-center justify-center space-y-4 text-center">
+                        
+                        <!-- Upload Icon -->
+                        <div
+                            class="flex h-[68px] w-[68px] items-center justify-center rounded-full bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                        >
+                            <svg
+                                class="fill-current"
+                                width="29"
+                                height="28"
+                                viewBox="0 0 29 28"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M14.5019 3.91699c-.2167 0-.412.09192-.5489.2389L8.57363 9.53186c-.29298.2928-.29313.76764-.00033 1.06064.2928.293 0.76767.2932 1.06066.0004l4.118-4.11538v12.18948c0 .4142.3358.75.75.75s.75-.3358.75-.75V6.48234l4.1134 4.11056c.2929.2928.7678.2926 1.0606-.0004.2928-.293.2926-.76767-.0004-1.06046L15.0838 4.19378a.75.75 0 00-.5819-.27679zM5.91626 18.667c0-.4142-.33579-.75-.75-.75s-.75.3358-.75.75v3.1667c0 1.2426 1.00736 2.25 2.25 2.25h15.6677c1.2427 0 2.25-1.0074 2.25-2.25V18.667c0-.4142-.3358-.75-.75-.75s-.75.3358-.75.75v3.1667c0 .4142-.3358.75-.75.75H6.66626c-.41421 0-.75-.3358-.75-.75V18.667z"
+                                />
+                            </svg>
+                        </div>
+
+                        <!-- Title -->
+                        <h4 class="text-theme-xl font-semibold text-gray-800 dark:text-white/90">
+                            Drop File Here
+                        </h4>
+
+                        <!-- Description -->
+                        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-[290px]">
+                            Drag and drop your PNG, JPG, WebP, or SVG images here, or click below to browse.
+                        </p>
+
+                        <!-- Browse text -->
+                        <span
+                            class="text-sm font-medium text-gray-500 dark:text-gray-300 underline"
+                        >
+                            Browse File
+                        </span>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+    <!-- End Left Hand Column -->
+
+    <!-- Start Right Hand Column-->
+	<div class="space-y-6">
+		<div
+			class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+			>
+			<div class="px-5 py-4 sm:px-6 sm:py-5">
+				<h3
+					class="text-base font-medium text-gray-800 dark:text-white/90"
+					>
+					Address
+				</h3>
+			</div>
+			<div
+				class="space-y-6 border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800"
+				>
+				
+                <!--Adrress Line 1-->
+                <div>
+                    <label
+                        class="mb-1.5 pl-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                    >
+                       Address Line 1 <span class="text-red-300">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="address_line_1"
+                        placeholder="enter your address"
+                        class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                        required
+                    />
+                </div>
+
+                <!--Adrress Line 2-->
+                <div>
+                    <label
+                        class="mb-1.5 pl-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                    >
+                       Address Line 2
+                    </label>
+                    <input
+                        type="text"
+                        name="address_line_2"
+                        placeholder="enter your address"
+                        class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+
+                    />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="mb-1.5 pl-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                            >
+                        City <span class="text-red-300">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="city"
+                            placeholder="montreal"
+                            class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="mb-1.5 pl-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                            >
+                        State/Province <span class="text-red-300">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="state"
+                            placeholder="Quebec"
+                            class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+                        />
+                    </div>
+				</div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="mb-1.5 pl-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                            >
+                        Postal Code <span class="text-red-300">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="postal_code"
+                            placeholder="G5H 3T5"
+                            class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label
+                            class="mb-1.5 pl-2 block text-sm font-medium text-gray-700 dark:text-gray-400"
+                            >
+                        Country <span class="text-red-300">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="country"
+                            placeholder="Canada"
+                            class="focus:border-green-300 focus:ring-green-500/10 dark:focus:border-yellow-300 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                            required
+                        />
+                    </div>
+				</div>
+			</div>
+		</div>
+		<div
+			class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+			>
+			<div class="px-5 py-4 sm:px-6 sm:py-5">
+				<h3
+					class="text-base font-medium text-gray-800 dark:text-white/90"
+					>
+					Notification Settings
+				</h3>
+			</div>
+			<div
+				class="space-y-6 border-t border-gray-100 p-5 sm:p-6 dark:border-gray-800"
+				>
+				<!-- Elements -->
+				<div class="flex flex-wrap items-center gap-8">
+                    <div x-data="{ checkboxToggle: true }">
+						<label
+							for="checkboxLabelThree"
+							class="flex cursor-pointer items-center text-xs md:text-sm font-medium text-gray-300 select-none dark:text-gray-700"
+							>
+							<div class="relative">
+								<input
+									type="checkbox"
+									id="checkboxLabelThree"
+									class="peer sr-only"
+									@change="checkboxToggle = !checkboxToggle"
+									disabled
+									/>
+								<div
+									:class="checkboxToggle ? 'bg-transparent border-gray-200 dark:border-gray-800' : 'border-green-500 bg-green-500'"
+									class="mr-3 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]"
+									>
+									<span :class="checkboxToggle ? '' : 'opacity-0'">
+										<svg
+											class="stroke-gray-200 dark:stroke-gray-800"
+											width="14"
+											height="14"
+											viewBox="0 0 14 14"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+											>
+											<path
+												d="M11.6666 3.5L5.24992 9.91667L2.33325 7"
+												stroke=""
+												stroke-width="2.33333"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												/>
+										</svg>
+									</span>
+								</div>
+							</div>
+							Email
+						</label>
+					</div>
+					<div x-data="{ checkboxToggle: false }">
+						<label
+							for="checkboxLabelOne"
+							class="flex cursor-pointer items-center text-xs md:text-sm font-medium text-gray-700 select-none dark:text-gray-400"
+							>
+							<div class="relative">
+								<input
+									type="checkbox"
+									id="checkboxLabelOne"
+									class="sr-only"
+									@change="checkboxToggle = !checkboxToggle"
+									/>
+								<div
+									:class="checkboxToggle ? 'border-green-500 bg-green-500' : 'bg-transparent border-gray-300 dark:border-gray-700'"
+									class="f hover:border-green-500 dark:hover:border-yellow-300 mr-3 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]"
+									>
+									<span :class="checkboxToggle ? '' : 'opacity-0'">
+										<svg
+											width="14"
+											height="14"
+											viewBox="0 0 14 14"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+											>
+											<path
+												d="M11.6666 3.5L5.24992 9.91667L2.33325 7"
+												stroke="white"
+												stroke-width="1.94437"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												/>
+										</svg>
+									</span>
+								</div>
+							</div>
+							Whatsapp
+						</label>
+					</div>
+                    <!--
+					<div x-data="{ checkboxToggle: false }">
+						<label
+							for="checkboxLabelTwo"
+							class="flex cursor-pointer items-center text-sm font-medium text-gray-700 select-none dark:text-gray-400"
+							>
+							<div class="relative">
+								<input
+									type="checkbox"
+									id="checkboxLabelTwo"
+									class="sr-only"
+									@change="checkboxToggle = !checkboxToggle"
+									/>
+								<div
+									:class="checkboxToggle ? 'border-green-500 bg-green-500' : 'bg-transparent border-gray-300 dark:border-gray-700'"
+									class="hover:border-green-500 dark:hover:border-yellow-300 mr-3 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]"
+									>
+									<span :class="checkboxToggle ? '' : 'opacity-0'">
+										<svg
+											width="14"
+											height="14"
+											viewBox="0 0 14 14"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+											>
+											<path
+												d="M11.6666 3.5L5.24992 9.91667L2.33325 7"
+												stroke="white"
+												stroke-width="1.94437"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												/>
+										</svg>
+									</span>
+								</div>
+							</div>
+							Whatsapp
+						</label>
+					</div>
+                    -->
+				</div>
+			</div>
+		</div>
+	</div>
+    <!-- End Right Hand Column-->
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+	function dropdown() {
+		return {
+		    options: [],
+		    selected: [],
+		    show: false,
+		    open() {
+		      this.show = true;
+		    },
+		    close() {
+		      this.show = false;
+		    },
+		    isOpen() {
+		      return this.show === true;
+		    },
+		    select(index, event) {
+		      if (!this.options[index].selected) {
+		        this.options[index].selected = true;
+		        this.options[index].element = event.target;
+		        this.selected.push(index);
+		      } else {
+		        this.selected.splice(this.selected.lastIndexOf(index), 1);
+		        this.options[index].selected = false;
+		      }
+		    },
+		    remove(index, option) {
+		      this.options[option].selected = false;
+		      this.selected.splice(index, 1);
+		    },
+		    loadOptions() {
+		      const options = document.getElementById("select").options;
+		      for (let i = 0; i < options.length; i++) {
+		        this.options.push({
+		          value: options[i].value,
+		          text: options[i].innerText,
+		          selected:
+		            options[i].getAttribute("selected") != null
+		              ? options[i].getAttribute("selected")
+		              : false,
+		        });
+		      }
+		    },
+		    selectedValues() {
+		      return this.selected.map((option) => {
+		        return this.options[option].value;
+		      });
+		    },
+		};
+	}
+</script>
+{% endblock %}

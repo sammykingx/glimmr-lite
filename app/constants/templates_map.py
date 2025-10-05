@@ -3,6 +3,7 @@
 class Templates:
     """Central registry for template names."""
 
+    AGENT_AVAILABILITY = "htmx-partials/agent-availability.html"
     class Auth:
         LOGIN = "auth/login.html"
         REGISTER = "auth/register.html"
@@ -26,3 +27,9 @@ class Templates:
         MANAGER = "dashboards/manager.html"
         SETTINGS = "dashboard/settings.html"
         PROFILE = "pages/accounts/user-profile.html"
+        
+        
+    class Onboarding:
+        AGENTS = "pages/onboarding/onboard-agents.html"
+        CLIENTS = "pages/onboarding/onboard-clients.html"
+        MANAGERS = "pages/onboarding/onboard-managers.html"
