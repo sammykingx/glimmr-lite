@@ -1,0 +1,14 @@
+{% extends "layouts/base-error.html" %}
+
+{% block page_title %}A Little Mix-Up - Olive Glitters{% endblock %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center text-center py-8 motion-blur-in-md motion-duration-[3s]">
+  <!-- Custom SVG from static folder -->
+  <img
+    src="{{ url_for('static', filename='svg/error-400.svg') }}"
+    alt="Page Not Found"
+    class="w-full max-w-md mb-10 opacity-80"
+  />
+</div>
+{% endblock %}

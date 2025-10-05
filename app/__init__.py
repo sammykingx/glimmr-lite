@@ -9,6 +9,9 @@ from app.views.goelocation import geo_bp as geolocation_blueprint
 from app.views.coupons import coupons_bp as coupons_blueprint
 from app.views.messages import msg_bp as messages_blueprint
 from app.views.payments import pay_bp as payments_blueprint
+from app import error_handler
+from logging.handlers import RotatingFileHandler
+import logging, os
 
 
 def create_app(config_object=DevelopmentConfig):
@@ -31,6 +34,26 @@ def create_app(config_object=DevelopmentConfig):
     app.register_blueprint(coupons_blueprint)
     app.register_blueprint(messages_blueprint)
     app.register_blueprint(payments_blueprint)
+    
+    # Logging configuration
+    # if not os.path.exists('logs'):
+    #     os.mkdir('logs')
+
+    # file_handler = RotatingFileHandler(
+    #     'logs/app.log', maxBytes=10240, backupCount=10
+    # )
+    # file_handler.setFormatter(logging.Formatter(
+    #     '%(asctime)s [%(levelname)s] %(message)s in %(pathname)s:%(lineno)d'
+    # ))
+    # file_handler.setLevel(logging.ERROR)
+    
+    # register error handlers
+    app.register_error_handler(400, error_handler.bad_request)
+    app.register_error_handler(401, error_handler.unauthorized_request)
+    app.register_error_handler(403, error_handler.forbidden_request)
+    app.register_error_handler(404, error_handler.page_not_found)
+    app.register_error_handler(405, error_handler.method_not_allowed)
+    app.register_error_handler(500, error_handler.internal_server)
     
 
     return app

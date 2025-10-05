@@ -33,3 +33,12 @@ class Templates:
         AGENTS = "pages/onboarding/onboard-agents.html"
         CLIENTS = "pages/onboarding/onboard-clients.html"
         MANAGERS = "pages/onboarding/onboard-managers.html"
+        
+    
+    class Errors:
+        ERROR_400 = "errors/error-400.html"
+        ERROR_401 = "errors/error-401.html"
+        ERROR_403 = "errors/error-403.html"
+        ERROR_404 = "errors/error-404.html"
+        ERROR_405 = "errors/error-405.html"
+        ERROR_500 = "errors/error-500.html"
