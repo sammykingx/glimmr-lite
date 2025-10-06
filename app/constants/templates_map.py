@@ -4,6 +4,7 @@ class Templates:
     """Central registry for template names."""
 
     AGENT_AVAILABILITY = "htmx-partials/agent-availability.html"
+    SERVICE_LISTING = "pages/services.html"
     class Auth:
         LOGIN = "auth/login.html"
         REGISTER = "auth/register.html"
