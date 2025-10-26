@@ -38,10 +38,9 @@ export function updateBookingSummary() {
   document.getElementById("summaryProperty").textContent = propertyDisplay;
 
   const freq = bookingData.frequency || "one off";
-  document.getElementById("summaryFrequency").textContent = freq.replace(
-    /\b\w/g,
-    (c) => c.toUpperCase()
-  );
+  document.getElementById("summaryFrequency").textContent = freq
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 
   // Schedule
   if (bookingData.selectedDate) {

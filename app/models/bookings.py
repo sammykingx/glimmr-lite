@@ -7,7 +7,7 @@ from app.constants.app_meta import TORONTO_TZ
 class FrequencyEnum(Enum):
     ONE_OFF = "one_off"
     WEEKLY = "weekly"
-    BIWEEKLY = "biweekly"
+    BI_WEEKLY = "bi_weekly"
     MONTHLY = "monthly"
 
 class Booking(db.Model):
@@ -35,3 +35,4 @@ class Booking(db.Model):
         db.DateTime,
     )
     additional_info = db.Column(db.Text)
+    guest_booking = db.Column(db.Boolean, default=False)

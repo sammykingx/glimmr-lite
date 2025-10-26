@@ -4,17 +4,18 @@ from app.models.user_profile import UserProfile
 from app.models.address import UserAddress
 from app.models.bookings import Booking
 from app.services.payment_service import PaymentService
-from app.services.notification_service import NotificationService
+from app.services.notification_service import EmailService
 
 
 class BookingService:
-    def __init__(self, cleaned_data: dict) -> None:
+    def __init__(self, cleaned_data: dict, guest_booking=True) -> None:
         self.booking_info = cleaned_data.model_dump()
         self.user_info = self.booking_info.pop("user_info", {})
         self.address = self.booking_info.pop("address", {})
         self.booking_info["recurring"] = (
             True if self.booking_info.get("frequency") != "one-off" else False
         )
+        self.booking_info["guest_booking"] = guest_booking
         self.booking = None
         self.user = None
 
@@ -22,7 +23,7 @@ class BookingService:
         """Creates or returns a new user if not already exists."""
 
         # gets user record by email if the user object is not set
-        if not self.user:
+        if self.user is None:
             self.user = UserProfile.query.filter_by(email=self.user_info.get("email")).first()
 
             # if user does not exist in the db, create a new one
@@ -30,17 +31,19 @@ class BookingService:
                 self.user = UserProfile(**self.user_info)
                 db.session.add(self.user)
                 db.session.commit()
+                print(f"Created new user: {self.user.email}")
 
         return self.user
 
     def save_user_address(self):
         """Creates or returns a new address for the user."""
 
-        if not self.user.address:
+        if not self.user.addresses:
             self.address = UserAddress(user_id=self.user.id, **self.address)
 
             db.session.add(self.address)
             db.session.commit()
+            print(f"Created new address for user: {self.user.email}")
 
         return self.address
 
@@ -48,13 +51,16 @@ class BookingService:
         """Creates the booking record in the database."""
 
         # Check if booking object already exists
+        from nanoid import generate
+        alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         if not self.booking:
             print("Creating new booking record...")
             self.user = self.create_or_get_user()
             self.save_user_address()
             self.booking = Booking(
                 **self.booking_info,
-                user_id=self.user.id,
+                booking_id="OGS-{}".format(generate(alphabet,11)),
+                user_email=self.user.email,
                 # user_id=2,  # For testing purposes, replace with self.user.id
             )
 
@@ -97,7 +103,7 @@ class BookingService:
     def notify(self):
         """Send mail notifications."""
 
-        from app.constants import APP_NAME, APP_SUPPORT_EMAIL
+        from app.constants.app_meta import APP_NAME, APP_SUPPORT_EMAIL
 
         email_message = render_template(
             "email/payment-confirmation.html",
@@ -108,21 +114,17 @@ class BookingService:
             payment_date=self.booking.booking_date,
             app_name=APP_NAME,
             app_support_email=APP_SUPPORT_EMAIL,
-            partner_name="Kleen & Spotless",
-            partner_support_email="contact@kleenspotless.com",
-            footer_comp_name="Divgm Technologies",
+            partner_name="Olive Glitters",
+            partner_support_email="support@oliveglitters.com",
+            footer_comp_name="Sammy Kingx Solutions",
         )
         print("email_message ready for sending")
 
-        mail_service = NotificationService(
-            user=self.user,
-            subject=f"Booking Confirmation - {APP_NAME}",
+        return EmailService.send_email(
+            subject=f"Booking Confirmation Receipt - {APP_NAME}",
+            to_email=self.user.email,
             message=email_message,
         )
-        mail_service.send_to_customer()
-        # NotificationService.send_to_customer(self.booking)
-        # NotificationService.send_to_admin(self.booking)
-        return True
 
     def place_booking(self):
         """Run the entire booking flow."""

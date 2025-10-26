@@ -21,7 +21,7 @@ def place_booking():
         current_app.logger.info(f"Received booking data: {data}")
         cleaned_data = ValidateBookingData(**data)
         Booking = BookingService(cleaned_data)
-        # booked_service = Booking.place_booking()
+        booked_service = Booking.place_booking()
 
     except CSRFError as e:
         # return jsonify({'status': 'error', 'message': 'CSRF validation failed'}), 403

@@ -7,6 +7,11 @@ from datetime import date, time
 
 def booking_data_serializer(booking_data: Dict) -> Dict:
     """Serializes booking data to a dictionary."""
+    
+    cleaning_date = datetime.strptime(
+        f"{booking_data.get("selectedDate")} {booking_data.get("selectedTime")}",
+        "%Y-%m-%d %H:%M"
+    )
 
     user_info = {
         "first_name": booking_data.get("personalInfo", {}).get("firstName", ""),
@@ -16,23 +21,23 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
     }
 
     address = {
-        "street": booking_data.get("address", {}).get("street", ""),
+        "street_line_1": booking_data.get("address", {}).get("street", ""),
         "city": booking_data.get("address", {}).get("city", ""),
         "state": booking_data.get("address", {}).get("state", ""),
-        # "country": booking_data.get("address", {}).get("country", ""),
+        "country": "canada", #booking_data.get("address", {}).get("country", ""),
     }
 
+    print(f"Date payload: {booking_data.get("selectedDate")}, Time payload: {booking_data.get("selectedTime")}")
     return {
         "service": booking_data.get("service"),
-        "category": booking_data.get("category"),
+        "service_category": booking_data.get("category"),
         "bedrooms": booking_data.get("bedrooms"),
         "bathrooms": booking_data.get("bathrooms"),
         "frequency": booking_data.get("frequency"),
         "add_ons": booking_data.get("addOns", []),
-        "booking_date": booking_data.get("selectedDate"),
-        "booking_time": booking_data.get("selectedTime"),
-        "price": booking_data.get("price", 0.0),
-        "payment_method": booking_data.get("paymentMethod", "interac"),
+        "cleaning_date": cleaning_date,
+        "price": float(booking_data.get("price", 0.0)),
+        # "payment_method": booking_data.get("paymentMethod", "interac"),
         "user_info": user_info,
         "address": address,
         "additional_info": booking_data.get("additionalInfo", ""),
@@ -41,15 +46,14 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
 
 class ValidateBookingData(BaseModel):
     service: str
-    category: str
+    service_category: str
     bedrooms: Union[int, str]
     bathrooms: Union[int, str]
     frequency: str
     add_ons: List[Dict[str, Union[str, int]]]
-    booking_date: Union[date, str] = None  # ISO format date string
-    booking_time: Union[time, str]
+    cleaning_date: datetime
     price: float = 0.0
-    payment_method: str
+    # payment_method: str
     user_info: Dict[str, str]
     address: Dict[str, str]
     additional_info: str = None
@@ -68,7 +72,15 @@ class ValidateBookingData(BaseModel):
 
         return user_payload
 
-    @field_validator("category", mode="before")
+    @field_validator("service", mode="before")
+    @classmethod
+    def validate_service(cls, value):
+        if not value.strip():
+            return ValueError("Service is required.")
+
+        return value.strip().lower()
+
+    @field_validator("service_category", mode="before")
     @classmethod
     def validate_service_category(cls, value):
         if not value.strip():
@@ -98,11 +110,15 @@ class ValidateBookingData(BaseModel):
     @field_validator("bathrooms", mode="before")
     @classmethod
     def validate_bathrooms(cls, value):
-        # if bathrooms is a string and not equall to 'studio' raise error
-        # if the bathrooms is a postive integer greater than 3 then raise error
         if isinstance(value, str):
-            if value.strip().lower() != "studio":
-                raise ValueError("Bathrooms must be 'studio' or a non-negative integer.")
+            err_msg = "Bathrooms must be a non-negative integer or 'studio'."
+            if value.isdigit():
+                if int(value) < 0:
+                    raise ValueError(err_msg)
+                value = int(value)
+                
+            elif value.strip().lower() != "studio":
+                raise ValueError(err_msg)
             
         elif not isinstance(value, int) or value < 0:
             raise ValueError("Bathrooms must be a non-negative integer or 'studio'.")
@@ -118,31 +134,7 @@ class ValidateBookingData(BaseModel):
         if value.lower() not in set(ALLOWED_FREQUENCIES):
             raise ValueError("Invalid frequency.")
 
-        return value.strip()
-
-    @field_validator("booking_date", mode="before")
-    @classmethod
-    def validate_booking_date(cls, value):
-        if isinstance(value, str):
-            try:
-                value = datetime.fromisoformat(value).date()
-            except ValueError:
-                raise ValueError("Invalid date format. Use ISO format (YYYY-MM-DD).")
-
-        elif not isinstance(value, date):
-            raise ValueError("Booking date must be a valid date.")
-
-        if value < date.today():
-            raise ValueError("Booking date cannot be in the past.")
-
-        # if value.weekday() == 6:  # Sunday
-        #     raise ValueError("Bookings cannot be made on Sundays.")
-
-        # booking date can only be 45 days days into the future frnom today
-        if (value - date.today()).days > 45:
-            raise ValueError("Booking date cannot be more than 45 days in the future.")
-
-        return value
+        return value.strip().lower()
 
     @field_validator("add_ons", mode="before")
     @classmethod

@@ -23,7 +23,7 @@ class UserProfile(db.Model, UserMixin):
     last_name = db.Column(db.String(20), nullable=True)
     email = db.Column(db.String(120), index=True, unique=True, nullable=False)
     phone = db.Column(db.String(20), unique=True, nullable=True)
-    password = db.Column(db.String(178), nullable=False)
+    password = db.Column(db.String(178), nullable=True)
     role = db.Column(db.Enum(UserRole), default=UserRole.CLIENT, nullable=False)
     profile_picture = db.Column(db.String(50), nullable=True)
     social_links = db.Column(db.JSON, nullable=True)

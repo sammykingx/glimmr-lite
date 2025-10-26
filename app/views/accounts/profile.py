@@ -1,5 +1,6 @@
 from . import accounts_bp
 from flask import render_template, Response
+from app.constants.templates_map import Templates
 
 
 @accounts_bp.route("/profile")
@@ -9,4 +10,4 @@ def user_profile() -> Response:
     
     :return: HTTP Response containing rendered HTML template
     """
-    return render_template("pages/accounts/user-profile.html", role="admin",)
+    return render_template(Templates.Dashboard.PROFILE, role="admin",)
