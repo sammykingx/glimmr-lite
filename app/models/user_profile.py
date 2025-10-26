@@ -58,8 +58,25 @@ class UserProfile(db.Model, UserMixin):
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
     
-    def hash_pwd(self) -> None:
-        self.password = generate_password_hash(self.password)
+    def hash_pwd(self, password:str|None=None) -> None:
+        """
+        Securely hashes a raw password and updates the user's stored password.
+
+        If a password is provided, it will be hashed and saved. If not, the method
+        will re-hash the current value of `self.password`. This ensures the password
+        is always stored in a hashed form for security.
+        
+        **Not passing any value for `password` is best suited for scenaries where
+        the user object's password field has already been set to a raw password**
+        prior to calling this method.
+
+        Args:
+            password (str | None, optional): Raw password to hash. If omitted, the
+                existing `self.password` field is hashed instead.
+                
+        :return None:
+        """
+        self.password = generate_password_hash(password) if password else generate_password_hash(self.password)
         
     def verify_pwd(self, raw_pwd) -> bool:
         return check_password_hash(self.password, raw_pwd)

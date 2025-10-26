@@ -9,17 +9,17 @@ app = create_app()
 def inject_globals():
     return dict(user=current_user)
 
-# @app.before_request
-# def enforce_onboarding():
-#     if current_user.is_authenticated:
-#         exempt_routes = {
-#             "accounts.onboarding_user",
-#             "auth.user_logout", 
-#             "static"}
-#         if (not current_user.onboarding_complete
-#             and request.endpoint not in exempt_routes
-#         ):
-#             return redirect(url_for("accounts.onboarding_user"))
+@app.before_request
+def enforce_onboarding():
+    if current_user.is_authenticated:
+        exempt_routes = {
+            "accounts.onboarding_user",
+            "auth.user_logout", 
+            "static"}
+        if (not current_user.onboarding_complete
+            and request.endpoint not in exempt_routes
+        ):
+            return redirect(url_for("accounts.onboarding_user"))
 
 
 @app.route("/")

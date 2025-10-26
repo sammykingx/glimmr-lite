@@ -20,7 +20,7 @@ def create_app(config_object=DevelopmentConfig):
     app.url_map.strict_slashes = False
     app.config.from_object(config_object)
     app = init_extensions(app)
-    # talisman configurations
+    
 
     with app.app_context():
         db.create_all()
@@ -55,5 +55,4 @@ def create_app(config_object=DevelopmentConfig):
     app.register_error_handler(405, error_handler.method_not_allowed)
     app.register_error_handler(500, error_handler.internal_server)
     
-
     return app

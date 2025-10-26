@@ -17,8 +17,8 @@ def onboarding_user() -> Response:
     """
     flash(
         {
-            "title": "Profile Updated",
-            "message": "Your profile information was successfully saved.",
+            "title": "You’re Almost Ready",
+            "message": "Just a few details about you and we’ll get everything set up.",
         }, "info")
     role_template_map = {
         UserRole.MANAGER: Templates.Onboarding.MANAGERS,

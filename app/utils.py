@@ -1,8 +1,8 @@
 from app.constants.services import ALLOWED_SERVICE, ALLOWED_FREQUENCIES
+from app.models.bookings import FrequencyEnum
 from pydantic import BaseModel, field_validator
 from datetime import datetime
-from typing import Dict, List, Tuple, Union
-from datetime import date, time
+from typing import Dict, List, Union
 
 
 def booking_data_serializer(booking_data: Dict) -> Dict:
@@ -33,7 +33,7 @@ def booking_data_serializer(booking_data: Dict) -> Dict:
         "service_category": booking_data.get("category"),
         "bedrooms": booking_data.get("bedrooms"),
         "bathrooms": booking_data.get("bathrooms"),
-        "frequency": booking_data.get("frequency"),
+        "frequency": FrequencyEnum(booking_data.get("frequency")),
         "add_ons": booking_data.get("addOns", []),
         "cleaning_date": cleaning_date,
         "price": float(booking_data.get("price", 0.0)),
@@ -49,7 +49,7 @@ class ValidateBookingData(BaseModel):
     service_category: str
     bedrooms: Union[int, str]
     bathrooms: Union[int, str]
-    frequency: str
+    frequency: FrequencyEnum
     add_ons: List[Dict[str, Union[str, int]]]
     cleaning_date: datetime
     price: float = 0.0
@@ -127,14 +127,11 @@ class ValidateBookingData(BaseModel):
     
     @field_validator("frequency", mode="before")
     @classmethod
-    def validate_frequency(cls, value):
-        if not value.strip():
-            raise ValueError("Frequency is required.")
-
-        if value.lower() not in set(ALLOWED_FREQUENCIES):
+    def validate_frequency(cls, enum_value):
+        if enum_value.value not in set(ALLOWED_FREQUENCIES):
             raise ValueError("Invalid frequency.")
 
-        return value.strip().lower()
+        return enum_value
 
     @field_validator("add_ons", mode="before")
     @classmethod

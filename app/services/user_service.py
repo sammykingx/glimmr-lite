@@ -59,18 +59,15 @@ class UserService(BaseService, TokenManagerMixin):
             If a user with the same unique field (e.g., email) already exists,
             the existing record is returned instead of creating a duplicate.
 
-            Args:
-                is_admin (bool, optional): Flag indicating whether the new user should
+            :param is_admin: (bool, optional) Flag indicating whether the new user should
                     be assigned the `ADMIN` role. Defaults to False (assigned `CLIENT` role).
-                **kwargs: Arbitrary keyword arguments corresponding to `UserProfile`
+            :param **kwargs: Arbitrary keyword arguments corresponding to `UserProfile`
                     fields (e.g., `email`, `password`, `full_name`, etc.).
 
-            Returns:
-                UserProfile: The newly created `UserProfile` object, or the existing one
+            :return UserProfile: The newly created `UserProfile` object, or the existing one
                 if a user with the same unique identifier already exists.
 
-            Raises:
-                ValueError: If required fields (e.g., `email`, `password`) are missing
+            :raise ValueError: If required fields (e.g., `email`, `password`) are missing
                 in `kwargs`.
         """
         user_obj = UserProfile(

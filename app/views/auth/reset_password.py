@@ -20,7 +20,10 @@ def password_reset_link():
         user = account_manager.get_user("email", email)
 
         if not user:
-            message = "Recovery instructions sent to user (if account exists)."
+            message = {
+                "title": "Email Sent",
+                "message": "Recovery instructions sent to user (if account exists).",
+            }
         else:
             reset_token = account_manager.save_user_token(user)
             is_sent = account_manager.send_user_token(
@@ -32,10 +35,16 @@ def password_reset_link():
             )
 
             if is_sent:
-                message = "Check your email for reset instructions."
+                message = {
+                    "title": "Reset Link Sent",
+                    "message": "Check your email for reset instructions."
+                }
                 category = "success"
             else:
-                message = "Email service unavailable. Please try again later."
+                message = {
+                    "title": "Service Unavailable",
+                    "message": "Email service unavailable. Please try again later."
+                }
                 category = "error"
 
         flash(message, category)
@@ -51,13 +60,16 @@ def reset_password():
     
     if not token_data:
         print("NO/INVALID REQUEST TOKEN")
-        flash("Invalid reset link", "warning")
+        flash({
+            "title": "Link Not Working",
+            "message": "It looks like this reset link has expired or isn’t valid anymore",
+            }, "warning")
         return render_template(template, disable_input=True)
     
     if request.method == "POST":
         form_data = request.form.to_dict()
         user = account_manager.get_user("reset_token", token_data.get("token"))
-        user.hash_pwd()
+        user.hash_pwd(form_data.get("password"))
         account_manager.update_user(user, password=form_data.get("password"))
         return redirect(url_for("auth.user_checkpiont"))
         

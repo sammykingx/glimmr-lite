@@ -1,5 +1,5 @@
 from . import accounts_bp
-from flask import render_template, Response,url_for
+from flask import flash, render_template, Response, url_for
 from flask_login import current_user, login_required
 from app.constants.templates_map import Templates
 from app.models.user_profile import UserRole
@@ -13,6 +13,11 @@ def dashboard() -> Response:
     
     :return: HTTP Response containing rendered HTML template
     """
+    flash(
+        {
+            "title": "Profile Updated",
+            "message": "Great work! Your profile is all set. You’re good to go!",
+        }, "success")
     role_template_map = {
         UserRole.ADMIN: Templates.Dashboard.ADMIN,
         UserRole.MANAGER: Templates.Dashboard.MANAGER,

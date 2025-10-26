@@ -111,7 +111,7 @@ class BookingService:
             client_email=self.user.email,
             amount=self.booking.price,
             service_type=self.booking.service,
-            payment_date=self.booking.booking_date,
+            payment_date=self.booking.cleaning_date,
             app_name=APP_NAME,
             app_support_email=APP_SUPPORT_EMAIL,
             partner_name="Olive Glitters",
@@ -123,7 +123,7 @@ class BookingService:
         return EmailService.send_email(
             subject=f"Booking Confirmation Receipt - {APP_NAME}",
             to_email=self.user.email,
-            message=email_message,
+            html_content=email_message,
         )
 
     def place_booking(self):

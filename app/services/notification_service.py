@@ -21,6 +21,7 @@ class EmailService:
             )
             mail.send(msg)
         except Exception as e:
+            print(f"Error sending email: {e}")
             return False
         return True
     

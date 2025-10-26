@@ -4,7 +4,7 @@ export let bookingData = {
   service: "",
   bedrooms: 1,
   bathrooms: 0, // values are [studio, 1, 2, 3]
-  frequency: "one_off", // default frequency, can be "one_off", "weekly", "bi-weekly", or "monthly"
+  frequency: "one_off", // default frequency, can be "one_off", "weekly", "bi_weekly", or "monthly"
   addOns: [],
   selectedDate: "",
   selectedTime: "",

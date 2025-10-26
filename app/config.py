@@ -2,9 +2,7 @@ from dotenv import load_dotenv
 import os
 
 
-load_dotenv()
-
-
+load_dotenv(override=True)
 class Config:
     SECRET_KEY = (
         os.getenv("APP_SECRET_KEY")
@@ -40,7 +38,6 @@ class ProductionConfig(Config):
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = "Lax"
-    WTF_CSRF_ENABLED = True
     PREFERRED_URL_SCHEME = "https"
     PERMANENT_SESSION_LIFETIME = 86400  # 1 day in seconds
     SQLALCHEMY_ENGINE_OPTIONS = {

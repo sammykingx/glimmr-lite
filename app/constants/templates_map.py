@@ -29,7 +29,6 @@ class Templates:
         SETTINGS = "dashboard/settings.html"
         PROFILE = "pages/accounts/user-profile.html"
         
-        
     class Onboarding:
         AGENTS = "pages/onboarding/onboard-agents.html"
         CLIENTS = "pages/onboarding/onboard-clients.html"
