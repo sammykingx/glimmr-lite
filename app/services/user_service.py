@@ -71,7 +71,7 @@ class UserService(BaseService, TokenManagerMixin):
                 in `kwargs`.
         """
         user_obj = UserProfile(
-            **kwargs, role=UserRole.ADMIN if is_admin else UserRole.CLIENT
+            **kwargs, role=UserRole.ADMIN if is_admin else UserRole.AGENT
         )
         user_obj.hash_pwd()
         return self.create("email", kwargs.get("email"), user_obj)
